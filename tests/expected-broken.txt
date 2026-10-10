@@ -1,0 +1,10 @@
+00-index.md: корневой индекс длиннее 40 строк
+journal/2026-09.md:3: строка длиннее 200 знаков
+notes/00-index.md: индекс длиннее 50 строк
+notes/dead-link.md:4: битая ссылка missing.md
+notes/fat-card.md: карточка длиннее 3000 знаков
+notes/long-card.md: карточка длиннее 30 строк
+notes/no-hook.md: нет заголовка или строки сути
+notes/orphan.md: нет строки в индексе notes/00-index.md
+rules.md: правил больше 30 строк
+work/00-index.md:5: строка длиннее 200 знаков
