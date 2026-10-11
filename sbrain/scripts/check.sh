@@ -45,9 +45,23 @@ link_re='\[[^]]*\]\(([^)]*)\)'
 scheme_re='^[A-Za-z][A-Za-z0-9+.-]*:'
 
 # Цели ссылок [текст](цель) строки $1 — в массив targets: без схемы, до «#».
+# Код ссылкой не считается: ни в обратных кавычках, ни в блоке между строками
+# из трёх обратных кавычек. Перед каждым файлом fence сбрасывается в 0.
+bt='`'
+fence=0
 links() {
     local rest="$1" m t
     targets=()
+    case "${rest#"${rest%%[! ]*}"}" in
+        "$bt$bt$bt"*)
+            fence=$((1 - fence))
+            return 0
+            ;;
+    esac
+    if [ $fence -eq 1 ]; then return 0; fi
+    while [[ $rest == *"$bt"*"$bt"* ]]; do
+        rest=${rest%%"$bt"*}' '${rest#*"$bt"*"$bt"}
+    done
     while [[ $rest =~ $link_re ]]; do
         m=${BASH_REMATCH[0]}
         t=${BASH_REMATCH[1]}
@@ -78,6 +92,7 @@ while IFS= read -r file; do
         *) continue ;;
     esac
     dir_of "$rel"
+    fence=0
     while IFS= read -r line || [ -n "$line" ]; do
         links "$line"
         if [ ${#targets[@]} -eq 0 ]; then continue; fi
@@ -118,6 +133,7 @@ while IFS= read -r file; do
     n=0
     title=0
     hook=0
+    fence=0
     while IFS= read -r line || [ -n "$line" ]; do
         n=$((n + 1))
         if [ $kind != card ] && [ ${#line} -gt 200 ]; then
