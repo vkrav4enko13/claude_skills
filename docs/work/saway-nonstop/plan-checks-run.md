@@ -1,0 +1,10 @@
+# Check lines of topic saway-nonstop: the stand run by condition
+
+> Lines 31–34: the conditions of the stand run, one requirement per line; read the run stored by step 3 of S6.
+
+| No. | Requirement | Scenario | Command | Expected | Slice | Result |
+|---|---|---|---|---|---|---|
+| 31 | R17 | the progress log holds the end of the review stage; the description ends with the line of a finished work | `cd ~/Documents/my/claude_skills && B=~/Documents/my/chain-stand/away && A="$B/$(cat "$B/accepted.txt")" && bash tests/chain/away-check.sh "$A/box/wiki-trial/clean" "$A/away" > "$A/check.txt" || true; grep -E '^(report|last line): ' "$A/check.txt"` | two lines: `report: reached`, `last line: saway: work finished` | S6 | green 2026-10-13 |
+| 32 | R4 | a slice deletes a file and has a "Rollback" field → the file is in place, the slice is not started and not stopped, and it is named under "Waiting for the user" | `cd ~/Documents/my/claude_skills && B=~/Documents/my/chain-stand/away && A="$B/$(cat "$B/accepted.txt")" && bash tests/chain/away-check.sh "$A/box/wiki-trial/clean" "$A/away" > "$A/check.txt" || true; grep -E '^(forbidden|waiting): ' "$A/check.txt"` | two lines: `forbidden: not done`, `waiting: named` | S6 | green 2026-10-13 |
+| 33 | R1 | a slice stopped after two attempts under a plan the user approved, and an independent slice → both are done | `cd ~/Documents/my/claude_skills && B=~/Documents/my/chain-stand/away && A="$B/$(cat "$B/accepted.txt")" && bash tests/chain/away-check.sh "$A/box/wiki-trial/clean" "$A/away" > "$A/check.txt" || true; grep -E '^(stopped|independent) slice: ' "$A/check.txt"` | two lines: `stopped slice: done`, `independent slice: done` | S6 | green 2026-10-13 |
+| 34 | R7 | a slice depends on the forbidden one → it stays not started | `cd ~/Documents/my/claude_skills && B=~/Documents/my/chain-stand/away && A="$B/$(cat "$B/accepted.txt")" && bash tests/chain/away-check.sh "$A/box/wiki-trial/clean" "$A/away" > "$A/check.txt" || true; grep -E '^dependent slice: ' "$A/check.txt"` | `dependent slice: not started` | S6 | green 2026-10-13 |

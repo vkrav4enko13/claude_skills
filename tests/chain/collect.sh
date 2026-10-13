@@ -7,7 +7,8 @@
 # the turns; done — the stage phase is reached: a denial does not fail the
 # stage; for work and seed — also every slice of the topic has the status
 # "done" or "awaiting manual check" and the progress log has the record
-# "stage 7 finished"; api_ms — duration_api_ms of the last turn: the field is
+# "stage 7 finished"; for away — only that record: the slice statuses and the
+# phase are not looked at; api_ms — duration_api_ms of the last turn: the field is
 # cumulative; wall_s — from wall.txt, no file — 0. The session records are
 # copied from the profile into raw/ together with subagents/; chat.md — the
 # requests and all the reply texts of the main session; agents/NN.md — the task
@@ -30,6 +31,7 @@ case "$stage" in
     plan) topic=count; phase='plan confirmed' ;;
     work) topic=count; phase='done' ;;
     seed) topic=longest; phase='done' ;;
+    away) topic=longest; phase='' ;;
     *) echo "unknown stage: $stage" >&2; exit 2 ;;
 esac
 
@@ -53,6 +55,13 @@ case "$stage" in
         done
         if ! grep -qs 'stage 7 finished' "$cards"/progress*.md; then
             finished=false
+        fi
+        ;;
+    away)
+        # The stage has no phase to reach: the report of swork is what counts.
+        finished=false
+        if grep -qs 'stage 7 finished' "$cards"/progress*.md; then
+            finished=true
         fi
         ;;
 esac

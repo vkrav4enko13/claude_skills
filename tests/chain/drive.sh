@@ -5,9 +5,11 @@
 #
 #   bash tests/chain/drive.sh <project> <stage> <stage folder>
 #
-# Stages: brain, plan, work, seed. The first turn starts the skill. While the
-# topic phase in state.md is not the one the stage is passed with — one more
+# Stages: brain, plan, work, seed, away. The first turn starts the skill. While
+# the topic phase in state.md is not the one the stage is passed with — one more
 # turn with the stage answer into the same session, at most six answers. The
+# stage away is exactly one turn and no answer: saway reads any answer as the
+# user's return. Its project is seeded by seed-away.sh. The
 # reply of every turn goes to turns/NN.json of the stage folder, the wall-clock
 # seconds — to wall.txt; at the end it calls collect.sh.
 # Takes from ten minutes to an hour and longer.
@@ -51,6 +53,11 @@ $(cat "$here/../trial-summary.md")"
         first='/swork longest — продолжи работу'
         answer='Принять работу; коммит не нужен.'
         ;;
+    away)
+        topic=longest
+        first='/saway longest — я ушёл, доделай без меня: решай сам и не жди моих ответов'
+        answer=''
+        ;;
     *) echo "unknown stage: $stage" >&2; exit 2 ;;
 esac
 answer="$answer На любой другой вопрос — рекомендованный вариант."
@@ -80,10 +87,12 @@ mkdir -p "$dir/turns"
 SECONDS=0
 turn "$first"
 answers=0
-while ! passed && [ $answers -lt 6 ]; do
-    answers=$((answers + 1))
-    turn "$answer" --resume "$(jq -r .session_id "$out")"
-done
+if [ "$stage" != away ]; then
+    while ! passed && [ $answers -lt 6 ]; do
+        answers=$((answers + 1))
+        turn "$answer" --resume "$(jq -r .session_id "$out")"
+    done
+fi
 echo "$SECONDS" > "$dir/wall.txt"
 
 "$BASH" "$here/collect.sh" "$project" "$stage" "$dir"
