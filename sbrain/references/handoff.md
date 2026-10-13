@@ -1,29 +1,29 @@
-# Сводка и итог. Передача дальше
+# Summary and result. Handoff
 
-Читается на шаге 7 — перед сводкой, до записи чего-либо — и на шаге 8, когда итог показан.
+Read at step 7 — before the summary, before anything is written — and at step 8, when the result has been shown.
 
-## 7. Сводка и итог
+## 7. Summary and result
 
-Прочитай `references/synthesis.md`. Там: сводка, которую пользователь подтверждает до записи; куда пишется итог; проверка перед показом. Что в какую карточку темы ложится и в каком порядке пишется — в `references/topic-cards.md`: прочитай его перед записью итога большого пути. Без этих файлов сводка превращается в пересказ разговора, а карточки — в черновик с заглушками.
+Read `references/synthesis.md`. It holds: the summary that the user confirms before writing; where the result is written; the check before showing. What goes into which topic card and in what order it is written — in `references/topic-cards.md`: read it before writing the result of the "Large" path. Without these files the summary turns into a retelling of the conversation, and the cards into a draft with stubs.
 
-Коротко, если файл недоступен: покажи «что строим» в 1–3 предложениях, сделанные компромиссы, что не входит и на что стоит взглянуть ещё раз; дождись «да»; для пробы и малой задачи итог остаётся в чате, для большой — папка темы, которую пользователь читает и одобряет, для опроса — правки в карточки плана темы или в файл плана, а если план был только в чате, итог в чате.
+In short, if the file is unavailable: show "what we build" in 1–3 sentences, the trade-offs made, what is out of scope and what is worth another look; wait for a "yes"; for a "Probe" and a "Small" task the result stays in the chat, for a "Large" one it is a topic folder that the user reads and approves, for a "Grill" — edits to the plan cards of the topic or to the plan file, and if the plan was only in the chat, the result is in the chat.
 
-## 8. Передача дальше
+## 8. Handoff
 
-Итог показан — одобрение и следующий шаг спрашивай одним запросом; сам реализацию не начинай. Варианты, по ситуации:
+The result has been shown — ask for the approval and the next step with one request; do not start the implementation yourself. The options, by the situation:
 
-- «Да, дальше план» — `splan` с путём к папке темы; если он не установлен — обычный режим планирования;
-- «Да, сразу реализация» — для малой задачи с одобренным дизайном;
-- «Да, на этом остановиться»;
-- «Поправить» — внеси правку, покажи исправленное и спроси снова;
-- прототип — если остался названный вопрос об ощущениях, который разговор не закрыл.
+- "Yes, the plan next" — `splan` with the path to the topic folder; if it is not installed — the ordinary planning mode;
+- "Yes, implementation right away" — for a "Small" task with an approved design;
+- "Yes, stop here";
+- "Fix" — make the fix, show the corrected version and ask again;
+- a prototype — if a named question about how it feels remains that the conversation did not close.
 
-В меню добавь «Ничего не делать»: одобрение не записывается, фаза не меняется. Вариантов больше четырёх — первым опускается «Да, на этом остановиться».
+Add "Do nothing" to the menu: the approval is not recorded, the phase does not change. If there are more than four options, "Yes, stop here" is the first to be dropped.
 
-Вариант с «Да» — и одобрение показанного, и выбор шага. У большого пути сначала запиши одобрение: в `state.md` — фаза `требования подтверждены`, в индексе темы — строка `**Требования подтверждены:**`, в строке темы в «В работе» корневого индекса — та же фаза (формы строк — в `references/topic-cards.md`); потом делай выбранное. Прототип одобрением не считается. Ответ «да» или «хорошо» текстом, без выбора шага, — одобрение, но не шаг: запиши одобрение и спроси шаг.
+An option with "Yes" is both the approval of what was shown and the choice of the step. On the "Large" path first record the approval: in `state.md` — the phase `requirements confirmed`, in the topic's line in "In progress" of the root index — the same phase (the forms of the lines are in `references/topic-cards.md`); then name how to start what was chosen and do not start it yourself: `splan` and `swork` are started by the user. A prototype does not count as approval. An answer "yes" or "fine" as text, without a choice of the step, is approval but not a step: record the approval and ask for the step.
 
-Следующий скил советуй запускать в новой сессии: всё нужное лежит в папке темы, а длинная сессия на каждом запросе заново несёт всю свою историю.
+If the result is written into the topic folder, advise starting the next skill in a new session: everything needed lies in the topic folder, and a long session carries its whole history anew on every request. If the result stayed in the chat, do not advise a new session: the result will not be in it.
 
-Не предлагай план, пока в документе остались вопросы, без ответа на которые планировать нельзя. Назови эти вопросы и скажи, что запрет пользователь может снять сам: блокирующими их счёл ты, и ты мог перестраховаться. Снял — сначала запиши каждый такой вопрос в документе явным допущением или вопросом, отложенным до плана, и только потом предлагай план.
+Do not offer a plan while the document still has questions without an answer to which planning is impossible. Name these questions and say that the user can lift the ban themselves: it was you who judged them blocking, and you may have been overcautious. If they have lifted it, first write each such question in the document as an explicit assumption or as a question deferred to the plan, and only then offer a plan.
 
-Проба заканчивается рекомендацией. Сохранить код пробы — новая задача со своим путём и своим одобрением.
+The "Probe" path ends with a recommendation. Keeping the probe's code is a new task with its own path and its own approval.

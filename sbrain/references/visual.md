@@ -1,25 +1,25 @@
-# Набросок вместо описания
+# A sketch instead of a description
 
-Читается, когда пользователь согласился посмотреть, а не читать. Набросок — одноразовая подсказка для одного решения, а не прототип, не макет интерфейса и не часть продукта.
+Read when the user has agreed to look rather than read. A sketch is a throwaway hint for one decision, not a prototype, not an interface mock-up and not a part of the product.
 
-## Что делать
+## What to do
 
-Самое дешёвое, что отвечает на текущий вопрос: один HTML-файл с вариантами рядом (А, Б, В) или диаграмма. Годится для расположения, структуры навигации, места шага в сценарии, вида состояний (пусто, загрузка, ошибка), связей и границ между частями.
+The cheapest thing that answers the current question: one HTML file with the options side by side (A, B, C) or a diagram. It suits arrangement, navigation structure, the place of a step in a scenario, the look of states (empty, loading, error), connections and boundaries between parts.
 
-Не делай: фирменный стиль, окончательные цвета и шрифты, точность до пикселя, анимацию без нужды, рабочую логику. Всё, что выглядит законченным, пользователь примет за обещание.
+Do not make: a brand style, final colours and fonts, pixel precision, animation without need, working logic. Everything that looks finished the user will take for a promise.
 
-Если не можешь внятно объяснить решение словами — рисовать рано: ты его ещё не понял.
+If you cannot explain the decision clearly in words, it is too early to draw: you have not understood it yet.
 
-## Где лежит и как показать
+## Where it lies and how to show it
 
-Клади во временную папку вне проекта: в проекте набросок примут за его часть. Открой файл в браузере сам, если среда это позволяет, иначе назови полный путь. Сервер ради наброска не поднимай.
+Put it in a temporary folder outside the project: inside the project a sketch will be taken for a part of it. Open the file in the browser yourself if the environment allows it, otherwise name the full path. Do not start a server for the sake of a sketch.
 
-## Как спросить
+## How to ask
 
-Показывая, скажи, что набросок черновой, **что оценивать** и **что игнорировать**: «Смотри на порядок шагов, а не на оформление». Варианты подпиши буквами.
+When showing it, say that the sketch is rough, **what to judge** and **what to ignore**: "Look at the order of the steps, not at the styling". Label the options with letters.
 
-Ответ пользователь даёт в чате, а не кликами в наброске: «А, Б, В или смесь, и что не так». Выбор из готовых вариантов — блокирующим вопросом, свободная критика — открытым. Решает ответ в чате; набросок — только пояснение к нему.
+The user gives the answer in the chat, not by clicks in the sketch: "A, B, C or a mix, and what is wrong". A choice from ready options goes as a blocking question, free criticism as an open one. The answer in the chat decides; the sketch is only an explanation to it.
 
-## Если не помогло
+## If it did not help
 
-Набросок не закрыл вопрос или решение упёрлось в отделку и движение, которых в черновике нет по определению, — это уже вопрос для прототипа: действует правило шага 4 о решениях, которые дорого переиграть.
+If the sketch did not close the question, or the decision has come down to finish and motion, which a rough draft lacks by definition, this is already a question for a prototype: the rule of step 4 about decisions that are expensive to redo applies.

@@ -1,44 +1,44 @@
 #!/bin/bash
-# Создаёт стенды для проверки вики: clean/, broken/, empty/, occupied/, big/.
+# Builds the stands for checking the wiki: clean/, broken/, empty/, occupied/, big/.
 #
-#   bash tests/make-wiki.sh <папка>
+#   bash tests/make-wiki.sh <folder>
 #
-# Папка пересоздаётся целиком, поэтому её имя обязано быть wiki-trial:
-# с любым другим путём скрипт отказывается и ничего не трогает.
+# The folder is recreated as a whole, so its name must be wiki-trial:
+# with any other path the script refuses and touches nothing.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
 T="${1:-}"
 T="${T%/}"
 if [ "${T##*/}" != wiki-trial ]; then
-    echo "отказ: имя папки стендов должно быть wiki-trial, получено «${1:-}»" >&2
+    echo "refused: the name of the stands folder must be wiki-trial, got \"${1:-}\"" >&2
     exit 2
 fi
 rm -rf "$T"
 mkdir -p "$T"
 
-# $1 русских букв подряд.
+# $1 Russian letters in a row.
 letters() {
     local s=""
     while [ ${#s} -lt "$1" ]; do s="${s}абвгдежзиклмнопрстуфхцчшщэюя"; done
     printf '%s' "${s:0:$1}"
 }
 
-# Строка $1, дополненная русскими буквами до $2 знаков.
+# The string $1, padded with Russian letters to $2 characters.
 pad() {
     printf '%s' "$1"
     letters $(($2 - ${#1}))
 }
 
-# Дописывает в файл $1 строки по образцу $3 (в нём %d — номер строки),
-# пока строк не станет $2.
+# Appends to the file $1 lines by the pattern $3 (%d in it is the line number)
+# until the file has $2 lines.
 grow() {
     local i n
     n=$(($(wc -l < "$1")))
     for ((i = n + 1; i <= $2; i++)); do printf -- "$3\n" "$i"; done >> "$1"
 }
 
-# Дополняет строку $2 файла $1 до $3 знаков.
+# Pads line $2 of the file $1 to $3 characters.
 stretch() {
     local n=0 line out=""
     while IFS= read -r line; do
@@ -53,334 +53,351 @@ app() {
     printf '%s\n' карточка викки журнал > "$1/app.txt"
 }
 
-# Карточка состояния темы: $1 — файл, $2 — тема, $3 — фаза с датой,
-# $4 — журнал, $5 — проверено, $6 — следующий шаг.
+# The state card of a topic: $1 — the file, $2 — the topic, $3 — the phase with the date,
+# $4 — the journal, $5 — what is verified, $6 — the next step.
 state() {
     cat > "$1" <<EOF
-# Состояние темы $2
+# State of topic $2
 
-> Фаза темы и шаг, с которого начнёт следующая сессия.
+> Topic phase and the step the next session starts from.
 
-- **Фаза:** $3
-- **Путь:** большая
-- **Журнал:** $4
-- **Проверено:** $5
-- **Следующий шаг:** $6
+- **Phase:** $3
+- **Path:** large
+- **Journal:** $4
+- **Verified:** $5
+- **Next step:** $6
 EOF
 }
 
-# Индекс папки темы: $1 — файл, $2 — тема, $3 — суть, $4 — дата и цель.
+# The index of a topic folder: $1 — the file, $2 — the topic, $3 — the essence, $4 — the date and the goal.
 topic_index() {
     cat > "$1" <<EOF
 # $2
 
 > $3
 
-**Требования подтверждены:** $4
+**Requirements confirmed:** $4
 
-## Карточки
+## Cards
 
-- [Состояние](state.md) — фаза темы и следующий шаг
+- [State](state.md) — topic phase and next step
 EOF
 }
 
-# ---------- clean: вики без нарушений ----------
+# ---------- clean: a wiki without violations ----------
 
 C="$T/clean"
 D="$C/docs"
 mkdir -p "$D/journal" "$D/notes" "$D/work/demo/.swork/base" "$D/work/old"
 app "$C"
 
-# Корневой индекс; $1 — сколько пунктов «Отложено» без ссылок добавить.
-# Первая строка «Отложено» — ровно 150 русских знаков.
+# The root index; $1 — how many "Deferred" items without links to add.
+# The first line of "Deferred" is exactly 150 characters of Russian text.
 root_index() {
     local i
     cat <<'EOF'
-# Список слов
+# Word list
 
-> Пробный проект: список слов в `app.txt`, по одному на строке.
+> A trial project: a list of words in `app.txt`, one per line.
 
-## В работе
+## In progress
 
-- [demo](work/demo/00-index.md) — требования подтверждены — дальше: составить план через `splan`
+- [demo](work/demo/00-index.md) — requirements confirmed — next: make a plan through `splan`
 
-## Отложено
+## Deferred
 
 - Перевод списка слов на английский язык — отложен, пока пользователь не решит, нужен ли проекту второй файл рядом с первым и кто будет сверять слова.
 EOF
     for ((i = 1; i <= $1; i++)); do
-        echo "- отложенное дело $i — до следующей пробы"
+        echo "- deferred item $i — until the next trial"
     done
     cat <<'EOF'
 
-## Разделы
+## Sections
 
-- [Правила проекта](rules.md) — решения, верные для всего проекта
-- [Журнал](journal/) — строка на задачу, файл на месяц
-- [Темы](work/00-index.md) — папки тем: требования, план, ход работы
-- [Заметки](notes/00-index.md) — факты, которых не восстановить из кода
+- [Project rules](rules.md) — decisions that hold for the whole project
+- [Journal](journal/) — a line per task, a file per month
+- [Topics](work/00-index.md) — topic folders: requirements, plan, progress of the work
+- [Notes](notes/00-index.md) — facts that cannot be recovered from the code
 EOF
 }
 root_index 0 > "$D/00-index.md"
 
 cat > "$D/rules.md" <<'EOF'
-# Правила проекта
+# Project rules
 
-> Решения и ответы, верные для всего проекта: по строке на правило.
+> Decisions and answers that hold for the whole project: a line per rule.
 
-- слова в `app.txt` — по одному на строке — 2026-08-03, со слов пользователя
-- файлы проекта — в UTF-8 — 2026-08-03, со слов пользователя
-- имена файлов — латиницей — 2026-08-17, со слов пользователя
+- the words in `app.txt` — one per line — 2026-08-03, in the user's words
+- the project files — in UTF-8 — 2026-08-03, in the user's words
+- the file names — in Latin letters — 2026-08-17, in the user's words
 EOF
 
 cat > "$D/journal/2026-08.md" <<'EOF'
-- 2026-08-03 · заведён список слов `app.txt` — проекту нужен общий словарь · [Формат app.txt](../notes/app-format.md)
-- 2026-08-04 · [old](../work/old/00-index.md): перевести `app.txt` в UTF-8 — сделано: файл в UTF-8, слова не изменились
-- 2026-08-17 · файл списка переименован латиницей — правило пользователя об именах · [Правила проекта](../rules.md)
-- 2026-08-21 · из `app.txt` убраны пустые строки — формат требует слово на каждой строке · [Формат app.txt](../notes/app-format.md)
-- 2026-08-28 · из `app.txt` убран повтор слова — слово встречается в списке один раз · [Формат app.txt](../notes/app-format.md)
+- 2026-08-03 · the word list `app.txt` set up — the project needs a shared dictionary · [Format of app.txt](../notes/app-format.md)
+- 2026-08-04 · [old](../work/old/00-index.md): convert `app.txt` to UTF-8 — done: the file is in UTF-8, the words did not change
+- 2026-08-17 · the list file renamed in Latin letters — the user's rule about names · [Project rules](../rules.md)
+- 2026-08-21 · empty lines removed from `app.txt` — the format requires a word on every line · [Format of app.txt](../notes/app-format.md)
+- 2026-08-28 · a repeated word removed from `app.txt` — a word occurs in the list once · [Format of app.txt](../notes/app-format.md)
 EOF
 
 cat > "$D/journal/2026-09.md" <<'EOF'
-- 2026-09-02 · в `app.txt` добавлено третье слово — попросил пользователь · [Формат app.txt](../notes/app-format.md)
-- 2026-09-05 · записана заметка о кириллице — длину считают в знаках, а не в байтах · [Кириллица в карточке](../notes/cyrillic-2000.md)
-- 2026-09-09 · слова в `app.txt` проверены на повторы — повтор сломал бы сортировку · [Формат app.txt](../notes/app-format.md)
-- 2026-09-12 · [demo](../work/demo/00-index.md): отсортировать слова в `app.txt` по алфавиту — требования записаны
-- 2026-09-15 · в заметку о формате добавлен пункт о повторах — о них спросил пользователь · [Формат app.txt](../notes/app-format.md)
-- 2026-09-20 · в индекс заметок добавлена строка о кириллице — карточка была без строки в индексе · [Заметки](../notes/00-index.md)
-- 2026-09-26 · в корневой индекс записан отложенный перевод слов — пользователь ещё не решил · [Список слов](../00-index.md)
+- 2026-09-02 · a third word added to `app.txt` — the user asked for it · [Format of app.txt](../notes/app-format.md)
+- 2026-09-05 · a note about Cyrillic written — the length is counted in characters, not in bytes · [Cyrillic in a card](../notes/cyrillic-2000.md)
+- 2026-09-09 · the words in `app.txt` checked for repeats — a repeat would break the sorting · [Format of app.txt](../notes/app-format.md)
+- 2026-09-12 · [demo](../work/demo/00-index.md): sort the words in `app.txt` alphabetically — requirements written
+- 2026-09-15 · an item about repeats added to the note about the format — the user asked about them · [Format of app.txt](../notes/app-format.md)
+- 2026-09-20 · a line about Cyrillic added to the notes index — the card had no line in the index · [Notes](../notes/00-index.md)
+- 2026-09-26 · the deferred translation of the words written to the root index — the user has not decided yet · [Word list](../00-index.md)
 EOF
 
 cat > "$D/notes/00-index.md" <<'EOF'
-# Заметки
+# Notes
 
-> Факты о проекте, которых не восстановить из кода.
+> Facts about the project that cannot be recovered from the code.
 
-## Карточки
+## Cards
 
-- [Формат app.txt](app-format.md) — одно слово на строке, без пустых строк и повторов
-- [Кириллица в карточке](cyrillic-2000.md) — две тысячи русских букв укладываются в предел карточки
+- [Format of app.txt](app-format.md) — one word per line, without empty lines and repeats
+- [Cyrillic in a card](cyrillic-2000.md) — two thousand Russian letters fit into the card limit
 EOF
 
 cat > "$D/notes/app-format.md" <<'EOF'
-# Формат app.txt
+# Format of app.txt
 
-> `app.txt` — список слов проекта: одно слово на строке, без пустых строк.
+> `app.txt` is the project's word list: one word per line, without empty lines.
 
-- Пробелов по краям строки нет: строка — ровно одно слово.
-- Повторов нет: слово встречается в файле один раз.
-- Запись в коде ссылкой не считается: `[слово](net-v-stroke.md)`, ни в строке, ни в блоке:
+- There are no spaces at the edges of a line: a line is exactly one word.
+- There are no repeats: a word occurs in the file once.
+- A record in code does not count as a link: `[word](net-v-stroke.md)`, neither in a line nor in a block:
 
   ```
-  [слово](net-v-bloke.md)
+  [word](net-v-bloke.md)
   ```
-- Источник: слова пользователя, 2026-08-03 и 2026-09-15
+- Source: the user's words, 2026-08-03 and 2026-09-15
 EOF
 
-# 20 строк; в пунктах ровно 2000 русских букв: 14 × 133 + 130 + 8 («Источник»).
+# 20 lines; the items hold exactly 2000 Russian letters: 14 × 133 + 138.
 {
-    printf '%s\n\n' "# Кириллица в карточке"
-    printf '%s\n\n' "> Предел карточки считается в знаках: русская буква — один знак, а не два байта."
+    printf '%s\n\n' "# Cyrillic in a card"
+    printf '%s\n\n' "> The card limit is counted in characters: a Russian letter is one character, not two bytes."
     for ((i = 1; i <= 14; i++)); do
         printf -- '- %s\n' "$(letters 133)"
     done
-    printf -- '- %s\n' "$(letters 130)"
-    echo "- Источник: tests/make-wiki.sh"
+    printf -- '- %s\n' "$(letters 138)"
+    echo "- Source: tests/make-wiki.sh"
 } > "$D/notes/cyrillic-2000.md"
 
 cat > "$D/work/00-index.md" <<'EOF'
-# Темы
+# Topics
 
-> Папки тем: требования, план и ход работы по каждой.
+> Topic folders: the requirements, the plan and the progress of the work for each.
 
-## Карточки
+## Cards
 
-- [demo](demo/00-index.md) — слова в `app.txt` по алфавиту
+- [demo](demo/00-index.md) — the words in `app.txt` in alphabetical order
 EOF
 
 cat > "$D/work/00-archive.md" <<'EOF'
-# Темы: архив
+# Topics: archive
 
-> Законченные темы: строки перенесены из индекса, папки остались на месте.
+> Finished topics: the lines are moved from the index, the folders stayed in place.
 
-## Карточки
+## Cards
 
-- [old](old/00-index.md) — `app.txt` переведён в UTF-8
+- [old](old/00-index.md) — `app.txt` converted to UTF-8
 EOF
 
 topic_index "$D/work/demo/00-index.md" demo \
-    "Слова в \`app.txt\` должны идти по алфавиту." \
-    "2026-09-12 — цель: «слова в \`app.txt\` отсортированы по алфавиту»"
-state "$D/work/demo/state.md" demo "требования подтверждены — 2026-09-12" \
-    "journal/2026-09.md, строка от 2026-09-12" "нет" "составить план через \`splan\`"
+    "The words in \`app.txt\` must go in alphabetical order." \
+    "2026-09-12 — goal: «the words in \`app.txt\` are sorted alphabetically»"
+state "$D/work/demo/state.md" demo "requirements confirmed — 2026-09-12" \
+    "journal/2026-09.md, line of 2026-09-12" "none" "make a plan through \`splan\`"
 
 topic_index "$D/work/old/00-index.md" old \
-    "Файл \`app.txt\` переведён в UTF-8." \
-    "2026-08-04 — цель: «\`app.txt\` читается как UTF-8»"
-state "$D/work/old/state.md" old "готово — 2026-08-05" \
-    "journal/2026-08.md, строка от 2026-08-04" "S1 и строки 1, 2" "нет — работа принята"
+    "The file \`app.txt\` is converted to UTF-8." \
+    "2026-08-04 — goal: «\`app.txt\` is read as UTF-8»"
+state "$D/work/old/state.md" old "done — 2026-08-05" \
+    "journal/2026-08.md, line of 2026-08-04" "S1 and lines 1, 2" "none — work accepted"
 
 for ((i = 1; i <= 100; i++)); do
-    echo "строка $i файла из снимка: вики его не видит"
+    echo "line $i of a file from the snapshot: the wiki does not see it"
 done > "$D/work/demo/.swork/base/big.md"
 
-# ---------- broken: копия clean с десятью нарушениями ----------
+# ---------- broken: a copy of clean with eleven violations ----------
 
 B="$T/broken"
 cp -R "$C" "$B"
 D="$B/docs"
 
-# 1. Корневой индекс — 45 строк.
+# 1. The root index — 45 lines.
 extra=$((45 - $(wc -l < "$D/00-index.md")))
 root_index "$extra" > "$D/00-index.md"
 
-# 2. rules.md — 35 строк.
-grow "$D/rules.md" 35 "- пробное правило %d — 2026-09-01, со слов пользователя"
+# 2. rules.md — 35 lines.
+grow "$D/rules.md" 35 "- trial rule %d — 2026-09-01, in the user's words"
 
-# 3. Третья строка журнала — 250 знаков.
+# 3. The third line of the journal — 250 characters.
 stretch "$D/journal/2026-09.md" 3 250
 
-# 4. Индекс заметок — 55 строк; названы все карточки, кроме orphan.md.
+# 4. The notes index — 55 lines; all the cards are named except orphan.md.
 cat >> "$D/notes/00-index.md" <<'EOF'
-- [Длинная карточка](long-card.md) — строк больше предела
-- [Толстая карточка](fat-card.md) — знаков больше предела
-- [Карточка без сути](no-hook.md) — под заголовком нет строки сути
-- [Карточка с битой ссылкой](dead-link.md) — ссылается на файл, которого нет
+- [A long card](long-card.md) — more lines than the limit
+- [A fat card](fat-card.md) — more characters than the limit
+- [A card without a hook line](no-hook.md) — there is no hook line under the title
+- [A card with a broken link](dead-link.md) — links to a file that does not exist
 EOF
-grow "$D/notes/00-index.md" 55 "- пункт %d без ссылки — добор индекса до 55 строк"
+grow "$D/notes/00-index.md" 55 "- item %d without a link — filling the index up to 55 lines"
 
-# 5. Карточка в 45 строк.
+# 5. A card of 45 lines.
 cat > "$D/notes/long-card.md" <<'EOF'
-# Длинная карточка
+# A long card
 
-> В этой карточке сорок пять строк.
+> This card has forty-five lines.
 
 EOF
-grow "$D/notes/long-card.md" 44 "- пункт %d длинной карточки"
-echo "- Источник: tests/make-wiki.sh" >> "$D/notes/long-card.md"
+grow "$D/notes/long-card.md" 44 "- item %d of the long card"
+echo "- Source: tests/make-wiki.sh" >> "$D/notes/long-card.md"
 
-# 6. Карточка в 20 строк и 3200 знаков: последний пункт добирает остаток.
-top="# Толстая карточка"$'\n\n'"> Строк в этой карточке двадцать, а знаков — три тысячи двести."$'\n\n'
+# 6. A card of 20 lines and 3200 characters: the last item takes up the remainder.
+top="# A fat card"$'\n\n'"> This card has twenty lines and three thousand two hundred characters."$'\n\n'
 body=""
 for ((i = 1; i <= 14; i++)); do
     body="$body$(pad "- " 200)"$'\n'
 done
-bottom="- Источник: tests/make-wiki.sh"$'\n'
+bottom="- Source: tests/make-wiki.sh"$'\n'
 rest=$((3200 - ${#top} - ${#body} - ${#bottom} - 1))
 printf '%s%s%s\n%s' "$top" "$body" "$(pad "- " "$rest")" "$bottom" > "$D/notes/fat-card.md"
 
-# 7. Карточка без строки сути.
+# 7. A card without a hook line.
 cat > "$D/notes/no-hook.md" <<'EOF'
-# Карточка без сути
+# A card without a hook line
 
-- Под заголовком этой карточки нет строки сути.
-- Источник: tests/make-wiki.sh
+- There is no hook line under the title of this card.
+- Source: tests/make-wiki.sh
 EOF
 
-# 8. Карточка, которой нет в индексе.
+# 8. A card that is not in the index.
 cat > "$D/notes/orphan.md" <<'EOF'
-# Карточка без строки в индексе
+# A card without a line in the index
 
-> Эта карточка не названа в индексе своей папки.
+> This card is not named in the index of its folder.
 
-- Источник: tests/make-wiki.sh
+- Source: tests/make-wiki.sh
 EOF
 
-# 9. Битая ссылка в четвёртой строке.
+# 9. A broken link in the fourth line.
 cat > "$D/notes/dead-link.md" <<'EOF'
-# Карточка с битой ссылкой
+# A card with a broken link
 
-> Четвёртая строка ссылается на файл, которого нет.
-- Файла по этой ссылке нет: [нет](missing.md)
-- Источник: tests/make-wiki.sh
+> The fourth line links to a file that does not exist.
+- There is no file behind this link: [none](missing.md)
+- Source: tests/make-wiki.sh
 EOF
 
-# 10. Пятая строка индекса тем — 250 знаков.
+# 10. The fifth line of the topics index — 250 characters.
 stretch "$D/work/00-index.md" 5 250
 
-# ---------- empty: проект без вики ----------
+# 11. A plan overview of 12 lines; the twelfth line — 250 characters.
+cat > "$D/work/demo/plan-overview.md" <<'EOF'
+# Plan overview of topic demo
+
+> The plan as one file for reading; the source is the slice cards: where they differ, the card is right.
+EOF
+grow "$D/work/demo/plan-overview.md" 12 "- item %d of the overview — filling up to 12 lines"
+stretch "$D/work/demo/plan-overview.md" 12 250
+
+# ---------- empty: a project without a wiki ----------
 
 mkdir -p "$T/empty"
 app "$T/empty"
 
-# ---------- occupied: docs/ занята другим ----------
+# ---------- occupied: docs/ is taken by other content ----------
 
 mkdir -p "$T/occupied/docs"
 app "$T/occupied"
 cat > "$T/occupied/docs/guide.md" <<'EOF'
-# Руководство пользователя
+# User guide
 
-Список слов лежит в `app.txt`: одно слово на строке.
+The word list lies in `app.txt`: one word per line.
 
-Чтобы добавить слово, допишите его новой строкой в конец файла.
+To add a word, write it as a new line at the end of the file.
 EOF
 
-# ---------- big: сто строк журнала и тридцать тем ----------
+# ---------- big: a hundred journal lines and thirty topics ----------
 
 D="$T/big/docs"
 mkdir -p "$D/journal" "$D/work"
 
 cat > "$D/rules.md" <<'EOF'
-# Правила проекта
+# Project rules
 
-> Решения и ответы, верные для всего проекта: по строке на правило.
+> Decisions and answers that hold for the whole project: a line per rule.
 
 EOF
-grow "$D/rules.md" 30 "- пробное правило %d — 2026-07-01, со слов пользователя"
+grow "$D/rules.md" 30 "- trial rule %d — 2026-07-01, in the user's words"
 
 cat > "$D/work/00-index.md" <<'EOF'
-# Темы
+# Topics
 
-> Папки тем: требования, план и ход работы по каждой.
+> Topic folders: the requirements, the plan and the progress of the work for each.
 
-## Карточки
+## Cards
 
 EOF
 
-# Темы 1–25 закончены, 26–30 в работе; по десять тем на месяц журнала.
+# Topics 1–25 are finished, 26–30 are in progress; ten topics per journal month.
 active=""
 for ((t = 1; t <= 30; t++)); do
     name=$(printf 'topic-%02d' "$t")
     month=$(printf '%02d' $((7 + (t - 1) / 10)))
     day=$(printf '%02d' $(((t - 1) % 10 + 1)))
     if [ $t -le 25 ]; then
-        phase="готово"
-        done_note="сделано: пробная тема $t закрыта"
-        checked="S1 и строки 1, 2"
-        next="нет — работа принята"
+        phase="done"
+        done_note="done: trial topic $t is closed"
+        checked="S1 and lines 1, 2"
+        next="none — work accepted"
     else
-        phase="исполнение идёт"
-        done_note="требования записаны"
-        checked="нет"
-        next="продолжить \`swork\` со среза S1"
-        active="$active- [$name](work/$name/00-index.md) — $phase — дальше: $next"$'\n'
+        phase="execution in progress"
+        done_note="requirements written"
+        checked="none"
+        next="continue \`swork\` from slice S1"
+        active="$active- [$name](work/$name/00-index.md) — $phase — next: $next"$'\n'
     fi
     mkdir -p "$D/work/$name"
-    topic_index "$D/work/$name/00-index.md" "$name" "Пробная тема $t большого стенда." \
-        "2026-$month-$day — цель: «проверить вики на тридцати темах»"
+    topic_index "$D/work/$name/00-index.md" "$name" "Trial topic $t of the big stand." \
+        "2026-$month-$day — goal: «check the wiki on thirty topics»"
     state "$D/work/$name/state.md" "$name" "$phase — 2026-$month-$day" \
-        "journal/2026-$month.md, строка от 2026-$month-$day" "$checked" "$next"
-    echo "- [$name]($name/00-index.md) — пробная тема $t большого стенда" >> "$D/work/00-index.md"
-    echo "- 2026-$month-$day · [$name](../work/$name/00-index.md): проверить вики на тридцати темах — $done_note" \
+        "journal/2026-$month.md, line of 2026-$month-$day" "$checked" "$next"
+    echo "- [$name]($name/00-index.md) — trial topic $t of the big stand" >> "$D/work/00-index.md"
+    echo "- 2026-$month-$day · [$name](../work/$name/00-index.md): check the wiki on thirty topics — $done_note" \
         >> "$D/journal/2026-$month.md"
 done
-grow "$D/journal/2026-07.md" 40 "- 2026-07-28 · пробная запись %d — добор журнала за июль · [Темы](../work/00-index.md)"
-grow "$D/journal/2026-08.md" 30 "- 2026-08-28 · пробная запись %d — добор журнала за август · [Темы](../work/00-index.md)"
-grow "$D/journal/2026-09.md" 30 "- 2026-09-28 · пробная запись %d — добор журнала за сентябрь · [Темы](../work/00-index.md)"
+grow "$D/journal/2026-07.md" 40 "- 2026-07-28 · trial record %d — filling the journal for July · [Topics](../work/00-index.md)"
+grow "$D/journal/2026-08.md" 30 "- 2026-08-28 · trial record %d — filling the journal for August · [Topics](../work/00-index.md)"
+grow "$D/journal/2026-09.md" 30 "- 2026-09-28 · trial record %d — filling the journal for September · [Topics](../work/00-index.md)"
+
+# The plan overview of the first topic — exactly 40 lines: the overview has no limit on the number of lines.
+cat > "$D/work/topic-01/plan-overview.md" <<'EOF'
+# Plan overview of topic topic-01
+
+> The plan as one file for reading; the source is the slice cards: where they differ, the card is right.
+EOF
+grow "$D/work/topic-01/plan-overview.md" 40 "- item %d of the overview — filling up to 40 lines"
 
 cat > "$D/00-index.md" <<EOF
-# Большой стенд
+# Big stand
 
-> Пробный проект с журналом на сто строк и тридцатью темами.
+> A trial project with a journal of a hundred lines and thirty topics.
 
-## В работе
+## In progress
 
 $active
-## Отложено
+## Deferred
 
-## Разделы
+## Sections
 
-- [Правила проекта](rules.md) — решения, верные для всего проекта
-- [Журнал](journal/) — строка на задачу, файл на месяц
-- [Темы](work/00-index.md) — папки тем: требования, план, ход работы
+- [Project rules](rules.md) — decisions that hold for the whole project
+- [Journal](journal/) — a line per task, a file per month
+- [Topics](work/00-index.md) — topic folders: requirements, plan, progress of the work
 EOF

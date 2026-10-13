@@ -1,73 +1,73 @@
-# Ревью
+# Review
 
-Читается на шаге 7 — после упрощения и до отчёта.
+Read at step 7 — after the simplification and before the report.
 
-Ревью ищет ошибки. Соответствием плану занимается сверка, лишним — упрощение; ревью — нет.
+The review looks for errors. Conformance to the plan is the business of the conformance check, what is superfluous — of the simplification; not of the review.
 
-## Что передать
+## What to pass
 
-Путь к папке темы (у плана из чата — его текст), изменения и корень проекта — как в сверке. Разговор, свои доводы и вывод «работает» не передавай.
+The path to the topic folder (for a plan from the chat — its text), the changes and the project root — as in the conformance check. Do not pass the conversation, your own arguments or the conclusion "it works".
 
-## Задание
+## Task
 
 ```
-Найди ошибки в изменениях. Корень проекта: <путь>. Изменённые файлы: <пути>;
-их состояние до работы — в <путь к base/>. Новые файлы: <пути>.
-План, по которому это написано: <путь к папке темы или текст>. Ничего не меняй —
-только читай.
+Find the errors in the changes. Reply in English. Project root: <path>. Changed files: <paths>;
+their state before the work is in <the path to base/>. New files: <paths>.
+The plan this was written by: <the path to the topic folder or the text>. Change nothing —
+only read.
 
-Считай, что ошибки есть, и найди их. Ищи:
-- неверный результат для входа, который здесь бывает: пустое, одно значение,
-  граница диапазона, повтор, другой регистр или язык;
-- падение: обращение к отсутствующему, необработанный отказ внешнего вызова;
-- потерю или порчу данных, нарушение порядка действий;
-- дыру в безопасности на границе системы;
-- несобираемое и несогласованное с вызывающим кодом.
+Assume that there are errors, and find them. Look for:
+- a wrong result for an input that occurs here: empty, a single value,
+  a boundary of a range, a repeat, another letter case or language;
+- a crash: access to something absent, an unhandled failure of an external call;
+- loss or corruption of data, a broken order of actions;
+- a security hole at the boundary of the system;
+- what does not build and what is inconsistent with the calling code.
 
-Есть у плана «Фокус проверки» (в папке темы он лежит в карточке
-`plan-decisions.md`) — каждую его строку проверь намеренно: что код делает
-при этом условии.
+If the plan has "Check focus" (in the topic folder it lies in the card
+`plan-decisions.md`), check each of its lines deliberately: what the code does
+under this condition.
 
-Не предлагай: стиль, переименования, упрощения, «было бы лучше», защиту
-от входа, которого здесь быть не может.
-Соответствие плану не проверяй: «сделано не так, как в плане» без неверного
-результата — не ошибка, этим занимается сверка.
+Do not propose: style, renamings, simplifications, "it would be better", protection
+against an input that cannot occur here.
+Do not check conformance to the plan: "done not the way the plan says" without a wrong
+result is not an error, that is the business of the conformance check.
 
-К каждой находке приведи, как её воспроизвести: вход или шаги и что получится.
-Находка без воспроизведения — предположение; так её и пометь.
+For every finding give how to reproduce it: the input or the steps and what will come out.
+A finding without a reproduction is a guess; mark it as such.
 
-Верни находки списком, серьёзные первыми:
-- серьёзность: серьёзная | мелкая
-- место: файл:строка
-- что сломается: одной-двумя фразами
-- как воспроизвести: вход или шаги и результат
+Return the findings as a list, the serious ones first:
+- severity: serious | minor
+- place: file:line
+- what will break: in one or two phrases
+- how to reproduce: the input or the steps and the result
 
-Серьёзная — неверный результат, падение, потеря или порча данных,
-дыра в безопасности, несобираемый код. Остальное — мелкая.
-Не нашёл ошибок — так и напиши, не выдумывай.
-ПРОЧИТАНО: <пути файлов, которые ты открыл и прочитал> — одной строкой после всех находок.
+A serious one is a wrong result, a crash, loss or corruption of data,
+a security hole, code that does not build. Everything else is minor.
+Found no errors — say so, do not make any up.
+READ: <the paths of the files you opened and read> — as one line after all the findings.
 ```
 
-## Отсев
+## Screening
 
-Проверяющий тоже ошибается. Каждую находку проверь по коду сам:
+The reviewer makes mistakes too. Check every finding against the code yourself:
 
-- **Реальна ли проблема** — а не правдоподобна ли правка. Воспроизведи её или проследи по коду.
-- **Находка без воспроизведения или без места в коде** — предположение: не подтвердилась — отклонена.
-- **Серьёзную отклоняй, только назвав строку кода, которая её опровергает.** «Это обрабатывается выше» без места — не довод. Не удалось ни подтвердить, ни опровергнуть — исход третий: «установить не удалось». Находка идёт в отчёт, в «Найдено и не тронуто», вместе с тем, что нужно проверить.
-- **Мелкую отклони**, если с дефектом вряд ли встретятся в обычной работе, а правка добавляет ветки, параметры или защиту. Иначе ревью вернёт то, что убрало упрощение.
+- **Whether the problem is real** — not whether the edit is plausible. Reproduce it or trace it through the code.
+- **A finding without a reproduction or without a place in the code** is a guess: it was not confirmed — it is declined.
+- **Decline a serious one only by naming the line of code that refutes it.** "This is handled above" without a place is not an argument. It could be neither confirmed nor refuted — there is a third outcome: "could not be established". The finding goes into the report, into "Found and left untouched", together with what needs to be checked.
+- **Decline a minor one** if the defect is unlikely to be met in ordinary work, while the edit adds branches, parameters or protection. Otherwise the review will bring back what the simplification removed.
 
-Что делать с подтверждённой:
+What to do with a confirmed one:
 
-- **Ошибка в коде срезов** — исправь сам: ступень `stage-7`, правки пачками, проверки срезов пачки. Красная — верни из ступени, находка в отчёт.
-- **Требует выйти за план, изменить поведение или решение плана** — не трогай, назови в отчёте с причиной.
+- **An error in the code of the slices** — fix it yourself: the checkpoint `stage-7`, the edits in batches, the checks of the slices of the batch. A red one — restore from the checkpoint, the finding goes into the report.
+- **It requires going outside the plan, changing the behaviour or a decision of the plan** — do not touch it, name it in the report with the reason.
 
-Отклонённые находки назови в отчёте, в разделе «Исправлено по ревью», одной строкой каждую: что предлагалось и почему отклонено.
+Name the declined findings in the report, in the "Fixed after the review" section, one line each: what was proposed and why it was declined.
 
-## Повторный круг
+## Second round
 
-Только если была исправлена **серьёзная** находка. Тому же заданию передай список находок и своё исправление и попроси проверить только их: исправление верно и не сломало соседнее.
+Only if a **serious** finding was fixed. Give the same task the list of the findings and your fix and ask to check only them: that the fix is right and did not break what is next to it.
 
-Повторный круг читает новый подагент: прежний уже видел свои находки.
+The second round is read by a new subagent: the previous one has already seen its own findings.
 
-Третьего круга нет. Новую находку повторного круга не исправляй — исправление некому перепроверить: она идёт в отчёт, в «Найдено и не тронуто». Своё первое исправление оставь, если проверки срезов зелёные; если повторный круг показал, что ошибку внесло оно, — верни файлы из `stage-7` и назови обе находки в отчёте.
+There is no third round. Do not fix a new finding of the second round — there is no one to recheck the fix: it goes into the report, into "Found and left untouched". Keep your first fix if the checks of the slices are green; if the second round showed that it was the fix that introduced the error — restore the files from `stage-7` and name both findings in the report.

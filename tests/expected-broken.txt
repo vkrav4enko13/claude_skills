@@ -1,10 +1,11 @@
-00-index.md: корневой индекс длиннее 40 строк
-journal/2026-09.md:3: строка длиннее 200 знаков
-notes/00-index.md: индекс длиннее 50 строк
-notes/dead-link.md:4: битая ссылка missing.md
-notes/fat-card.md: карточка длиннее 3000 знаков
-notes/long-card.md: карточка длиннее 30 строк
-notes/no-hook.md: нет заголовка или строки сути
-notes/orphan.md: нет строки в индексе notes/00-index.md
-rules.md: правил больше 30 строк
-work/00-index.md:5: строка длиннее 200 знаков
+00-index.md: root index is longer than 40 lines
+journal/2026-09.md:3: line is longer than 200 characters
+notes/00-index.md: index is longer than 50 lines
+notes/dead-link.md:4: broken link missing.md
+notes/fat-card.md: card is longer than 3000 characters
+notes/long-card.md: card is longer than 30 lines
+notes/no-hook.md: no title or hook line
+notes/orphan.md: no line in index notes/00-index.md
+rules.md: rules are longer than 30 lines
+work/00-index.md:5: line is longer than 200 characters
+work/demo/plan-overview.md:12: line is longer than 200 characters

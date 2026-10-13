@@ -1,47 +1,51 @@
-# Остановка до записи. Запись плана. Проверка. Показ и следующий шаг
+# Stop before writing. Writing the plan. Review. Showing and the next step
 
-Читается на шаге 6 — после нарезки, до записи плана, — на шаге 7, когда нарезка согласована, на шаге 8, когда план готов, и на шаге 9, перед показом плана пользователю.
+Read at step 6 — after the slicing, before the plan is written, — at step 7, when the slicing is agreed, at step 8, when the plan is ready, and at step 9, before the plan is shown to the user.
 
-## 6. Остановка до записи
+## 6. Stop before writing
 
-Для плана карточками, один раз. Покажи в чате и жди «да»:
+For a plan in cards, once. Show in the chat and wait for a "yes":
 
-1. **Нарезка** — по строке на срез: что заработает и от каких срезов он зависит.
-2. **Точки проверки** — где и чем будет проверяться поведение (шаг 4), и отдельной строкой счёт: сколько строк проверки и сколько из них проверяется вручную.
-3. **Технические решения** — только те, что пользователь стал бы взвешивать: что выбрано и вместо чего.
-4. **Расхождения** — где код противоречит требованию, где в требованиях пробел и где план противоречит решению со статусом «в силе» — с названной карточкой этого решения.
+1. **Slicing** — a line per slice: what will start working and which slices it depends on.
+2. **Check points** — where and with what the behaviour will be checked (step 4), and as a separate line the final count, which includes the lines of "Check focus": how many check lines there are and how many of them are checked manually.
+3. **Technical decisions** — only those the user would weigh: what was chosen and instead of what. Here too go the cases that the requirements are silent about but for which there is a reasonable expectation: decide yourself and show the decision as a line.
+4. **Discrepancies** — where the code contradicts a requirement, where the requirements have a gap — a case whose answer changes the scope, and where the plan contradicts a decision with the status "in force" — with the card of that decision named.
 
-Пункт — одна строка, самое большее две. Пустой раздел не показывай.
+An item is one line, two at most. Do not show an empty section.
 
-**Расхождение или пробел молча не закрывай.** Назови его и предложи, что делать: поправить карточку требований (правишь ты, с согласия пользователя, на месте) — если уточнение не меняет объём и поведение; вернуться в `sbrain` — если меняет. План по требованию, с которым код не сходится, не пишется, пока пользователь не ответил.
+"Yes" at this stop approves everything shown at it: the slicing, the check points and the decisions.
 
-**План противоречит решению со статусом «в силе»** — назови пользователю карточку этого решения и жди ответа: решение меняет только его явное «да». Без него меняй нарезку, а не решение. Замену оформи при записи плана — по разделу «Замена и архив» `references/wiki-rules.md`.
+**Do not silently close a discrepancy or a gap.** Name it and propose what to do: fix the requirements card (you make the edit, with the user's consent, in place) — if the clarification does not change the scope or the behaviour; go back to `sbrain` — if it does. The plan for a requirement that the code does not agree with is not written until the user has answered. A gap is only a case whose answer changes the scope: the rest of the requirements' silence you close yourself.
 
-## 7. Запись плана
+**The plan contradicts a decision with the status "in force"** — name the card of that decision to the user and wait for an answer: only their explicit "yes" changes the decision. Without it change the slicing, not the decision. Write up the replacement when writing the plan — by the section "Replacement and archive" of `references/wiki-rules.md`.
 
-Прочитай `references/plan-format.md` и запиши план по нему. Там: где лежит план, состав карточек, строки проверки, поля среза, что допустимо в плане из кода и порядок записи.
+## 7. Writing the plan
 
-После записи карточек: в `state.md` — фаза `план записан`; в индексе темы — строка на каждую новую карточку; в строке темы в «В работе» корневого индекса — та же фаза; затем скрипт проверки вики. Формы строк — в том же файле.
+Read `references/plan-format.md` and write the plan by it. It holds: where the plan lies, the composition of the cards, the check lines, the slice fields, what code is allowed in the plan and the order of writing.
 
-## 8. Проверка
+After the cards are written: in `state.md` — the phase `plan written` and the next step "independent plan review"; in the topic index — a line for every new card; in the topic's line in "In progress" of the root index — the same phase; then the wiki check script. The forms of the lines are in the same file.
 
-Прямой и короткий итог перечитай сам: у каждого требования есть срез, каждый шаг однозначен, имена согласованы между срезами.
+## 8. Review
 
-Для плана карточками прочитай `references/review.md`. Там самопроверка по списку, задание отдельному агенту, который не видел разговора, и что делать с его находками.
+Reread a direct and a short result yourself: every requirement has a slice, every step is unambiguous, the names are consistent between the slices.
 
-## 9. Показ и следующий шаг
+For a plan in cards read `references/review.md`. It holds the self-check by a list, the task for a separate agent that has not seen the conversation, and what to do with its findings.
 
-Назови полный путь к папке темы (для прямого и короткого — сам план в чате), попроси прочитать и скажи, что осталось несогласованным: находки проверяющего, с которыми ты не согласился, и допущения.
+The review is passed — write the next step into `state.md`: the user reads the plan and answers whether we approve or edit.
 
-Одобрение плана и следующий шаг спрашивай одним запросом. Варианты, по ситуации:
+## 9. Showing and the next step
 
-- «Да, исполнять» — `swork`; если он не установлен — обычная сессия по этому плану;
-- «Да, на этом остановиться»;
-- «Поправить» — внеси правку, покажи исправленное и спроси снова;
-- вернуться в `sbrain` — если при планировании выяснилось, что требования надо менять.
+A direct and a short result is already shown in the chat. Show a plan in cards in the chat in full, with the same text as in the overview `plan-overview.md`: for every slice — what will start working, the files, the steps, the checks with the command and the expected output, the dependencies; then the technical decisions, "Not doing" and what is not agreed — both the reviewer's findings that you disagreed with and the assumptions. After the plan name the full path to the overview and to the topic folder.
 
-В меню добавь «Ничего не делать»: одобрение не записывается, фаза не меняется. Вариантов больше четырёх — первым опускается «Да, на этом остановиться».
+Ask for the approval of the plan and the next step with one request. The options, by the situation:
 
-Вариант с «Да» — и одобрение плана, и выбор шага. У плана карточками сначала запиши одобрение: в `state.md` — фаза `план подтверждён`, в строке темы в «В работе» корневого индекса — та же фаза (формы строк — в `references/plan-format.md`); потом назови, как запустить выбранное. Остальные варианты одобрением не считаются. «План хороший» текстом, без выбора шага, — одобрение, но не шаг: запиши одобрение и спроси шаг.
+- "Yes, execute" — `swork`; if it is not installed — an ordinary session by this plan;
+- "Yes, stop here";
+- "Fix" — make the fix, show the corrected version and ask again;
+- go back to `sbrain` — if it turned out during the planning that the requirements have to be changed.
 
-Рекомендацию дай одной фразой с причиной из самого плана. Исполнение сам не начинай: «Да, исполнять» значит, что `swork` запускает пользователь, — советуй новую сессию: всё нужное лежит в папке темы, а длинная сессия на каждом запросе заново несёт всю свою историю. В git не коммить, пока не попросят.
+Add "Do nothing" to the menu: the approval is not recorded, the phase does not change. If there are more than four options, "Yes, stop here" is the first to be dropped.
+
+An option with "Yes" is both the approval of the plan and the choice of the step. For a plan in cards first record the approval: in `state.md` — the phase `plan confirmed`, in the topic's line in "In progress" of the root index — the same phase (the forms of the lines are in `references/plan-format.md`); then name how to start what was chosen. The other options do not count as approval. "The plan is good" as text, without a choice of the step, is approval but not a step: record the approval and ask for the step.
+
+Give the recommendation in one phrase with a reason from the plan itself. Do not start the execution yourself: "Yes, execute" means that `swork` is started by the user. The plan lies as cards in the topic folder — advise a new session: everything needed lies in the topic folder, and a long session carries its whole history anew on every request. A direct or a short result lies only in the chat — do not advise a new session: the plan will not be in it. Do not commit to git until you are asked.

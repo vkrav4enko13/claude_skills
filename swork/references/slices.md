@@ -1,67 +1,69 @@
-# Подготовка. Срезы
+# Preparation. Slices
 
-Читается на шаге 2 — после входа, до первого среза — и на шаге 3, когда подготовка закончена.
+Read at step 2 — after the entry, before the first slice — and at step 3, when the preparation is finished.
 
-## 2. Подготовка
+## 2. Preparation
 
-Прочитай `references/snapshot.md` и сделай по нему:
+Read `references/snapshot.md` and do the following by it:
 
-1. определи, под git ли корень проекта;
-2. заведи папку снимка — `.swork/` в папке темы; под git запиши список изменённых файлов на старте;
-3. поставь метку времени;
-4. собери исключения для поиска несообщённых правок и запиши их в «Ход исполнения» до первого среза — пользователь должен видеть, что поиск пропускает.
+1. determine whether the project root is under git;
+2. set up the snapshot folder — `.swork/` in the topic folder; under git write down the list of the files that are changed at the start;
+3. set the time marker;
+4. collect the exclusions for the search for unreported edits and write them into "Progress log" before the first slice — the user must see what the search skips.
 
-Отметь начало работы в вики: в `state.md` — фаза `исполнение идёт` и следующий шаг; в строке темы в «В работе» корневого индекса — та же фаза и тот же шаг. Дальше эта строка меняется вместе с `state.md`.
+Mark the start of the work in the wiki: in `state.md` — the phase `execution in progress` and the next step; in the topic's line in "In progress" of the root index — the same phase and the same step. From then on this line changes together with `state.md`.
 
-Вики в проекте не ведётся — у проекта свои правила записей, в `.wiki-path` стоит `off` либо сессия запущена в домашней или временной папке, — а папка темы лежит там, где её назвал пользователь: пиши только в карточки темы. Записи в корневой индекс, журнал и `notes/` пропускай, скрипт проверки не запускай, пределы карточек проверь сам и скажи об этом в отчёте.
+Before the first slice check the plan line "Checked against code" against the present code and name the discrepancies — the slice files changed after that check. Do not wait for an answer: this is not a stop.
 
-Выстрой срезы по строкам «Зависит от» их карточек. Порядок исполнения задают зависимости, а не номера срезов.
+If the wiki is not kept in the project, write by `references/wiki-rules.md`, section "The wiki is not kept", and say so in the report.
 
-## 3. Срезы
+Order the slices by the "Depends on" lines of their cards. The order of execution is set by the dependencies, not by the slice numbers.
 
-Срезы исполняются **по одному**. Одновременно — никогда, даже если они независимы.
+## 3. Slices
 
-**Проверка среза** — команды его строк из карточек проверок (`plan-checks.md` и её части); номера строк называет поле «Проверки» карточки среза. Она зелёная, когда зелёные все строки среза с командой, и красная, когда красная хотя бы одна. Строка со словами `проверяется вручную` командой не запускается — о ней «Ручная проверка» ниже.
+The slices are executed **one at a time**. At the same time — never, even if they are independent.
 
-**Ход исполнения** — карточка `progress.md` в папке темы: по строке на запись, новая — в конец. Заводишь её ты при первой записи: заголовок, строка сути и строка о ней в индексе темы — как у любой карточки по `references/wiki-rules.md`. Заполнилась до предела карточки — продолжай в `progress-2.md`.
+**The check of a slice** is the commands of its lines from the check cards (`plan-checks.md` and its parts); the line numbers are named by the "Checks" field of the slice card. It is green when all the lines of the slice that have a command are green, and red when at least one is red. A line with the words `checked manually` is not run as a command — "Manual check" below is about it.
 
-Для каждого среза — сначала прочитай его карточку и его строки проверок, затем:
+**Progress log** is the `progress.md` card in the topic folder: a line per record, a new one goes to the end. You set it up at the first record: the title, the hook line and the line about it in the topic index — as for any card by `references/wiki-rules.md`. It has filled up to the card limit — continue in `progress-2.md`.
 
-1. **Копии.** Сними копии файлов среза по `references/snapshot.md` — у любого среза, в том числе с разделом «Откат». Файла «изменить» не существует — это расхождение с планом, а не повод создать файл.
-2. **Проверка до правок.** Один раз запусти проверку и прочитай, почему она не проходит.
-   - Красная, потому что среза ещё нет, — так и должно быть, иди дальше.
-   - Красная по другой причине — ошибка в коде вне файлов среза, негодная команда — расхождение с планом: исполнитель чинил бы чужое.
-   - Зелёная — сверь срез с кодом по блокам «Файлы» и «Интерфейсы». Срез уже сделан — поставь «готов» и не переписывай. Не сделан — проверка ничего не доказывает: остановка.
-   - У среза только ручная проверка — шаг пропускается.
-3. **Исполнитель.** Запиши в «Ход исполнения» «S<N>: начат». Прочитай `references/executor.md`. Срез плана в папке темы исполняет свежий подагент; он получает пакет своего среза, а не весь план.
-4. **Что вернул исполнитель.**
-   - `готово` — иди к шагу 5.
-   - `нужен файл` — файла нет в блоке «Файлы» среза. Файл переехал или переименован — это мелкое расхождение; иначе остановка.
-   - `расхождение` — мелкое исправляешь ты, см. ниже; иначе остановка.
-   - `не смог` — неудачная попытка, см. шаг 6.
-5. **Проверка основной сессией.** Сам запусти проверку и посмотри изменения по снимку. Отчёт исполнителя доказательством не считается: «готов» ставится только по выводу команды, полученному сейчас. В изменениях проверь, что проверка не позеленела за свой счёт: ожидаемое значение не переписано под код, тест не отключён и не пропущен. Иначе она красная. После каждого запуска исполнителя, какой бы ни была проверка, найди несообщённые правки по `references/snapshot.md`.
-6. **Красная проверка.** Запусти исполнителя снова: тот же пакет, конец вывода упавшей проверки и перечень уже испробованного. Попыток исправить — **две**; после второй неудачной — остановка. В счёт идут запуски после красной проверки и после `не смог`; первый запуск исполнителя и перезапуск после мелкого расхождения не считаются. Каждую попытку записывай в «Ход исполнения» строкой «S<N>: попытка 1 из 2 — что пробовали, чем кончилось»; перед второй добавь, какое допущение могло быть неверным. Правки неудачных попыток при остановке остаются на месте: снимок цел, решает пользователь.
-7. **Статус.** Запиши статус в карточку среза: `готов` — когда все его строки с командой зелёные и строк «проверяется вручную» у него нет; есть такая строка — `ждёт ручной проверки`, см. «Ручная проверка». Запиши строку в «Ход исполнения»: номер среза, итог, номера строк проверок и файлы с их выводом. В `state.md` допиши в «Проверено» срез и номера его зелёных строк — `S1 и строки 1, 2` — и запиши «Следующий шаг».
-8. **Записи в вики.** Проверка среза зелёная — запиши карточками в `notes/` то, что по ходу среза выяснилось и подтвердилось: неочевидные факты и грабли. Порог и порядок записи — в `references/wiki-rules.md`, раздел «Запись». Правишь заметку, которая была до этой работы, — сначала скопируй её в `notes/` папки снимка; копию, которая там уже лежит, не перезаписывай. Записанное назови в «Ходе исполнения» строкой «Записано в вики: <путь карточки от папки вики> — новая» либо «… — дополнена». Записать нечего — такой строки нет.
+For each slice — first read its card and its check lines, then:
 
-**Созданное и замеченное.** Функции из поля «СОЗДАНЫ ФУНКЦИИ» допиши в `created.txt` снимка строками `S<N>: имя(сигнатура) — файл`; строку, которая там уже есть, не повторяй. После попытки исправить сверь прежние строки этого среза с кодом: функции с таким именем в файле больше нет — строку убери; сигнатура изменилась — строку замени. Замеченное исполнителем запиши в «Ход исполнения» строкой «S<N>: замечено вне среза — <место и суть>».
+1. **Copies.** Take copies of the slice files by `references/snapshot.md` — for any slice, including one with a "Rollback" section. A "change" file does not exist — this is a discrepancy with the plan, not a reason to create the file.
+2. **The check before the edits.** Run the check once and read why it does not pass.
+   - It is red because the slice is not there yet — that is how it should be, go on.
+   - It is red for another reason — an error in the code outside the slice files, an unfit command — a discrepancy with the plan: the executor would be fixing what is not its own.
+   - It is green — check the slice against the code by the "Files" and "Interfaces" blocks. The slice is already done — set "done" and do not rewrite it. It is not done, and the slice has the `no behavior change` mark — that is how it should be: for it a check that is green before the edits does not count as a stop, go on. It is not done and there is no mark — the check proves nothing: a stop.
+   - The slice has only a manual check — the step is skipped.
+3. **The executor.** Write "S<N>: started" into "Progress log". Read `references/executor.md` before the first slice; after that — only if its text is no longer in the context. A slice of a plan in the topic folder is executed by a fresh subagent; it gets the packet of its own slice, not the whole plan. For a slice marked `ready text`, launch the executor with effort `high`, using the effort parameter of the subagent launch tool; if there is no such parameter, at the session level. Conformance and review reviewers and all other subagents run at the session level.
+4. **What the executor returned.**
+   - `done` — go to step 5.
+   - `need a file` — the file is not in the "Files" block of the slice. The file has moved or been renamed — this is a minor discrepancy; otherwise a stop.
+   - `discrepancy` — a minor one you fix yourself, see below; otherwise a stop.
+   - `could not` — a failed attempt, see step 6.
+5. **The check by the main session.** Run the check yourself and look at the changes by the snapshot. The executor's report does not count as proof: "done" is set only by command output obtained now. In the changes check that the check has not turned green at its own expense: the expected value is not rewritten to fit the code, the test is not disabled and not skipped. Otherwise it is red. After every run of the executor, whatever the check turned out to be, find the unreported edits by `references/snapshot.md`.
+6. **A red check.** Run the executor again: the same packet, the end of the output of the failed check and the list of what has already been tried. There are **two** attempts to fix; after the second failed one — a stop. The runs after a red check and after `could not` count; the first run of the executor and a rerun after a minor discrepancy do not count. Record every attempt in "Progress log" as a line "S<N>: attempt 1 of 2 — what was tried, how it ended"; before the second one add which assumption could have been wrong. At a stop the edits of the failed attempts stay in place: the snapshot is intact, the user decides.
+7. **Status.** Write the status into the slice card: `done` — when all its lines with a command are green and it has no "checked manually" lines; there is such a line — `awaiting manual check`, see "Manual check". Write a line into "Progress log": the slice number, the outcome, the numbers of the check lines and the files with their output. Write "Next step" into `state.md`.
+8. **Records in the wiki.** The check of the slice is green — write as cards in `notes/` what came to light and was confirmed in the course of the slice: non-obvious facts and pitfalls. Take them from the PITFALLS field of the executor's reply and from what you saw yourself; first check an executor's fact against the code. The threshold and the order of writing are in `references/wiki-rules.md`, section "Writing". You edit a note that existed before this work — first copy it into `notes/` of the snapshot folder; do not overwrite a copy that already lies there. In "Progress log" name what was written, as a line "Written to the wiki: <card path from the wiki folder> — new" or "… — extended". There is nothing to write — there is no such line.
 
-**Мелкое расхождение** — файл переехал или переименован, имя изменилось, смысл тот же. Исправляешь его ты, не исполнитель: правишь план на месте во всех карточках, где это имя или путь названы, снимаешь копию файла, записываешь в «Ход исполнения» и запускаешь исполнителя снова. Любое другое расхождение — остановка.
+**What was created and what was noticed.** Add the functions from the "FUNCTIONS CREATED" field to the snapshot's `created.txt` as lines `S<N>: name(signature) — file`; do not repeat a line that is already there. After an attempt to fix, check the earlier lines of this slice against the code: the file no longer has a function with that name — remove the line; the signature has changed — replace the line. Write what the executor noticed into "Progress log" as a line "S<N>: noticed outside the slice — <the place and the essence>".
 
-**Ручная проверка.** Строку `проверяется вручную: <шаги>` командой не проверить: команды остальных строк среза запусти как обычно, а этой строке запиши в «Результат» `ждёт ручной проверки`. От среза зависят другие срезы — остановка: поставь «ждёт ручной проверки», покажи шаги и жди подтверждения. Не зависят — поставь «ждёт ручной проверки» и иди дальше; все такие проверки покажешь списком в отчёте. «Готов» ручная проверка получает только после слов пользователя.
+**A minor discrepancy** — a file has moved or been renamed, a name has changed, the meaning is the same. You fix it, not the executor: you fix the plan in place in all the cards where this name or path is named, take a copy of the file, record it in "Progress log" and run the executor again. Any other discrepancy is a stop.
 
-**Необратимое.** У среза есть раздел «Откат» — остановка до его начала. После согласия первым выполняется сохранение из этого раздела.
+**Manual check.** A line `checked manually: <steps>` cannot be checked with a command: run the commands of the other lines of the slice as usual, and for this line write `awaiting manual check` into "Result". Other slices depend on the slice — a stop: set "awaiting manual check", show the steps and wait for confirmation. None depend on it — set "awaiting manual check" and go on; you will show all such checks as a list in the report. A manual check gets "done" only after the user says so.
 
-## Меню остановки
+**The irreversible.** The slice has a "Rollback" section — a stop before it starts. After consent the saving from this section is carried out first.
 
-Первым — действие из таблицы, с тем, что после него произойдёт; затем «Поправить» и «Ничего не делать» — статус среза и снимок остаются как есть.
+## Stop menu
 
-| Остановка | Действие | Что после него |
+First — the action from the table, with what will happen after it; then "Fix" and "Do nothing" — the slice status and the snapshot stay as they are.
+
+| Stop | Action | What happens after it |
 |---|---|---|
-| код расходится с планом не по мелочи | «Вернуться в `splan`» | срез правит `splan`; `swork` его не запускает: назови папку темы и остановись |
-| проверка не проходит после двух попыток | «Снять остановку с подсказкой» | пользователь называет, что попробовать; счёт попыток начинается заново |
-| срез с необратимым действием | «Начать срез» | первым выполняется сохранение из раздела «Откат» |
-| ручная проверка, от среза зависят другие | «Проверил: проходит» | срез получает «готов», зависящие срезы начинаются |
-| изменённый файл вне плана, который нечем вернуть | «Файл мой, оставить» | путь уходит в `known.txt`, работа продолжается |
-| проверка проходит до правок, а срез не сделан | «Вернуться в `splan`» | строку проверки правит `splan`; `swork` его не запускает: назови папку темы и остановись |
-| проверку нельзя выполнить из-за среды | «Среда починена» | проверка запускается снова, попытки не тратятся |
+| the code differs from the plan, and not in a minor way | "Go back to `splan`" | the slice is fixed by `splan`; `swork` does not start `splan`: name the topic folder and stop |
+| the check does not pass after two attempts | "Lift the stop with a hint" | the user names what to try; the count of attempts starts anew |
+| a slice with an irreversible action | "Start the slice" | the saving from the "Rollback" section is carried out first |
+| a manual check, other slices depend on the slice | "Checked: it passes" | the slice gets "done", the dependent slices start |
+| a changed file outside the plan that there is nothing to restore with | "The file is mine, keep it" | the path goes into `known.txt`, the work continues |
+| the check passes before the edits, while the slice is not done | "Go back to `splan`" | the check line is fixed by `splan`; `swork` does not start `splan`: name the topic folder and stop |
+| the check cannot be run because of the environment | "The environment is fixed" | the check is run again, attempts are not spent |

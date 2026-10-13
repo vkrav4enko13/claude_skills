@@ -1,25 +1,26 @@
 #!/bin/bash
-# Проверяет вики проекта и называет нарушения. Сам ничего не меняет.
+# Checks the project wiki and names the violations. Changes nothing itself.
 #
-#   bash check.sh <папка вики>
+#   bash check.sh <wiki folder>
 #
-# Нарушений нет — строка «вики в порядке», код 0.
-# Есть — по строке «<путь от папки вики>[:<номер строки>]: <нарушение>», код 1.
-# Нет аргумента или в папке нет 00-index.md — сообщение и код 2.
+# No violations — the line "wiki is fine", code 0.
+# Any — a line "<path from the wiki folder>[:<line number>]: <violation>" each, code 1.
+# No argument, or the folder has no 00-index.md — a message and code 2.
 #
-# Видит только пять частей вики: 00-index.md, rules.md, journal/, work/, notes/.
-# Папки с точкой в начале имени не видит на любой глубине.
-# Как исправить каждое нарушение — references/wiki-rules.md, раздел «Проверка».
+# Sees only five parts of the wiki: 00-index.md, rules.md, journal/, work/, notes/.
+# Does not see folders whose name starts with a dot, at any depth.
+# The plan overview plan-overview.md is not a card: it has one limit, the line length.
+# How to fix each violation — references/wiki-rules.md, section "Check".
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
 if [ -z "${1:-}" ]; then
-    echo "запуск: bash check.sh <папка вики>" >&2
+    echo "usage: bash check.sh <wiki folder>" >&2
     exit 2
 fi
 W="${1%/}"
 if [ ! -f "$W/00-index.md" ]; then
-    echo "$1: это не вики — нет 00-index.md" >&2
+    echo "$1: not a wiki: no 00-index.md" >&2
     exit 2
 fi
 
@@ -29,7 +30,7 @@ say() {
     bad=1
 }
 
-# Файлы вики, полными путями.
+# The wiki files, as full paths.
 wiki_files() {
     local part
     echo "$W/00-index.md"
@@ -44,9 +45,9 @@ wiki_files() {
 link_re='\[[^]]*\]\(([^)]*)\)'
 scheme_re='^[A-Za-z][A-Za-z0-9+.-]*:'
 
-# Цели ссылок [текст](цель) строки $1 — в массив targets: без схемы, до «#».
-# Код ссылкой не считается: ни в обратных кавычках, ни в блоке между строками
-# из трёх обратных кавычек. Перед каждым файлом fence сбрасывается в 0.
+# The link targets [text](target) of the line $1 — into the array targets:
+# without a scheme, up to "#". Code is not a link: neither in backticks nor in
+# a block between lines of three backticks. fence is reset to 0 before each file.
 bt='`'
 fence=0
 links() {
@@ -72,7 +73,7 @@ links() {
     done
 }
 
-# Папка файла $1 от папки вики, с косой чертой в конце; для корня — пусто.
+# The folder of the file $1 from the wiki folder, with a trailing slash; for the root — empty.
 dir_of() {
     case "$1" in
         */*) dir="${1%/*}/" ;;
@@ -82,8 +83,8 @@ dir_of() {
 
 files=$(wiki_files | sort)
 
-# Первый проход: что названо в индексах и архивах. Индекс называет карточки
-# своей папки и индексы папок уровнем ниже — больше ничего.
+# First pass: what the indexes and the archives name. An index names the cards
+# of its own folder and the indexes of the folders one level down — nothing else.
 named=$'\n'
 while IFS= read -r file; do
     rel=${file#"$W/"}
@@ -105,7 +106,7 @@ while IFS= read -r file; do
     done < "$file"
 done <<< "$files"
 
-# Второй проход: пределы, ссылки, заголовок и суть, строка в индексе.
+# Second pass: the limits, the links, the title and the hook line, the line in the index.
 while IFS= read -r file; do
     rel=${file#"$W/"}
     dir_of "$rel"
@@ -113,20 +114,20 @@ while IFS= read -r file; do
     kind=list
     case "$rel" in
         00-index.md)
-            if [ $lines -gt 40 ]; then say "$rel" "корневой индекс длиннее 40 строк"; fi
+            if [ $lines -gt 40 ]; then say "$rel" "root index is longer than 40 lines"; fi
             ;;
         rules.md)
-            if [ $lines -gt 30 ]; then say "$rel" "правил больше 30 строк"; fi
+            if [ $lines -gt 30 ]; then say "$rel" "rules are longer than 30 lines"; fi
             ;;
-        journal/* | */00-archive.md) ;;
+        journal/* | */00-archive.md | */plan-overview.md) ;;
         */00-index.md)
             kind=folder
-            if [ $lines -gt 50 ]; then say "$rel" "индекс длиннее 50 строк"; fi
+            if [ $lines -gt 50 ]; then say "$rel" "index is longer than 50 lines"; fi
             ;;
         *)
             kind=card
-            if [ $lines -gt 30 ]; then say "$rel" "карточка длиннее 30 строк"; fi
-            if [ $(($(wc -m < "$file"))) -gt 3000 ]; then say "$rel" "карточка длиннее 3000 знаков"; fi
+            if [ $lines -gt 30 ]; then say "$rel" "card is longer than 30 lines"; fi
+            if [ $(($(wc -m < "$file"))) -gt 3000 ]; then say "$rel" "card is longer than 3000 characters"; fi
             ;;
     esac
 
@@ -137,7 +138,7 @@ while IFS= read -r file; do
     while IFS= read -r line || [ -n "$line" ]; do
         n=$((n + 1))
         if [ $kind != card ] && [ ${#line} -gt 200 ]; then
-            say "$rel:$n" "строка длиннее 200 знаков"
+            say "$rel:$n" "line is longer than 200 characters"
         fi
         case "$line" in
             '# '*) title=1 ;;
@@ -146,21 +147,21 @@ while IFS= read -r file; do
         links "$line"
         if [ ${#targets[@]} -eq 0 ]; then continue; fi
         for t in "${targets[@]}"; do
-            if [ ! -e "$W/$dir$t" ]; then say "$rel:$n" "битая ссылка $t"; fi
+            if [ ! -e "$W/$dir$t" ]; then say "$rel:$n" "broken link $t"; fi
         done
     done < "$file"
 
     if [ $kind = card ] && { [ $title -eq 0 ] || [ $hook -eq 0 ]; }; then
-        say "$rel" "нет заголовка или строки сути"
+        say "$rel" "no title or hook line"
     fi
     if [ $kind = folder ]; then dir_of "${dir%/}"; fi
     if [ $kind != list ]; then
         case "$named" in
             *$'\n'"$rel"$'\n'*) ;;
-            *) say "$rel" "нет строки в индексе ${dir}00-index.md" ;;
+            *) say "$rel" "no line in index ${dir}00-index.md" ;;
         esac
     fi
 done <<< "$files"
 
 if [ $bad -eq 1 ]; then exit 1; fi
-echo "вики в порядке"
+echo "wiki is fine"

@@ -1,85 +1,83 @@
 ---
 name: splan
-description: "Личное планирование перед работой: из одобренных требований или ясной задачи делает план из срезов, который исполнитель проходит без вопросов, и не пишет код. Используй, когда пользователь просит план, просит разбить работу на шаги, спланировать по требованиям темы или продолжить после sbrain. Не для выяснения, что строить (это sbrain), и не для самого исполнения."
-argument-hint: "[тема или задача]"
+description: "Personal planning before the work: turns approved requirements or a clear task into a plan of slices that the executor goes through without questions, and writes no code. Use when the user asks for a plan, asks to break the work into steps, to plan from the requirements of a topic or to continue after sbrain. Not for finding out what to build (that is sbrain) and not for the execution itself."
+argument-hint: "[topic or task]"
 ---
 
-# План перед работой
+# Plan before the work
 
-Отвечает на вопрос **как** строить. **Что** строить и почему — решено до него, в `sbrain` или в самой задаче; строит — исполнитель после него. Цепочка: `sbrain → splan → swork`.
+Answers the question of **how** to build. **What** to build and why is decided before it, in `sbrain` or in the task itself; the building is done by `swork` after it. The chain: `sbrain → splan → swork`.
 
-Говори с пользователем на его языке. Если в запросе нет ни темы, ни задачи — спроси, что планируем, и дальше не иди.
+Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a topic nor a task in the request, ask what we are planning and go no further.
 
-**Подтверждение и выбор — запросом, а не просьбой написать «да».** Одобрение, выбор варианта и следующий шаг спрашивай инструментом блокирующих вопросов (в Claude Code — `AskUserQuestion`): варианты выбора с рекомендуемым первым либо «Да», и всегда вариант «Поправить» — выбрал его — спроси, что именно. Вариантов не больше четырёх: редкий пользователь впишет сам. Где ниже сказано «жди „да“» или «жди выбора», это значит такой запрос. Инструмента нет — нумерованным списком в чате.
+**Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for approval, for the choice of an option and for the next step with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat.
 
-**Каждая остановка говорит, что нужно от пользователя.** Меню согласия называет, что именно одобряется; описание каждого варианта говорит, что произойдёт после него; в меню согласия всегда есть «Поправить» и «Ничего не делать» — после него ничего не меняется и не записывается. Останавливаешься, а от пользователя ничего не нужно, — напиши это прямо последней строкой сообщения.
+**Every stop says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If you stop and nothing is needed from the user, say so plainly in the last line of the message.
 
-Файлы в `references/` читай в тот момент, когда до них дошёл шаг, — не заранее и не по памяти.
+## Ban on implementation
 
-## Запрет на реализацию
+`splan` does not write product code, does not create a scaffold, does not install dependencies and does not call execution skills. You may read the project and run things that change nothing (a search, `git log`, command help). Changing the code to see what comes of it is not allowed: that is the job of `swork`.
 
-`splan` не пишет код продукта, не создаёт каркас, не ставит зависимости и не вызывает скилы исполнения. Читать проект и запускать то, что ничего не меняет (поиск, `git log`, справка по командам), можно. Менять код, чтобы посмотреть, что получится, нельзя: это дело исполнителя.
+## Transitions — only by choice
 
-## Переходы — только по выбору
+`splan` does not move to another stage by itself: neither back to `sbrain` nor forward to `swork`. It names what it proposes and why, and waits for an answer. This holds for a result of any size, including the smallest: "the change is obvious" does not permit starting to make it.
 
-На другой этап `splan` сам не переходит: ни назад в `sbrain`, ни вперёд к исполнителю. Он называет, что предлагает и почему, и ждёт ответа. Это верно для любого размера итога, включая самый малый: «изменение очевидно» не разрешает начать его делать.
+Approval covers only what was shown. Consent at the stop before writing approves what was shown at it, but not the plan; an approved plan does not start the execution. A fix is not approval: show the corrected version and wait for a "yes".
 
-Одобрение относится только к показанному. Согласие с нарезкой не одобряет план; одобренный план не запускает исполнение. Правка — не одобрение: покажи исправленное и жди «да».
+## 1. Entry
 
-## 1. Вход
+If you are started on a topic — the user named it or gave the path to its folder in the project wiki (where the wiki is — `references/wiki-rules.md`) — read its `state.md` card first and act by the phase:
 
-Запущен по теме — пользователь назвал её или дал путь к её папке в вики проекта (где вики — `references/wiki-rules.md`) — первой прочитай её карточку `state.md` и поступи по фазе:
-
-| Фаза в `state.md` | Что делаешь |
+| Phase in `state.md` | What you do |
 |---|---|
-| папки темы нет | задача без темы либо предложи `sbrain` |
-| требования записаны | остановись: требования не подтверждены |
-| требования подтверждены | планируй |
-| план записан | иди к шагу 9: покажи план и жди «да» |
-| план подтверждён | спроси: продолжаем с него или пишем заново |
-| исполнение идёт | сверь план с кодом, назови, что сделано и что устарело, и спроси: продолжаем с него или пишем заново |
-| готово | спроси: новая тема или продолжение этой |
+| there is no topic folder | a task without a topic, or offer `sbrain` |
+| requirements written | stop: the requirements are not confirmed |
+| requirements confirmed | plan |
+| plan written | in `state.md` the next step is independent plan review: go to step 8; otherwise — to step 9: show the plan and wait for a "yes" |
+| plan confirmed | ask: do we continue from it or write anew |
+| execution in progress | read "Progress log" — `progress.md` and its parts: the reason for the stop and the slice records; check the plan against the code, name what is done and what is outdated, and ask: do we continue from it or write anew |
+| done | ask: a new topic or a continuation of this one |
 
-Там, где таблица велит остановиться или спросить, назови фазу и жди ответа: разведку не начинай. Фаза `требования записаны` значит, что пользователь ещё не сказал «да» по карточкам темы: назови это и предложи `sbrain` — одобряют и правят требования там.
+Where the table tells you to stop or to ask, name the phase and wait for an answer: do not start the recon. The phase `requirements written` means that the user has not yet said "yes" to the topic cards: say so and offer `sbrain` — the requirements are approved and edited there.
 
-- **Папка темы** (от `sbrain`) — прочитай карточки требований, `decisions.md` и `scope.md` — вместе с их частями (`requirements-<группа>.md`, `decisions-<часть>.md`, `scope-<часть>.md`), если карточки разделены. Требования с номерами (`R1`, `R2`…), «Не входит», решения со статусом «в силе» и решённое в `rules.md` вики — данность: не пересматривай их и не добавляй к ним своё.
-- **Задача без темы** — годится, если понятно, что должно получиться, для кого и как это проверить.
-- **Неясно, что строить** — не опрашивай сам. Назови, чего не хватает, и предложи `sbrain`.
-- **Дали файл требований прежнего вида, одним файлом** — назови формат прежним и предложи `sbrain`: он переложит его в карточки темы. По такому файлу не планируй.
-- **В требованиях есть вопросы, помеченные как блокирующие план** — остановись и назови их. Пользователь может снять блокировку сам; тогда запиши каждый такой вопрос в плане допущением.
-- **По теме уже есть план** — прочитай его карточки и поступи по таблице. Пользователь ответил «продолжаем с него» — сверь план с кодом, начиная со строки «Сверено с кодом», и назови, что устарело: новые срезы поверх непроверенных утверждений старого плана не пишутся. Правь карточки плана на месте, номера срезов не меняй.
-- **По теме лежит план прежнего вида, одним файлом** — назови формат прежним и спроси, продолжаем с него или пишем заново. «Продолжаем с него» значит переложить его в карточки темы по `references/plan-format.md`; по самому файлу дальше не работай.
+- **A topic folder** (from `sbrain`) — read all the cards named in its index `00-index.md`: the task, the requirements, the examples, the design, the decisions and the scope — together with their parts. The requirements with numbers (`R1`, `R2`…), "Out of scope", the decisions with the status "in force" and what is decided in the wiki's `rules.md` are a given: do not reconsider them and do not add your own to them.
+- **A task without a topic** — it will do if it is clear what should come out, for whom, and how to check it.
+- **It is unclear what to build** — do not run a survey yourself. Name what is missing and offer `sbrain`.
+- **You were given a requirements file of the earlier form, as a single file** — call the format the earlier one and offer `sbrain`: it will move it into topic cards. Do not plan from such a file.
+- **The requirements have questions marked as blocking the plan** — stop and name them. The user may lift the block themselves; then write each such question in the "Assumptions" section of the plan header.
+- **The topic already has a plan** — read its cards and act by the table. If the user answered "we continue from it", check the plan against the code, starting from the "Checked against code" line, and name what is outdated: new slices are not written on top of unverified claims of the old plan. Edit the plan cards in place, do not change the slice numbers. On such an entry take the overview `plan-overview.md` and rebuild it from the cards: where they differ, the slice card is right.
+- **The topic has a plan of the earlier form, as a single file** — call the format the earlier one and ask whether we continue from it or write anew. "We continue from it" means moving it into topic cards by `references/plan-format.md`; do not work from the file itself any further.
 
-## Правила на всех этапах
+## Rules for all stages
 
-**Перед остановкой — сначала `state.md`.** Папка темы уже есть — перед любой остановкой (ждёшь ответа пользователя, упёрся в блокер, кончается сессия) сначала запиши в её `state.md` фазу и следующий шаг: одно действие, с которого начнёт следующая сессия.
+**Before a stop — first `state.md`.** If the topic folder already exists, before any stop (you are waiting for the user's answer, you have hit a blocker, the session is ending) first write the phase and the next step into its `state.md`: one action that the next session will start from.
 
-## Этапы
+## Stages
 
-| Этап | Файл |
+| Stage | File |
 |---|---|
-| 2. Выбери размер и назови его вслух | `references/recon.md` |
-| 3. Разведка | `references/recon.md` |
-| 4. Строки проверки | `references/slicing.md` |
-| 5. Нарезка | `references/slicing.md` |
-| 6. Остановка до записи | `references/approval.md` |
-| 7. Запись плана | `references/approval.md` |
-| 8. Проверка | `references/approval.md` |
-| 9. Показ и следующий шаг | `references/approval.md` |
+| 2. Choose the size and name it aloud | `references/recon.md` |
+| 3. Recon | `references/recon.md` |
+| 4. Check lines | `references/slicing.md` |
+| 5. Slicing | `references/slicing.md` |
+| 6. Stop before writing | `references/approval.md` |
+| 7. Writing the plan | `references/approval.md` |
+| 8. Review | `references/approval.md` |
+| 9. Showing and the next step | `references/approval.md` |
 
-Файл этапа читай целиком, когда дошёл до этапа.
+Read the stage file in full when you reach the stage — not in advance and not from memory.
 
-Текста файла этапа нет в контексте — перечитай файл, прежде чем продолжать этап.
+If the text of the stage file is not in the context, reread the file before you continue the stage.
 
-Текст ссылается на раздел или шаг из другого файла — прочитай и его.
+If the text refers to a section or a step from another file, read that one too.
 
-## Ловушки
+## Traps
 
-| Мысль | На деле |
+| Thought | In fact |
 |---|---|
-| «Задача очевидна, сразу сделаю» | `splan` не исполняет; прямой итог — это два предложения и предложение шага |
-| «Требование неудобное, поправлю в плане» | Расхождение называется вслух; карточка требований правится с согласия |
-| «Непонятно, что он хочет, — спрошу пару вопросов» | Что строить, выясняет `sbrain`; предложи его |
-| «Сначала база, потом сервер, потом экран» | Это слои; срез идёт насквозь и проверяется сам |
-| «Сначала нарежу, проверки допишу потом» | Срезы собираются из строк проверки: сначала строка на каждое требование, потом нарезка |
-| «Сам перечитал, агент не нужен» | Автор подтверждает то, во что уже верит; для плана карточками агент обязателен |
+| "The task is obvious, I will do it right away" | `splan` does not execute; a direct result is two sentences and a proposal of a step |
+| "The requirement is inconvenient, I will fix it in the plan" | A discrepancy is named aloud; the requirements card is edited with consent |
+| "It is unclear what they want — I will ask a couple of questions" | What to build is found out by `sbrain`; offer it |
+| "First the database, then the server, then the screen" | Those are layers; a slice goes all the way through and is checked on its own |
+| "First I will slice, I will add the checks later" | Slices are assembled from check lines: first a line for every requirement, then the slicing |
+| "I reread it myself, no agent is needed" | The author confirms what they already believe; for a plan in cards the agent is mandatory |

@@ -1,45 +1,45 @@
-# Сверка с планом. Упрощение. Ревью
+# Conformance check. Simplification. Review
 
-Читается на шаге 5 — после последнего среза, — на шаге 6, после правок сверки, и на шаге 7, после упрощения и до отчёта.
+Read at step 5 — after the last slice, — at step 6, after the edits of the conformance check, and at step 7, after the simplification and before the report.
 
-## 5. Сверка с планом
+## 5. Conformance check
 
-После последнего среза. Начало и конец этого и двух следующих этапов записывай в «Ход исполнения»: «этап 5 начат», «этап 5 закончен».
+After the last slice. Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished".
 
-**Сначала — все проверки заново.** Запусти проверки всех срезов «готов» и строки с командой у срезов «ждёт ручной проверки», каждую разную команду один раз: поздний срез мог сломать ранний, а этапы 5–7 судят о своих правках по зелёной проверке. Красная — попытка исправить по шагу 6 раздела 3 для среза, к файлам которого относится упавшее.
+**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to.
 
-Прочитай `references/conformance.md`. Сверку и задания упрощения читает один проверяющий, который не видел разговора: срезы добавили новый код — передай ему тем же сообщением дословно оба задания из `references/simplify.md`; нового кода нет — только задание сверки. Проверяющим этого этапа и ревью передаётся путь к папке темы: карточки плана они читают сами.
+Read `references/conformance.md`. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation: the slices added new code — pass it both tasks from `references/simplify.md` word for word in the same message; there is no new code — only the conformance check task. The reviewers of this stage and of the review are passed the path to the topic folder: they read the plan cards themselves.
 
-Каждую находку сначала проверь по коду сам: проверяющий тоже ошибается, а срез, признанный сделанным ещё до правок, законно не тронут. Перед правками сними ступень `stage-5` по `references/snapshot.md`. Порядок правок важен: красная проверка из-за недоделки отменила бы снятие лишнего.
+First check every finding against the code yourself: the reviewer makes mistakes too, and a slice recognized as done even before the edits is legitimately untouched. Before the edits take the checkpoint `stage-5` by `references/snapshot.md`. The order of the edits matters: a red check caused by something left unfinished would cancel the removal of what is superfluous.
 
-1. **«Недостаёт» и «неверно»** — попытка исправить для среза-владельца, как в шаге 6 раздела 3: исполнитель получает пакет среза и текст находки. После попытки проверь находку по коду сам. Не закрыта за две попытки — в отчёт как незакрытая; правки попыток остаются, пока проверка среза зелёная. Остановки здесь нет.
-2. **«Сверх плана»** — верни к состоянию до начала только лишнее: лишний файл целиком, лишний кусок правкой. Запусти проверки затронутых срезов.
-   - Прошли — убрано, строка в отчёт.
-   - Не прошли — значит, оно чему-то нужно: верни из `stage-5` и назови в отчёте.
-   - У затронутого среза проверка только ручная — не убирай, назови в отчёте.
+1. **"missing" and "wrong"** — an attempt to fix for the owning slice, as in step 6 of section 3: the executor gets the packet of the slice and the text of the finding. After the attempt check the finding against the code yourself. It is not closed in two attempts — it goes into the report as unclosed; the edits of the attempts stay as long as the check of the slice is green. There is no stop here.
+2. **"beyond the plan"** — bring back to the state before the start only what is superfluous: a superfluous file as a whole, a superfluous piece with an edit. Run the checks of the affected slices.
+   - They passed — it is removed, a line goes into the report.
+   - They did not pass — so something needs it: restore it from `stage-5` and name it in the report.
+   - An affected slice has only a manual check — do not remove it, name it in the report.
 
-Файл вне всех списков затрагивает все срезы со статусом «готов» и «ждёт ручной проверки». Копии такого файла в `base/` нет — поступай с ним по таблице «Что делать с найденным файлом вне плана» из `references/snapshot.md`, включая остановку.
+A file outside all the lists affects all the slices with the status "done" and "awaiting manual check". There is no copy of such a file in `base/` — deal with it by the table "What to do with a found file outside the plan" from `references/snapshot.md`, including the stop.
 
-Список того, что проверяющий не смог проверить, перенеси в отчёт как есть.
+Carry the list of what the reviewer could not check over into the report as it is.
 
-Сверь строку ПРОЧИТАНО каждого проверяющего со списком изменённых и новых файлов: файл, которого в ней нет, назови в отчёте, в «Не прочитано проверяющими», вместе с тем, кто его не прочитал, — сверка или ревью. У повторного круга ревью строку сверяй только с исправленными файлами: остальных он по заданию не читает.
+Check the READ line of every reviewer against the list of changed and new files: in the report, in "Not read by the reviewers", name a file that is not in that line, together with who did not read it — the conformance check or the review. For the second round of the review check the line only against the fixed files: by its task it does not read the others.
 
-## 6. Упрощение
+## 6. Simplification
 
-Этап нужен, только если срезы добавили новый код: функцию, класс, скрипт, новый файл с кодом. Работа меняла тексты, настройки или отдельные строки существующего кода — этап пропускается: запиши в «Ход исполнения» «этап 6 пропущен: нового кода нет» и назови это в отчёте, в «Упрощено».
+The stage is needed only if the slices added new code: a function, a class, a script, a new file with code. The work changed texts, settings or separate lines of existing code — the stage is skipped: write "stage 6 skipped: no new code" into "Progress log" and name this in the report, in "Simplified".
 
-Задания этапа лежат в `references/simplify.md`. Отдельных проверяющих у этапа нет: оба задания прочитал проверяющий сверки. Эффективность и стиль этот этап не проверяет. Его находки ждут конца правок сверки: находку о месте, которое сверка изменила или убрала, проверь по нынешнему коду.
+The tasks of the stage lie in `references/simplify.md`. The stage has no reviewers of its own: both tasks were read by the reviewer of the conformance check. This stage does not check efficiency and style. Its findings wait for the end of the edits of the conformance check: check a finding about a place that the conformance check changed or removed against the present code.
 
-Находок упрощения в контексте нет — сессия прервалась после этапа 5 — отдай оба задания из `references/simplify.md` проверяющему заново, прежде чем править. Строку ПРОЧИТАНО этого запуска с полным списком не сверяй: он читает только новый код.
+If the simplification findings are not in the context — the session was interrupted after stage 5 — give both tasks from `references/simplify.md` to a reviewer anew before you edit. Do not check the READ line of this run against the full list: it reads only the new code.
 
-Перед правками сними ступень `stage-6`. Правишь ты, а не проверяющие, и только по разделу «Что не трогать» из того же файла.
+Before the edits take the checkpoint `stage-6`. You do the editing, not the reviewers, and only by the "What not to touch" section from the same file.
 
-**Пачки.** Находки срезов с общими файлами — одна пачка: срезы, которые правят один и тот же файл, объединяются, в том числе по цепочке. После пачки запусти проверки её срезов. Красная — верни файлы пачки из `stage-6`, находки уходят в отчёт как нетронутые. У среза пачки проверка только ручная — правки не применяй вовсе: проверить их нечем, находки в отчёт.
+**Batches.** The findings of slices with shared files are one batch: slices that edit one and the same file are joined, including through a chain. After a batch run the checks of its slices. A red one — restore the files of the batch from `stage-6`, the findings go into the report as untouched. A slice of the batch has only a manual check — do not apply the edits at all: there is nothing to check them with, the findings go into the report.
 
-Находку, которую ты счёл ложной или которую запрещает «Что не трогать», пропусти без вопроса пользователю и посчитай в отчёте.
+A finding that you judged false or that "What not to touch" forbids — skip it without a question to the user and count it in the report.
 
-## 7. Ревью
+## 7. Review
 
-Прочитай `references/review.md`: задание подагенту, который не видел разговора, отсев находок и повторный круг. Перед правками сними ступень `stage-7`; правки — пачками, как в разделе 6.
+Read `references/review.md`: the task for a subagent that has not seen the conversation, the screening of the findings and the second round. Before the edits take the checkpoint `stage-7`; the edits go in batches, as in section 6.
 
-Ревью читает второй проверяющий — после правок сверки и упрощения.
+The review is read by a second reviewer — after the edits of the conformance check and the simplification.

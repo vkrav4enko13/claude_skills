@@ -1,120 +1,114 @@
-# Карточки темы
+# Topic cards
 
-Читается на шаге 7 — после подтверждённой сводки, перед записью итога большого пути — и на шаге 8, когда пользователь одобрил карточки. По этой же раскладке идёт перенос старого файла: `references/wiki-migrate.md`.
+Read at step 7 — after the confirmed summary, before the result of the "Large" path is written — and at step 8, when the user has approved the cards. Moving an old file over follows the same layout: `references/wiki-migrate.md`.
 
-Итог большого пути — папка темы `work/<тема>/` в вики проекта, по умолчанию `docs/work/<тема>/`; `<тема>` — латиницей, через дефис. Где вики, пределы карточки и индекса, скрипт проверки — в `references/wiki-rules.md`; шаблоны остальных частей вики — в `references/wiki-templates.md`. Здесь только то, что добавляет тема.
+The result of the "Large" path is a topic folder `work/<topic>/` in the project wiki, by default `docs/work/<topic>/`; `<topic>` is in Latin letters, hyphenated. Where the wiki is, the limits of a card and of an index, the check script — in `references/wiki-rules.md`. Here is only what a topic adds.
 
-## Что куда ложится
+## What goes where
 
-| Раздел итога | Карточка | Что несёт |
+| Section of the result | Card | What it carries |
 |---|---|---|
-| Кратко | `task.md` | «Что строим» из сводки |
-| Задача | `task.md` | Проблема глазами пользователя: что сейчас не так и для кого. Не повторяй «Кратко» другими словами |
-| Критерии успеха | `task.md` | Как поймём, что получилось |
-| Требования | `requirements.md` | Строки `- R<N>. …`: каждое проверяемо, каждое — намерение и самое большее одно уточнение. Номера сквозные, в порядке сводки. Требования о разном сгруппируй по темам под короткими заголовками |
-| Примеры приёмки | `examples.md` | Конкретный случай, что произошло и что должно получиться, со ссылкой на требование («проверяет R4»). Только когда поведение зависит от условий: простому поведению карточка не нужна |
-| Дизайн | `design.md` | Одобренные разделы шага 6 в том виде, в каком их одобрили. Только если шаг 6 проводился |
-| Принятые решения | `decisions.md` | По строке на решение: что выбрано, вместо чего и почему, чьё оно, статус |
-| Не входит | `scope.md` | Отложенное и то, что сознательно не делаем |
-| Допущения и открытые вопросы | `scope.md` | Всё неподтверждённое. Отдельно отметь вопросы, без ответа на которые нельзя планировать |
+| In brief | `task.md` | "What we build" from the summary |
+| Task | `task.md` | The problem through the user's eyes: what is wrong now and for whom. Do not repeat "In brief" in other words |
+| Success criteria | `task.md` | How we will know it worked |
+| Requirements | `requirements.md` | Lines `- R<N>. …`: each is checkable, each is an intention and at most one refinement. The numbers are continuous, in the order of the summary. Group requirements about different things by subject under short headings |
+| Acceptance examples | `examples.md` | A concrete case, what happened and what should come out, with a reference to the requirement ("checks R4"). Only when the behaviour depends on conditions: simple behaviour needs no card |
+| Design | `design.md` | The approved sections of step 6 in the form in which they were approved. Only if step 6 was carried out |
+| Decisions made | `decisions.md` | A line per decision: what was chosen, instead of what and why, whose it is, the status |
+| Out of scope | `scope.md` | What is deferred and what we deliberately do not do |
+| Assumptions and open questions | `scope.md` | Everything unconfirmed. Mark separately the questions without an answer to which planning is impossible |
 
-Шесть карточек есть у каждой темы: `00-index.md`, `state.md`, `task.md`, `requirements.md`, `decisions.md`, `scope.md`. Карточки `examples.md`, `design.md` и `decision-<имя>.md` — только когда в них есть что положить.
+Every topic has six cards: `00-index.md`, `state.md`, `task.md`, `requirements.md`, `decisions.md`, `scope.md`. The cards `examples.md`, `design.md` and `decision-<name>.md` — only when there is something to put in them.
 
-**Карточка** — заголовок, строка сути, строка в индексе и деление переросшей — по `references/wiki-rules.md`, разделы «Карточка и пределы» и «Проверка». Разделы внутри карточки идут под заголовками `## …`. Требования делятся по группам — `requirements-<группа>.md`, нумерация остаётся сквозной.
+**A card** — the title, the hook line, the line in the index and the splitting of an overgrown card — by `references/wiki-rules.md`, sections "Card and limits" and "Check". The sections inside a card go under `## …` headings. Requirements are split by groups — `requirements-<group>.md`, the numbering stays continuous.
 
-**Решения.** Строка `decisions.md`: `- <что выбрано>, вместо <чего> — <почему>; <чьё решение>; <статус>`. Сюда идут компромиссы из сводки и твои допущения, с которыми пользователь согласился. Чьё решение — одно из двух: «выбрал пользователь» — он сам выбрал между показанными вариантами или против предложенного; «согласился» — предложил ты, показав цену, а он принял. Своё предложение, на которое он не ответил, решением не записывай — это допущение, его место в `scope.md`. Статус — «в силе», «заменено» или «снято». Когда решению нужна полная карточка — `references/synthesis.md`, раздел «Словарь и записи решений».
+**Decisions.** A line of `decisions.md`: `- <what was chosen>, instead of <what> — <why>; <whose decision>; <status>`. The trade-offs from the summary and your assumptions that the user agreed with go here. Whose decision it is — one of two: "user chose" — they themselves chose between the options shown or against what was proposed; "agreed" — you proposed, showing the price, and they accepted. Do not record as a decision a proposal of your own that they did not answer — it is an assumption, its place is in `scope.md`. The status is "in force", "superseded" or "withdrawn". When a decision needs a full card — `references/synthesis.md`, section "Glossary and decision records".
 
-## Шаблоны
+## Templates
 
-Слова в угловых скобках замени, остальное перенеси как есть.
+Replace the words in angle brackets, carry the rest over as it is.
 
-### Индекс темы — `00-index.md`
-
-```markdown
-# <Название темы>
-
-> <суть темы одной строкой>
-
-## Карточки
-
-- [Состояние](state.md) — фаза темы и следующий шаг
-- [Задача](task.md) — что строим, для кого и как поймём, что получилось
-- [Требования](requirements.md) — R1–R<N>
-- [Решения](decisions.md) — что выбрано, вместо чего и чьё решение
-- [Границы](scope.md) — что не входит, допущения и открытые вопросы
-```
-
-После «да» пользователя по карточкам, не раньше, под строкой сути появляется строка `**Требования подтверждены:** ГГГГ-ММ-ДД — цель: «<цель одной фразой>»`. Цель одной фразой — «что строим» из сводки, сжатое до фразы; она же стоит в строке журнала.
-
-### Состояние — `state.md`
-
-Заголовок, строка сути и ровно пять строк:
+### Topic index — `00-index.md`
 
 ```markdown
-# Состояние темы <тема>
+# <Topic title>
 
-> Фаза темы и шаг, с которого начнёт следующая сессия.
+> <the essence of the topic in one line>
 
-- **Фаза:** <значение> — ГГГГ-ММ-ДД
-- **Путь:** большая | опрос | без sbrain
-- **Журнал:** journal/ГГГГ-ММ.md, строка от ГГГГ-ММ-ДД | нет
-- **Проверено:** нет | S<N> и номера его строк проверок
-- **Следующий шаг:** <одно действие, с которого начнёт следующая сессия>
+## Cards
+
+- [State](state.md) — topic phase and next step
+- [Task](task.md) — what we build, for whom, and how we will know it worked
+- [Requirements](requirements.md) — R1–R<N>
+- [Decisions](decisions.md) — what was chosen, instead of what, and whose decision
+- [Scope](scope.md) — what is out of scope, assumptions and open questions
 ```
 
-- **Фаза** — `требования записаны`, `требования подтверждены`, `план записан`, `план подтверждён`, `исполнение идёт` или `готово`, с датой записи. `sbrain` ставит первые две: `требования записаны` — когда пишет карточки, `требования подтверждены` — после «да» пользователя по ним.
-- **Путь** — путь `sbrain`, которым шла тема: `большая` или `опрос`. `без sbrain` ставит `splan`, когда тему завёл он.
-- **Журнал** — файл и дата строки журнала цепочки.
-- **Проверено** — `sbrain` пишет `нет`: строку заполняет `swork`.
-- **Следующий шаг** — пока карточки не одобрены: пользователь читает карточки темы и отвечает, одобряем или правим. После его «да»: составить план через `splan`.
+### State — `state.md`
 
-### Требования — `requirements.md`
+A title, a hook line and exactly three lines:
 
 ```markdown
-# Требования темы <тема>
+# State of topic <topic>
 
-> <о чём требования — одной строкой>
+> Topic phase and the step the next session starts from.
 
-- R<N>. <требование по одному из пяти образцов>
+- **Phase:** <value> — YYYY-MM-DD
+- **Journal:** journal/YYYY-MM.md, line of YYYY-MM-DD | none
+- **Next step:** <one action that the next session will start from>
 ```
 
-Каждое требование следует одному из пяти образцов:
+- **Phase** — `requirements written`, `requirements confirmed`, `plan written`, `plan confirmed`, `execution in progress` or `done`, with the date of the record. `sbrain` sets the first two: `requirements written` — when it writes the cards, `requirements confirmed` — after the user's "yes" to them.
+- **Journal** — the file and the date of the chain's journal line.
+- **Next step** — while the cards are not approved: the user reads the topic cards and answers whether we approve or edit. After their "yes": make a plan through `splan`.
 
-| Вид | Образец | Пример |
+### Requirements — `requirements.md`
+
+```markdown
+# Requirements of topic <topic>
+
+> <what the requirements are about — in one line>
+
+- R<N>. <a requirement by one of the five patterns>
+```
+
+Every requirement follows one of five patterns:
+
+| Kind | Pattern | Example |
 |---|---|---|
-| всегда | `<кто> <делает что>` | «Магазин показывает цену вместе с налогом» |
-| событие | `Когда <событие>, <кто> <делает что>` | «Когда покупатель отменяет заказ, магазин возвращает деньги на ту же карту» |
-| состояние | `Пока <состояние>, <кто> <делает что>` | «Пока заказ не оплачен, магазин держит товар в резерве» |
-| нежелательное | `Если <сбой или запрет>, то <кто> <делает что>` | «Если оплата не прошла, то магазин оставляет корзину как была» |
-| вариант | `Где <условие, верное не для всех проектов>, <кто> <делает что>` | «Где есть доставка курьером, магазин предлагает выбрать час доставки» |
+| always | `<who> <does what>` | "The shop shows the price together with the tax" |
+| event | `When <event>, <who> <does what>` | "When a customer cancels an order, the shop returns the money to the same card" |
+| state | `While <state>, <who> <does what>` | "While an order is not paid, the shop keeps the goods in reserve" |
+| unwanted | `If <failure or prohibition>, then <who> <does what>` | "If a payment did not go through, then the shop leaves the basket as it was" |
+| option | `Where <a condition that does not hold for every project>, <who> <does what>` | "Where there is delivery by courier, the shop offers to choose the hour of delivery" |
 
-- **Образец по условию.** Первый образец — только для того, что верно всегда. У требования есть условие — оно стоит в начале, по одному из четырёх остальных.
-- **Действующее лицо названо** — тот, кто делает: скрипт, магазин, покупатель. Слова «система» в требовании нет.
-- **Только новые требования.** Образцы действуют на требования, которые пишешь сейчас. Старые формулировки, перенесённые в карточки, под образцы не переписывай.
+- **The pattern follows the condition.** The first pattern is only for what is always true. If a requirement has a condition, it stands at the start, by one of the other four.
+- **The actor is named** — the one who does it: a script, a shop, a customer. The word "system" is not in a requirement.
+- **Only new requirements.** The patterns apply to the requirements you are writing now. Do not rewrite old wordings carried over into cards to fit the patterns.
 
-### Карточка решения — `decision-<имя>.md`
+### Decision card — `decision-<name>.md`
 
 ```markdown
-# <что решено>
+# <what is decided>
 
-> <что выбрано и вместо чего — одной строкой>
+> <what was chosen and instead of what — in one line>
 
-- **Слова пользователя:** «<дословно>» — ГГГГ-ММ-ДД
-- **Причина:** <почему выбрано именно это>
-- **Отвергнуто:** <вариант> — <почему нет>
-- **Статус:** в силе
-- **Заменяет:** нет
+- **User's words:** «<the words of the user in English translation>» — YYYY-MM-DD
+- **Reason:** <why exactly this was chosen>
+- **Rejected:** <option> — <why not>
+- **Status:** in force
+- **Replaces:** none
 ```
 
-Слова пользователя — дословно, без пересказа. «Отвергнуто» — по строке на вариант. Статус — «в силе», «заменено» или «снято». «Заменяет» — ссылка на карточку решения, на место которого встало это, либо `нет`. Как оформить замену — `references/wiki-rules.md`, раздел «Замена и архив».
+Words of the user are given in English translation, close to the original, without retelling. "Rejected" — a line per option. "Status" — "in force", "superseded" or "withdrawn". "Replaces" — a link to the card of the decision whose place this one has taken, or `none`. How to write up a replacement — `references/wiki-rules.md`, section "Replacement and archive".
 
-## Порядок записи
+## Order of writing
 
-1. **Карточки темы** — по раскладке и шаблонам выше.
-2. **Строка темы в `work/00-index.md`** — ссылка `[<тема>]` на `<тема>/00-index.md` и суть темы.
-3. **Строка темы в «В работе» корневого индекса** — с фазой `требования записаны`; форма строки — в `references/wiki-rules.md`, раздел «Состав». Фаза и следующий шаг в ней — те же, что в `state.md`, и меняются вместе с ними.
-4. **Строка в `rules.md`** — на каждый ответ пользователя, верный для всего проекта, а не для одной темы; форма строки — там же. В карточках темы ответ остаётся.
-5. **Строка журнала цепочки:** `- ГГГГ-ММ-ДД · [<тема>](../work/<тема>/00-index.md): <цель одной фразой> — требования записаны`. Она одна на всю цепочку `sbrain → splan → swork`: хвост заменит `swork`, когда работу примут. Ни при правках карточек, ни после «да» по ним `sbrain` её больше не трогает.
-6. **Скрипт проверки** — запусти и исправь названное.
+1. **The topic cards** — by the layout and the templates above.
+2. **The topic's line in `work/00-index.md`** — a link `[<topic>]` to `<topic>/00-index.md` and the essence of the topic.
+3. **The topic's line in "In progress" of the root index** — with the phase `requirements written`; the form of the line is in `references/wiki-rules.md`, section "Composition". The phase and the next step in it are the same as in `state.md` and change together with them.
+4. **A line in `rules.md`** — for every answer of the user that holds for the whole project and not for one topic; the form of the line is in the same place. The answer stays in the topic cards.
+5. **The chain's journal line:** `- YYYY-MM-DD · [<topic>](../work/<topic>/00-index.md): <the goal in one phrase> — requirements written`. It is one for the whole chain `sbrain → splan → swork`: `swork` will replace the tail when the work is accepted. `sbrain` does not touch it again — neither when the cards are edited nor after the "yes" to them. The goal in one phrase is "what we build" from the summary, compressed to a phrase.
+6. **The check script** — run it and fix what it names.
 
-Части вики, которой ещё нет, — `work/00-index.md`, `rules.md`, файла журнала за текущий месяц — заведи по `references/wiki-templates.md` и назови в «Разделах» корневого индекса.
+Set up the parts of the wiki that do not exist yet — `work/00-index.md`, `rules.md`, the journal file of the current month — by the "Composition" section of `references/wiki-rules.md` and name them in "Sections" of the root index.

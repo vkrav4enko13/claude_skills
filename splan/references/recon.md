@@ -1,34 +1,34 @@
-# Выбери размер и назови его вслух. Разведка
+# Choose the size and name it aloud. Recon
 
-Читается на шаге 2 — после входа, до разведки — и на шаге 3, когда размер назван.
+Read at step 2 — after the entry, before the recon — and at step 3, when the size is named.
 
-## 2. Выбери размер и назови его вслух
+## 2. Choose the size and name it aloud
 
-До разведки скажи, какой размер выбран и почему, чтобы пользователь мог поправить.
+Before the recon say which size is chosen and why, and go on: this is not a stop, do not wait for an answer. The user can correct the size at any moment.
 
-| Размер | Когда | Итог |
+| Size | When | Result |
 |---|---|---|
-| **Прямой** | Изменение можно назвать, сделать и проверить за один проход; решений, которые пользователь стал бы взвешивать, нет | Два-три предложения в чате: что меняем, где, как проверим |
-| **Короткий** | Один–три среза, самое большее одно решение на взвешивание, нет опасной зоны | План в чате: цель, срезы (что заработает, файлы, проверка), что не делаем |
-| **Карточки** | Всё остальное; всегда — если есть папка темы, если пользователь просил план карточками или если затронута опасная зона: вход и права, деньги, перенос данных, внешние договорённости | План карточками в папке темы — по `references/plan-format.md` |
+| **Direct** | The change can be named, made and checked in one pass; there are no decisions that the user would weigh | Two or three sentences in the chat: what we change, where, how we will check |
+| **Short** | One to three slices, at most one decision to weigh, no danger zone | A plan in the chat: the goal, the slices (what will start working, the files, the check), what we do not do |
+| **Cards** | Everything else; always — if there is a topic folder, if the user asked for a plan in cards or if a danger zone is touched: login and permissions, money, data migration, external agreements | A plan in cards in the topic folder — by `references/plan-format.md` |
 
-Сомневаешься между двумя — бери тяжелее. Если разведка вскрыла сложность, остановись, скажи об этом и перейди на размер тяжелее; облегчать на ходу нельзя.
+If you hesitate between two — take the heavier one. If the recon uncovered complexity, stop, say so and move to a heavier size; making it lighter on the way is not allowed.
 
-Размер «Карточки», а папки темы нет — `splan` заводит её сам, когда пишет план: `00-index.md` и `state.md` с путём `без sbrain` — и открывает строку журнала цепочки с хвостом `план записан`. Как — в `references/plan-format.md`.
+The size is "Cards" but there is no topic folder — `splan` sets it up itself when it writes the plan: `00-index.md` and `state.md` — and opens the chain's journal line with the tail `plan written`. How — in `references/plan-format.md`.
 
-Вики в проекте не ведётся — у проекта свои правила записей, в `.wiki-path` стоит `off` либо сессия запущена в домашней или временной папке: папка темы лежит там, где её назвал пользователь; её нет, а размер «Карточки» — один раз спроси, куда её положить. Всё, что ниже велено писать в корневой индекс и в журнал, пропускай, скрипт проверки не запускай и пределы карточек проверь сам.
+The wiki is not kept in the project — keep the topic folder and the records by `references/wiki-rules.md`, section "The wiki is not kept".
 
-Для прямого и короткого разведку делай сам, чтением названных мест. Шаг 6 для них не нужен, из шага 8 — только самопроверка, без отдельного агента; шаг 9 обязателен. Папка темы для них не заводится, и в вики `splan` ничего не пишет: итог остаётся в чате, строку журнала пишет тот, кто делает правку.
+For a direct and a short one do the recon yourself, by reading the named places. Step 6 is not needed for them, of step 8 — only the self-check, without a separate agent; step 9 is mandatory. No topic folder is set up for them, and `splan` writes nothing to the wiki: the result stays in the chat, the journal line is written by whoever makes the edit.
 
-## 3. Разведка
+## 3. Recon
 
-Сначала код, потом вопросы.
+First the code, then the questions.
 
-- **Что искать:** места, которые затронет работа; как в проекте уже сделано похожее — этому и следуй; команды сборки, запуска и проверки; инструкции проекта и словарь терминов; что сломается рядом.
-- **Факты ищешь ты, решения принимает пользователь.** Не спрашивай то, что можно найти в репозитории, в инструментах или в сети.
-- **Для плана карточками** отдай разведку подагентам, если они есть и затронутые места заранее не известны: не больше трёх на план, каждому — один вопрос и просьба вернуть вывод с путями и строками, а не выгрузку файлов. Решённое передавай как факт, без доводов в его пользу, и добавляй: «найдёшь, что это не может работать, — сообщи». Места, названные в требованиях или в задаче, читай сам.
-- **Проверяй, прежде чем утверждать.** Любое «этого в проекте нет» и любой путь или имя в плане — либо проверены по коду, либо названы непроверенным предположением.
-- **Поправку пользователя о коде проверь по коду**, а не принимай на слово; расхождение назови.
-- **Готовое.** Для мест, которые затронет работа, найди в проекте готовый код, который можно взять вместо нового: функцию, класс или скрипт. Запиши имя, сигнатуру и файл.
+- **What to look for:** the places the work will touch; how similar things are already done in the project — follow that; the build, launch and check commands; the project instructions and the glossary of terms; what will break nearby.
+- **You look for the facts, the user makes the decisions.** Do not ask what can be found in the repository, in the tools or on the web.
+- **For a plan in cards** hand the recon to subagents if they are available and the affected places are not known in advance: at most three per plan, to each — one question and a request to return a conclusion with paths and lines, not a dump of files. Start them in one message. Pass on what is decided as a fact, without arguments in its favour, and add: "if you find that this cannot work — report it". Read the places named in the requirements or in the task yourself.
+- **Check before you assert.** Any "the project does not have this" and any path or name in the plan is either checked against the code or called an unverified guess.
+- **Check the user's correction about the code against the code**, do not take it on trust; name the discrepancy.
+- **Ready-made code.** For the places the work will touch, find ready-made code in the project that can be taken instead of new code: a function, a class or a script. Write down the name, the signature and the file.
 
-Вопросы пользователю — только о том, на что не отвечают ни код, ни требования, и только блокирующие: без ответа нельзя выбрать нарезку или техническое решение, которое дорого отменить. Задавай их через инструмент блокирующих вопросов, с рекомендацией к каждому. Остальное решай сам и показывай в плане как принятое решение.
+Questions to the user — only about what neither the code nor the requirements answer, and only blocking ones: without an answer it is impossible to choose the slicing or a technical decision that is expensive to undo. Ask them through the blocking question tool, with a recommendation for each. Decide the rest yourself and show it in the plan as a decision made.

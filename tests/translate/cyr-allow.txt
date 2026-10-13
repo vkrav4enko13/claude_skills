@@ -1,0 +1,12 @@
+tests/translate/map.tsv
+tests/translate/glossary.tsv
+tests/trial-summary.md
+tests/chain/requests.tsv
+tests/chain/drive.sh:^ *first=
+tests/chain/drive.sh:^ *answer=
+tests/translate/cyr-allow.txt
+tests/make-wiki.sh:карточка викки журнал > "\$1/app\.txt"$
+tests/make-wiki.sh:s="\$\{s\}абвгдежзиклмнопрстуфхцчшщэюя"
+tests/make-wiki.sh:^- Перевод списка слов на английский язык — отложен, пока
+tests/chain/seed.sh:`карточка
+tests/chain/seeds.md:`карточка

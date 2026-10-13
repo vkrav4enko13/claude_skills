@@ -1,30 +1,30 @@
-# Вход: виды входа и продолжение
+# Entry: kinds of entry and continuation
 
-Читается на шаге 1 — после таблицы фаз.
+Read at step 1 — after the table of phases.
 
-| Вход | Что делать |
+| Entry | What to do |
 |---|---|
-| **План в папке темы** от `splan` | Прочитай `plan.md`, `plan-decisions.md` и карточки проверок — `plan-checks.md` и её части `plan-checks-<группа>.md`. Карточку среза `plan-s<N>-<имя>.md` читай целиком, когда срез начинается; до того из карточек срезов нужны только строки «Статус» и «Зависит от». У среза без строки `- **Статус:**` допиши `- **Статус:** не начат` под строкой сути и продолжай. У темы есть `scope.md` или её части `scope-<часть>.md` — найди в них раздел «Не входит» и прочитай: его текст получат исполнитель и сверка |
-| **План прежнего вида, одним файлом** — не карточками в папке темы | Не исполняй. Назови формат прежним и предложи `splan`: он переложит план в карточки темы. По такому файлу не работай |
-| **План из чата** (прямой или короткий итог `splan`) | Иди по разделу «Малое изменение» |
-| **Задача без плана** | Годится, только если её можно назвать, сделать и проверить за один проход. Скажи в двух предложениях, что и где меняешь и чем проверишь, и сразу делай — согласия на эти два предложения не жди. Дальше — раздел «Малое изменение». Задача крупнее — не исполняй и не планируй: назови, чего не хватает, предложи `splan` и остановись |
+| **A plan in the topic folder** from `splan` | Read `plan.md` and its parts `plan-2.md`, `plan-decisions.md` and the check cards — `plan-checks.md` and its parts `plan-checks-<group>.md`. Read a slice card `plan-s<N>-<name>.md` in full, together with its parts `plan-s<N>-<name>-2.md`, when the slice starts; until then only the lines "Status" and "Depends on" are needed from the slice cards. For a slice without a `- **Status:**` line add `- **Status:** not started` under the hook line and go on; a part of a slice — a card with "part 2" in the title — has no such line and needs none. The topic has `scope.md` or its parts `scope-<part>.md` — find the "Out of scope" section in them and read it: its text will go to the executor and to the conformance check. Do not read the overview `plan-overview.md`: where it differs from the slice card, act by the slice card. |
+| **A plan of the earlier form, as a single file** — not as cards in the topic folder | Do not execute. Call the format the earlier one and offer `splan`: it will move the plan into topic cards. Do not work from such a file |
+| **A plan from the chat** (a direct or a short result of `splan`) | Go by the "Small change" section |
+| **A task without a plan** | It will do only if it can be named, made and checked in one pass. Say in two sentences what you change and where and what you will check it with, and do it right away — do not wait for consent to these two sentences. Next — the "Small change" section. The task is larger — do not execute and do not plan: name what is missing, offer `splan` and stop |
 
-Малое изменение начинай с чтения `references/small.md`: снимок и проверка до правок — оттуда, и они идут раньше первой правки.
+Start a small change by reading `references/small.md` — before the first edit.
 
-**Продолжение прерванной работы.** Если в `state.md` фаза `исполнение идёт`, у срезов есть статусы, отличные от «не начат», в «Ходе исполнения» — карточке `progress.md` — есть записи или в папке темы уже лежит папка снимка `.swork/` — работа продолжается. До первого среза:
+**Continuing interrupted work.** If the phase in `state.md` is `execution in progress`, the slices have statuses other than "not started", "Progress log" — the `progress.md` card — has records, or the snapshot folder `.swork/` already lies in the topic folder — the work is being continued. The next step in `state.md` is "user's choice after the report" — this means that the report has been shown but the choice has not been made: do not repeat the slices and the stages, show the report from the records of "Progress log" — by `references/report.md` — and ask for the choice. Otherwise — before the first slice:
 
-- сверь строку плана «Сверено с кодом» с нынешним кодом и назови расхождения;
-- найди файлы вне плана, изменённые с прошлой сессии, по `references/snapshot.md`, покажи их списком и спроси один раз, чьи это правки. Названные пользователем своими запиши в `known.txt` снимка; с остальными поступай по таблице из того же файла;
-- запусти заново проверки срезов «готов» и строки с командой у срезов «ждёт ручной проверки», каждую разную команду один раз: между сессиями готовое могло сломаться. Красная — попытка исправить по шагу 6 раздела 3 для среза, к файлам которого относится упавшее; пока она красная, следующий срез не начинай;
-- метку времени не переставляй, копии и ступени в снимке не трогай.
+- check the plan line "Checked against code" against the present code and name the discrepancies;
+- find the files outside the plan that were changed since the last session, by `references/snapshot.md`, show them as a list and ask once whose edits these are. Write the ones the user called their own into the snapshot's `known.txt`; deal with the rest by the table from the same file;
+- run anew the checks of the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: between sessions what was done could have broken. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; while it is red, do not start the next slice;
+- do not move the time marker, do not touch the copies and the checkpoints in the snapshot.
 
-Дальше — по статусам и «Ходу исполнения»:
+Next — by the statuses and "Progress log":
 
-- срез «готов» не переделывай;
-- срез «остановлен» или срез с записью «начат» без итога — в его файлах лежат правки прошлых попыток. Назови причину остановки из «Хода исполнения» и начни с шага 2 раздела 3. После обрыва попытки, записанные в «Ходе», идут в счёт; после остановки, которую снял пользователь, счёт начинается заново. У такого среза с разделом «Откат» сохранение не повторяй: спроси, что успело выполниться;
-- срез «ждёт ручной проверки» не исполняй заново — спроси, чем кончилась проверка;
-- есть запись «этап начат» без «этап закончен» — верни файлы из ступени этого этапа и пройди этап заново.
+- do not redo a "done" slice;
+- a "stopped" slice or a slice with a "started" record without an outcome — its files hold the edits of the past attempts. Name the reason for the stop from "Progress log" and start from step 2 of section 3. After an interruption the attempts recorded in "Progress log" count; after a stop that the user lifted, the count starts anew. For such a slice with a "Rollback" section do not repeat the saving: ask what managed to run;
+- do not execute an "awaiting manual check" slice anew — ask how the check ended;
+- there is a "stage started" record without a "stage finished" one — restore the files from the checkpoint of this stage and go through the stage anew.
 
-Папка снимка есть, а статусы все «не начат» и записей нет — спроси, продолжать или начать заново. Снимок молча не удаляй.
+There is a snapshot folder, but the statuses are all "not started" and there are no records — ask whether to continue or to start anew. Do not delete the snapshot silently.
 
-**Отложенные вопросы.** Вопрос из раздела плана «Отложенные вопросы», от которого зависит срез, назови перед началом этого среза — не раньше и не позже — вместе с тем, что план принял до ответа. Ответа не жди: это не остановка.
+**Assumptions.** A slice is named in a line of the plan section "Assumptions", or the line has "all" — name this assumption before the slice starts, not earlier and not later. Do not wait for an answer: this is not a stop.

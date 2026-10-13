@@ -1,60 +1,60 @@
-# Проверка плана
+# Plan review
 
-Читается на шаге 8 — после записи плана карточками и до показа пользователю.
+Read at step 8 — after the plan is written in cards and before it is shown to the user.
 
-## Самопроверка
+## Self-check
 
-Перечитай план свежим взглядом, держа перед собой требования, и исправь на месте:
+Reread the plan with fresh eyes, keeping the requirements in front of you, and fix in place:
 
-1. **Покрытие.** Пройди требования по номерам: у каждого есть строка проверки, и её сценарий проверяет именно его, а не только называет его номер. Пройди строки проверки: у каждой — ровно один срез, и он называет её в «Проверках»; среза без строк нет. Требование без строки — добавь строку и срез или назови, почему оно не делается. Срез без требования — лишний: убери или спроси.
-2. **Однозначность.** Из каждой строки «Что сделать» исполнитель напишет ровно одну разумную вещь. Строка, которая ничего не решает, — дыра.
-3. **Согласованность имён.** Имена, сигнатуры и типы в блоках «берёт» совпадают с тем, что соседние срезы «отдают». Никто не берёт то, чего ни один срез не отдаёт и чего нет в коде.
-4. **Порядок.** Зависимости не замкнуты в круг; срез не использует то, что появится позже; первый срез проходит насквозь.
-5. **Проверяемость.** В каждой строке проверки есть команда с ожидаемым результатом или ручные шаги, и строки проверяют поведение среза, а не «сборка прошла». Одна из строк — сквозная: проверяет цель плана целиком, и владеет ею срез, после которого цель достигнута. Команда показала бы поломку, а не прошла бы при любом коде.
-6. **Фокус проверки.** Каждая его строка приписана срезу, и на неё заведена строка проверки, у которой в колонке «Срез» стоит этот срез. Пустой раздел означает, что ты искал и не нашёл. Назови и то, что сломается рядом и планом не учтено.
-7. **Слова-уступки.** «Пока», «временно», «заглушка», «в первой версии», «упрощённо» там, где требования этого не разрешали, — молчаливое сужение объёма. Либо сделай срез полным, либо вынеси сужение вопросом пользователю.
-8. **Мера.** Блоки кода не занимают большую часть плана; нет строк, пересказывающих требования без решения.
-9. **Размер среза.** Каждый срез помещается в одну свежую сессию исполнителя вместе с чтением нужного кода и проверкой. Не помещается — раздели там, где одну часть можно принять без другой.
-10. **Откат.** У каждого среза с необратимым действием названо, что сохранить и как вернуть.
-11. **Вики.** Скрипт проверки вики доволен: печатает `вики в порядке`. Как его запустить и как исправить названное — `references/wiki-rules.md`, раздел «Проверка».
-12. **Готовое.** У каждого среза заполнено поле «Готовое», и названный код существует.
+1. **Coverage.** Go through the requirements by number: each has a check line, and its scenario checks exactly that requirement, not merely names its number. Go through the check lines: each has exactly one slice, and that slice names it in "Checks"; there is no slice without lines. A requirement without a line — add a line and a slice or name why it is not being done. A slice without a requirement is superfluous: remove it or ask.
+2. **Unambiguity.** From every line of "What to do" the executor will write exactly one reasonable thing. A line that decides nothing is a hole.
+3. **Consistency of names.** The names, signatures and types in the "takes" blocks match what the "gives" blocks of the neighbouring slices give. Nobody takes something that no slice gives and that is not in the code.
+4. **Order.** The dependencies do not close into a circle; a slice does not use what will appear later; the first slice goes all the way through.
+5. **Checkability.** Every check line has a command with the expected result or manual steps, and the lines check the behaviour of the slice, not "the build passed". One of the lines is end-to-end: it checks the goal of the plan as a whole, and it is owned by the slice after which the goal is reached. The command together with "Expected" would show a breakage rather than pass with any code.
+6. **Check focus.** Each of its lines is assigned to a slice, and for that line a check line is set up that has this slice in the "Slice" column. An empty section means that you searched and found nothing. Name also what will break nearby and is not accounted for by the plan.
+7. **Concession words.** "For now", "temporarily", "a stub", "in the first version", "simplified" where the requirements did not permit it are a silent narrowing of the scope. Either make the slice complete or bring the narrowing to the user as a question.
+8. **Measure.** Code blocks do not take up most of the plan; there are no lines that retell the requirements without a decision.
+9. **Slice size.** Every slice fits into one fresh session of the executor together with reading the needed code and the check. It does not fit — split where one part can be accepted without the other.
+10. **Rollback.** Every slice with an irreversible action names what to save and how to bring it back.
+11. **Wiki.** The wiki check script is satisfied: it prints `wiki is fine`. How to run it and how to fix what it names — `references/wiki-rules.md`, section "Check".
+12. **Ready-made code.** Every slice has the "Reuse" field filled in, and the named code exists.
 
-## Отдельный агент
+## Separate agent
 
-Автор, проверяющий сам себя, подтверждает то, во что уже верит. Поэтому план карточками читает агент, который не видел разговора. Подагентов в среде нет — скажи об этом пользователю при показе плана: независимой проверки не было.
+An author who checks themselves confirms what they already believe. That is why a plan in cards is read by an agent that has not seen the conversation. If the environment has no subagents, say so to the user when showing the plan: there was no independent review.
 
-**Что передать:** путь к папке темы — в ней карточки плана и требований (требований там нет — ещё и текст задачи), корень проекта. Разговор, свои доводы и вывод «план хороший» не передавай: они привязывают.
+**What to pass:** the path to the topic folder — it holds the plan cards and the requirements cards (there are no requirements there — the text of the task as well), the project root. Do not pass the conversation, your own arguments or the conclusion "the plan is good": they anchor.
 
-**Задание** — передай по смыслу, своими словами под проект:
+**The task** is the code block below. Do not retype it and do not retell it: cut the block out with a command into a temporary file — `awk '/^\140\140\140/{f=!f; next} f' <this file> > <temporary folder>/plan-review.txt` — and write to the agent: "Read the task in the file <path> and carry it out word for word". In the message pass the path to the topic folder, the project root and, if there are no requirements, the text of the task. If there is nothing to cut with, pass the block word for word.
 
 ```
-Проверь план работ перед исполнением. Папка темы: <путь> — в ней карточками
-лежат план и требования (требований нет — задача: <текст>).
-Проект: <корень>. Ничего не меняй — только читай.
+Review the work plan before it is executed. Reply in English. Topic folder: <path> — the plan and
+the requirements lie in it as cards (no requirements — the task: <text>).
+Project: <root>. Change nothing — only read.
 
-Считай, что в плане есть изъяны, и найди их. Проверь по коду и по требованиям:
+Assume that the plan has flaws, and find them. Check against the code and against the requirements:
 
-1. Утверждения о коде. Каждый путь, имя функции, сигнатура и команда из плана
-   существуют и выглядят так, как сказано. Назови каждое, что не подтвердилось.
-2. Где исполнителю придётся гадать.
+1. Claims about the code. Every path, function name, signature and command from the plan
+   exists and looks as stated. Name every one that was not confirmed.
+2. Where the executor will have to guess.
 
-Верни находки списком, самые серьёзные первыми. К каждой:
-- серьёзность: «блокирует» (по плану выйдет неверное или несобираемое),
-  «стоит исправить», «мелочь»;
-- место в плане (раздел, номер среза);
-- доказательство: путь и строка в коде либо номер требования;
-- что изменить.
-Не нашёл изъянов в каком-то пункте — так и напиши, не выдумывай.
-Отдельно пометь всё, что не смог проверить.
+Return the findings as a list, the most serious first. For each:
+- severity: "blocking" (following the plan will give something wrong or something
+  that does not build), "worth fixing", "nit";
+- the place in the plan (the section, the slice number);
+- the evidence: a path and a line in the code or a requirement number;
+- what to change.
+Found no flaws in some item — say so, do not make any up.
+Mark separately everything you could not check.
 ```
 
-## Что делать с находками
+## What to do with the findings
 
-Получил находки — исправил — показываешь пользователю. Второй круг — только если была подтвердившаяся находка «блокирует»: тому же заданию дай список исправленных мест и попроси проверить только их — исправление верно и не сломало соседние срезы. Третьего круга нет: что осталось после второго, назови пользователю при показе.
+You got the findings — you fixed them — you show the plan to the user. A second round — only if there was a confirmed "blocking" finding: give the same task the list of the fixed places and ask to check only them — that the fix is right and did not break the neighbouring slices. There is no third round: what is left after the second, name to the user when showing the plan.
 
-- **Сначала проверь находку.** Агент тоже ошибается: доказательство без пути и строки — предположение. Подтвердилась — исправляй.
-- **«Блокирует» и «стоит исправить»** — исправь в плане на месте. Исправление затронуло имена или зависимости — пройди пункты 3 и 4 самопроверки ещё раз.
-- **Находка меняет объём или поведение** — не решай сам: задай пользователю один вопрос до показа плана.
-- **Находка показывает, что требования не сходятся с кодом** — это расхождение из шага 6: назови его пользователю, план по такому требованию не считается готовым.
-- **Не согласен с находкой** — оставь план как есть и назови её при показе одной строкой: что нашёл агент и почему ты не стал править.
-- **«Мелочь»** — исправь, если это строка; иначе пропусти без упоминания.
+- **First check the finding.** The agent makes mistakes too: evidence without a path and a line is a guess. It is confirmed — fix it.
+- **"blocking" and "worth fixing"** — fix in the plan in place. The fix touched names or dependencies — go through items 3 and 4 of the self-check once more.
+- **The finding changes the scope or the behaviour** — do not decide yourself: ask the user one question before showing the plan.
+- **The finding shows that the requirements do not agree with the code** — this is a discrepancy from step 6: name it to the user, the plan for such a requirement does not count as ready.
+- **You disagree with the finding** — leave the plan as it is and name the finding when showing the plan, in one line: what the agent found and why you did not fix it.
+- **"nit"** — fix it if it is one line; otherwise skip it without a mention.

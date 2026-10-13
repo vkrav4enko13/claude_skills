@@ -1,0 +1,7 @@
+# Строки проверки темы chain-cleanup: скрипт смены формата на пробной вики
+
+> Строка 127: скрипт смены формата на пробной вики.
+
+| № | Требование | Сценарий | Команда | Ожидаемое | Срез | Результат |
+|---|---|---|---|---|---|---|
+| 127 | R100 | пробная вики: фаза и раздел стоят на месте формата, а слова «Статус» и «готов» — в тексте → меняется только формат, повторный запуск ничего не меняет | `cd "$HOME/Documents/my/claude_skills" && T=$(mktemp -d) && mkdir -p "$T/w/work/t" && printf '# X\n\n> y\n\n## В работе\n\n- [t](work/t/00-index.md) — исполнение идёт — дальше: шаг про Статус готов\n\n## Отложено\n\n## Разделы\n' > "$T/w/00-index.md" && printf '# T\n\n> y\n\n## Карточки\n\n- [Состояние](state.md) — фаза темы и следующий шаг\n' > "$T/w/work/t/00-index.md" && printf '# Состояние темы t\n\n> y\n\n- **Фаза:** исполнение идёт — 2026-10-12\n- **Следующий шаг:** слово готов остаётся\n' > "$T/w/work/t/state.md" && bash tests/translate/format.sh "$T/w" > /dev/null && cp -R "$T/w" "$T/w1" && bash tests/translate/format.sh "$T/w" > /dev/null && diff -r "$T/w" "$T/w1" > /dev/null && grep -q '^- \*\*Phase:\*\* execution in progress — 2026-10-12$' "$T/w/work/t/state.md" && grep -q '^- \*\*Next step:\*\* слово готов остаётся$' "$T/w/work/t/state.md" && grep -q '^## In progress$' "$T/w/00-index.md" && grep -q ' — execution in progress — next: шаг про Статус готов$' "$T/w/00-index.md" && echo "формат сменён, текст цел"` | `формат сменён, текст цел` | S55 | зелёная 2026-10-13 |

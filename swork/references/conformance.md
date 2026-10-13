@@ -1,65 +1,65 @@
-# Сверка с планом
+# Conformance check
 
-Читается на шаге 5 — после последнего среза и до правок.
+Read at step 5 — after the last slice and before the edits.
 
-Сверка отвечает на один вопрос: сделано ли то, что в плане, и только оно. Ошибки в коде ищет ревью, лишнее внутри плана — упрощение.
+The conformance check answers one question: whether what is in the plan was done, and only that. Errors in the code are looked for by the review, what is superfluous inside the plan — by the simplification.
 
-## Что передать
+## What to pass
 
-- путь к папке темы — карточки плана проверяющий читает сам; у плана из чата и задачи без плана — сам текст плана или задачи;
-- текст раздела «Не входит» из `scope.md` темы или её части `scope-<часть>.md`, если у темы есть такая карточка;
-- изменения: пути изменённых и новых файлов и папку `base/` снимка для сравнения;
-- корень проекта.
+- the path to the topic folder — the reviewer reads the plan cards itself; for a plan from the chat and a task without a plan — the text of the plan or of the task itself;
+- the text of the "Out of scope" section from the topic's `scope.md` or from its part `scope-<part>.md`, if the topic has such a card;
+- the changes: the paths of the changed and new files and the snapshot's `base/` folder for comparison;
+- the project root.
 
-Разговор, отчёты исполнителей и свой вывод «всё сделано» не передавай: они привязывают.
+Do not pass the conversation, the executors' reports or your own conclusion "everything is done": they anchor.
 
-## Задание
+## Task
 
 ```
-Сверь сделанное с планом. План: <путь к папке темы или текст>.
-Корень проекта: <путь>. «Не входит» из требований: <текст или «нет»>.
-Изменённые файлы: <пути>; их состояние до работы — в <путь к base/>.
-Новые файлы: <пути>. Ничего не меняй — только читай.
+Check what was done against the plan. Reply in English. The plan: <the path to the topic folder or the text>.
+Project root: <path>. "Out of scope" from the requirements: <the text or "none">.
+Changed files: <paths>; their state before the work is in <the path to base/>.
+New files: <paths>. Change nothing — only read.
 
-В папке темы план лежит карточками: `plan.md` — цель, общие ограничения
-и «Не делаем»; `plan-decisions.md` — технические решения; `plan-checks.md`
-и её части — строки проверок; `plan-s<N>-<имя>.md` — срезы.
+In the topic folder the plan lies as cards: `plan.md` — the goal, the shared constraints
+and "Not doing"; `plan-decisions.md` — the technical decisions; `plan-checks.md`
+and its parts — the check lines; `plan-s<N>-<name>.md` — the slices.
 
-Считай, что расхождения есть, и найди их. Находки трёх видов:
+Assume that there are discrepancies, and find them. The findings are of three kinds:
 
-1. НЕДОСТАЁТ — план просил, а в изменениях этого нет или оно сделано частично.
-   - Каждый файл из блока «Файлы» среза должен иметь правку: файл назван,
-     а не тронут — это находка.
-   - Каждой строке проверок среза должен отвечать код: строка, сценарий
-     которой в изменениях ничем не обработан, — это находка.
-2. СВЕРХ ПЛАНА — в изменениях есть то, чего план не просил. Проверь три вещи:
-   - изменён или создан файл, которого нет ни в одном блоке «Файлы»;
-   - обобщение, параметр, настройка или точка расширения под нужду,
-     которой в плане нет;
-   - что-либо из раздела «Не делаем» или из «Не входит».
-3. НЕВЕРНО — план просил, сделано, но не так: другое имя, сигнатура,
-   значение, место, либо нарушено «Что сделать», «Интерфейсы» или строка
-   проверок среза.
+1. MISSING — the plan asked for it, but it is not in the changes or it is done in part.
+   - Every file from the "Files" block of a slice must have an edit: a file is named
+     but not touched — this is a finding.
+   - Every check line of a slice must be answered by code: a line whose scenario
+     nothing in the changes handles — this is a finding.
+2. BEYOND THE PLAN — the changes have something the plan did not ask for. Check three things:
+   - a file that is in no "Files" block is changed or created;
+   - a generalization, a parameter, a setting or an extension point for a need
+     that is not in the plan;
+   - anything from the "Not doing" section or from "Out of scope".
+3. WRONG — the plan asked for it, it is done, but not that way: another name, signature,
+   value, place, or "What to do", "Interfaces" or a check line
+   of the slice is violated.
 
-К каждой находке приведи цитату строки карточки, на которую опираешься,
-и назови карточку.
-Объяснение в коде, в комментарии или в чьём-либо отчёте находку не смягчает:
-«добавил на будущее» остаётся «сверх плана».
+For every finding give a quote of the card line you rely on,
+and name the card.
+An explanation in the code, in a comment or in anyone's report does not soften a finding:
+"added for the future" remains "beyond the plan".
 
-Если у плана нет блоков «Файлы» (план из чата, задача словами) — цитируй его
-текст, а сверку файлов веди по местам, которые в этом тексте названы.
+If the plan has no "Files" blocks (a plan from the chat, a task in words) — quote its
+text, and check the files by the places that are named in this text.
 
-Верни находки списком:
-- вид: недостаёт | сверх плана | неверно
-- место: файл:строка
-- план: карточка и «цитата её строки»
-- что: одной-двумя фразами
+Return the findings as a list:
+- kind: missing | beyond the plan | wrong
+- place: file:line
+- plan: the card and "a quote of its line"
+- what: in one or two phrases
 
-Отдельным списком — что не смог проверить по изменениям.
-Не нашёл находок какого-то вида — так и напиши, не выдумывай.
-ПРОЧИТАНО: <пути файлов, которые ты открыл и прочитал> — одной строкой после всех находок.
+As a separate list — what you could not check by the changes.
+Found no findings of some kind — say so, do not make any up.
+READ: <the paths of the files you opened and read> — as one line after all the findings.
 ```
 
-## Находка без цитаты
+## A finding without a quote
 
-Находку без цитаты плана проверь сам: без строки плана это мнение, а не расхождение.
+Check a finding without a quote of the plan yourself: without a plan line it is an opinion, not a discrepancy.

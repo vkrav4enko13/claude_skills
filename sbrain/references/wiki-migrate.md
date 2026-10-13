@@ -1,32 +1,32 @@
-# Перенос старого файла в карточки
+# Moving an old file over into cards
 
-Читается, когда в проекте найден файл требований или план прежнего вида — одним файлом — и пользователь согласился переложить его в карточки либо сам об этом попросил. По такому файлу молча не работают: назови формат прежним и предложи перенос.
+Read when a requirements file or a plan of the earlier form — as a single file — is found in the project and the user has agreed to move it into cards or has asked for it themselves. Such a file is not worked from silently: call the format the earlier one and offer the move.
 
-Перенос ничего не переписывает: строки оригинала переезжают в карточки дословно. Улучшать формулировки по дороге нельзя.
+The move rewrites nothing: the lines of the original move into the cards verbatim. Improving the wordings along the way is not allowed.
 
-## Кто что перекладывает
+## Who moves what
 
-- **Файл требований прежнего вида** — `sbrain`. Какой раздел в какую карточку темы идёт, сказано в `references/topic-cards.md` скила `sbrain`.
-- **План** — `splan`. Предложи его; сам план не раскладывай.
+- **A requirements file of the earlier form** — `sbrain`. Which section goes into which topic card is said in `references/topic-cards.md` of the `sbrain` skill.
+- **A plan** — `splan`. Offer it; do not lay the plan out yourself.
 
-## Порядок
+## Order
 
-1. **Убедись, что оригинал сохранён** — коммитом пользователя или копией. Под git: `git status --porcelain -- <оригинал>` ничего не печатает, а `git log -1 --oneline -- <оригинал>` называет коммит. Иначе попроси пользователя закоммитить файл либо сделай копию рядом с оригиналом и назови её путь; сам не коммить. Пока нет ни коммита, ни копии — перенос не начинай.
-2. **Разложи разделы по карточкам темы** в `work/<тема>/` — по раскладке из «Кто что перекладывает». Заголовок и строку сути каждой карточки пишешь ты; всё, что под ними, — строки оригинала.
-3. **Переноси строки дословно** — вырезанием диапазонов строк, а не перепечаткой:
+1. **Make sure the original is saved** — by the user's commit or by a copy. Under git: `git status --porcelain -- <original>` prints nothing, and `git log -1 --oneline -- <original>` names a commit. Otherwise ask the user to commit the file, or make a copy next to the original and name its path; do not commit yourself. While there is neither a commit nor a copy, do not start the move.
+2. **Lay the sections out into the topic cards** in `work/<topic>/` — by the layout from "Who moves what". You write the title and the hook line of each card; everything under them is lines of the original.
+3. **Move the lines verbatim** — by cutting out line ranges, not by retyping:
 
    ```bash
-   sed -n '<первая>,<последняя>p' <оригинал> >> <карточка>
+   sed -n '<first>,<last>p' <original> >> <card>
    ```
 
-   Набранная заново строка расходится с оригиналом незаметно. Карточка вышла за предел — раздели её, строки при этом не меняй. Затем запусти проверку вики — `references/wiki-rules.md`, раздел «Проверка». Проверка назвала битой ссылку в перенесённой строке — её цель считалась от папки оригинала: перепиши цель от папки карточки и больше в строке ничего не меняй. Это единственная правка, которую перенос допускает.
-4. **Сверь построчно.** Каждая непустая строка оригинала, кроме заголовков разделов и шапки, дословно есть в карточках темы. Команда печатает строки оригинала, которых в карточках нет:
+   A retyped line differs from the original unnoticeably. If a card went over the limit, split it and do not change the lines while doing so. Then run the wiki check — `references/wiki-rules.md`, section "Check". If the check named a link in a moved line broken, its target was counted from the folder of the original: rewrite the target from the folder of the card and change nothing else in the line. This is the only edit the move allows.
+4. **Compare line by line.** Every non-empty line of the original, except the section headings and the header, is verbatim in the topic cards. The command prints the lines of the original that are not in the cards:
 
    ```bash
-   grep -v '^[[:space:]]*$' <оригинал> | grep -v '^#' | while IFS= read -r line; do
-       grep -rqxF -- "$line" <папка темы> || printf '%s\n' "$line"
+   grep -v '^[[:space:]]*$' <original> | grep -v '^#' | while IFS= read -r line; do
+       grep -rqxF -- "$line" <topic folder> || printf '%s\n' "$line"
    done
    ```
 
-   В выводе допустимы только шапка — строки оригинала до первого раздела — и строки, в которых на шаге 3 переписана цель ссылки. Любая другая строка потеряна: верни её в карточку вырезанием и запусти сверку снова.
-5. **Покажи итог и жди «да».** Назови, сколько непустых строк в оригинале, сколько из них нашлось в карточках, какие не перенесены и в каких переписана цель ссылки. Оригинал удаляй только после «да» пользователя по итогам сверки. Правка — не одобрение: поправил карточки — сверь заново, покажи и жди «да».
+   Only the header — the lines of the original before the first section — and the lines in which the link target was rewritten at step 3 are allowed in the output. Any other line is lost: return it to the card by cutting and run the comparison again.
+5. **Show the result and wait for a "yes".** Name how many non-empty lines the original has, how many of them were found in the cards, which were not moved and in which the link target was rewritten. Delete the original only after the user's "yes" to the results of the comparison. A fix is not approval: if you fixed the cards, compare again, show and wait for a "yes".

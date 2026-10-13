@@ -1,180 +1,127 @@
-# Снимок: что изменилось и как вернуть
+# Snapshot: what changed and how to restore it
 
-Читается на шаге 2 и дальше — каждый раз, когда нужно снять копию, найти правку или откатить.
+Read once per run, at step 2; reread it only if the text of the file is no longer in the context.
 
-`swork` не полагается на git, даже когда он есть: в рабочем дереве могут лежать незакоммиченные правки пользователя, и git не отличит их от правок исполнителя. Механизм один для всех проектов; git, если он есть, только помогает.
+`swork` does not rely on git, even when it is there: the working tree may hold the user's uncommitted edits, and git will not tell them apart from the executor's edits. The mechanism is the same for all projects; git, if it is there, only helps.
 
-## Где что лежит
+## What lies where
 
-**Папка снимка.** Для плана в папке темы — `.swork/` в этой папке: `<папка вики>/work/<тема>/.swork/`. Правила вики и скрипт проверки папок с точкой в начале имени не видят, поэтому снимок им не мешает. Для плана из чата и задачи без плана — `.swork/` в корне проекта. Снимок переживает прерванную сессию и удаляется, когда пользователь выбрал «принять работу».
+**The snapshot folder.** For a plan in the topic folder — `.swork/` in that folder: `<wiki folder>/work/<topic>/.swork/`. The wiki rules and the check script do not see folders with a dot at the start of the name, so the snapshot does not get in their way. For a plan from the chat and a task without a plan — `.swork/` in the project root. The snapshot survives an interrupted session and is deleted when the user has chosen "accept the work".
 
-| Путь в снимке | Что это |
+| Path in the snapshot | What it is |
 |---|---|
-| `base/<путь от корня проекта>` | Копия файла до первой правки |
-| `new-files.txt` | Файлы, созданные в этой работе: путь от корня на строку, без повторов |
-| `known.txt` | Файлы вне плана, которые пользователь назвал своими: путь от корня на строку |
-| `created.txt` | Функции, созданные срезами: `S<N>: имя(сигнатура) — файл` на строку; пишет основная сессия после каждого запуска исполнителя |
-| `checks/` | Полный вывод каждого запуска проверки: `S2-1.txt`, `S2-2.txt` — срез и номер запуска |
-| `dirty-at-start.txt` | Только под git: вывод `git status --porcelain` на старте |
-| `removed/<путь>` | Только под git: файлы вне плана, убранные из проекта, и изменённые версии возвращённых |
-| `notes/<имя>.md` | Копия заметки вики, которая была до работы и которую работа дополнила; в «Изменения» не входит |
-| `stage-5/`, `stage-6/`, `stage-7/` | Ступени: состояние перед сверкой, упрощением, ревью |
+| `base/<path from the project root>` | A copy of the file before the first edit |
+| `new-files.txt` | The files created in this work: a path from the root per line, without repeats |
+| `known.txt` | The files outside the plan that the user called their own: a path from the root per line |
+| `created.txt` | The functions created by the slices: `S<N>: name(signature) — file` per line; written by the main session after every run of the executor |
+| `checks/` | The full output of every run of a check: `S2-1.txt`, `S2-2.txt` — the slice and the number of the run |
+| `dirty-at-start.txt` | Only under git: the output of `git status --porcelain` at the start |
+| `removed/<path>` | Only under git: the files outside the plan that were removed from the project, and the changed versions of the restored ones |
+| `notes/<name>.md` | A copy of a wiki note that existed before the work and that the work extended; it is not part of "the changes" |
+| `stage-5/`, `stage-6/`, `stage-7/` | The checkpoints: the state before the conformance check, the simplification, the review |
 
-**Метка времени** — пустой файл `.swork-marker` в корне проекта, а не в снимке: её время должна ставить та же файловая система, что ставит время правок. Проект лежит на другой машине — и метка, и поиск выполняются на ней. При продолжении работы метка не переставляется.
+**The time marker** is an empty file `.swork-marker` in the project root, not in the snapshot: its time must be set by the same file system that sets the time of the edits. The project lies on another machine — both the marker and the search are done on that machine. When the work is continued the marker is not moved.
 
-**Изменения** — сравнение `base/` с текущими файлами плюс список `new-files.txt`. Этот набор получают все проверяющие.
+**The changes** are the comparison of `base/` with the current files plus the list `new-files.txt`. All the reviewers get this set.
 
-## Правила
+## Rules
 
-- **Копия снимается перед срезом** — для каждого файла, названного в срезе как «изменить». Файл «создать» записывается в `new-files.txt`.
-- **Существующая копия не перезаписывается.** Второй срез правит тот же файл или работа продолжается — в `base/` уже лежит исходник; новая копия заменила бы его изменённым файлом.
-- **Файл из `new-files.txt` в `base/` не копируется:** до начала работы его не было.
-- **Откат** — копию вернуть на место, файл из `new-files.txt` удалить.
-- **Срез с разделом «Откат» копиями не откатывается:** базу данных, права и схему возвращает только его собственный раздел.
+- **A copy is taken before the slice** — for every file named in the slice as "change". A "create" file is written into `new-files.txt`.
+- **An existing copy is not overwritten.** A second slice edits the same file or the work is being continued — `base/` already holds the original; a new copy would replace it with the changed file.
+- **A file listed in `new-files.txt` is not copied into `base/`:** it did not exist before the work started.
+- **Rollback** — put the copy back in place, delete a file listed in `new-files.txt`.
+- **A slice with a "Rollback" section is not rolled back with copies:** the database, the permissions and the schema are restored only by its own section.
 
-## Ступени
+## Checkpoints
 
-Перед сверкой, упрощением и ревью скопируй в папку ступени текущее состояние всех изменённых и новых файлов. Неудачная правка этапа откатывается к ступени, а не к `base/`: иначе откат упрощения стёр бы сам срез. Файл, созданный на этапе, при откате пачки удаляется.
+Before the conformance check, the simplification and the review copy the current state of all the changed and new files into the checkpoint folder. A failed edit of a stage is rolled back to the checkpoint, not to `base/`: otherwise a rollback of the simplification would wipe out the slice itself. A file created at a stage is deleted when a batch is rolled back.
 
-Существующая ступень не перезаписывается: при продолжении работы в ней лежит состояние до этапа, а в проекте — уже наполовину применённые правки.
+An existing checkpoint is not overwritten: when the work is continued it holds the state before the stage, while the project holds edits that are already half applied.
 
-## Несообщённые правки
+## Unreported edits
 
-После каждого запуска исполнителя найди файлы новее метки и вычти:
+After every run of the executor find the files newer than the marker and subtract:
 
-- папку снимка, метку и папку вики целиком — всегда: в вики ты пишешь статусы, результаты проверок и заметки уже после метки;
-- файлы из блоков «Файлы» текущего среза и срезов, которые уже исполнялись;
-- исключения;
-- файлы из `known.txt`.
+- the snapshot folder, the marker and the wiki folder as a whole — always: you write the statuses, the check results and the notes into the wiki after the marker is already set;
+- the files from the "Files" blocks of the current slice and of the slices that have already been executed;
+- the exclusions;
+- the files from `known.txt`.
 
-Файл будущего среза, изменённый раньше времени, — такая же правка вне плана: иначе перед его срезом в `base/` легла бы уже изменённая копия, и откат вернул бы не исходник.
+A file of a future slice that was changed ahead of time is the same kind of edit outside the plan: otherwise an already changed copy would go into `base/` before its slice, and a rollback would restore something other than the original.
 
-**Исключения** — то, что создают сборка и запуск.
+**The exclusions** are what the build and the run create.
 
-- Под git — файлы, на которые `git check-ignore` отвечает кодом 0.
-- Без git собери список при подготовке из трёх источников: файлы игнорирования проекта (`.gitignore`, `.ignore` и подобные); пути вывода в командах проверки срезов; типовой список — `build/`, `out/`, `bin/`, `obj/`, `node_modules/`, `__pycache__/`, `*.o`, `*.obj`, `*.pdb`, `*.log`, `*.tmp`.
+- Under git — the files for which `git check-ignore` answers with code 0.
+- Without git collect the list during the preparation from three sources: the project's ignore files (`.gitignore`, `.ignore` and the like); the output paths in the check commands of the slices; the standard list — `build/`, `out/`, `bin/`, `obj/`, `node_modules/`, `__pycache__/`, `*.o`, `*.obj`, `*.pdb`, `*.log`, `*.tmp`.
 
-Список исключений запиши в «Ход исполнения» до первого среза. Без git он — оценка: слишком широкий спрячет настоящую правку, слишком узкий даст лишнюю остановку.
+Write the list of exclusions into "Progress log" before the first slice. Without git it is an estimate: too wide a list will hide a real edit, too narrow a list will give a needless stop.
 
-**Чего поиск не видит:** удаление файла и перенос с сохранением времени. Под git удаление покажет `git status`, без git — ничто.
+**What the search does not see:** the deletion of a file and a move that keeps the time. Under git a deletion is shown by `git status`, without git — by nothing.
 
-**Что делать с найденным файлом вне плана**
+**What to do with a found file outside the plan**
 
-| Случай | Действие |
+| Case | Action |
 |---|---|
-| Под git, файл отслеживается и чист на старте (нет в `dirty-at-start.txt`) | Изменённый файл скопировать в `removed/`, затем `git checkout -- <файл>` и вернуть файлу время метки, иначе он найдётся снова; строка в отчёт |
-| Под git, файл новый и неотслеживаемый, в `dirty-at-start.txt` его нет | Перенести в `removed/` снимка — не удалять; строка в отчёт |
-| Под git, файл есть в `dirty-at-start.txt` | Остановка: в нём правки пользователя, вернуть нечем |
-| Без git | Остановка: показать файл, вернуть не пытаться |
+| Under git, the file is tracked and clean at the start (it is not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, then `git checkout -- <file>` and set the time of the file back to the time of the marker, otherwise it will be found again; a line into the report |
+| Under git, the file is new and untracked, it is not in `dirty-at-start.txt` | Move it into the snapshot's `removed/` — do not delete it; a line into the report |
+| Under git, the file is in `dirty-at-start.txt` | A stop: it holds the user's edits, there is nothing to restore it with |
+| Without git | A stop: show the file, do not try to restore it |
 
-Пользователь на остановке назвал файл своим — запиши путь в `known.txt`, иначе файл остановит работу после каждого следующего среза.
+If at the stop the user called the file their own, write the path into `known.txt`, or the file will stop the work after every following slice.
 
-После возврата или переноса запусти проверки текущего среза, всех срезов со статусом «готов» и команды срезов со статусом «ждёт ручной проверки»: файл вне списков мог быть нужен любому из них. Проверка покраснела — значит, срезу нужен файл, которого нет в плане: верни файл из `removed/` на место и остановись с расхождением.
+After the restoring or the move run the checks of the current slice, of all the slices with the status "done" and the commands of the slices with the status "awaiting manual check": a file outside the lists could have been needed by any of them. A check turned red — then the slice must need a file that is not in the plan: put the file from `removed/` back in place and stop with a discrepancy.
 
-## Команды: bash
+## Commands: bash
 
-`ROOT` — корень проекта, `SNAP` — папка снимка, `WIKI` — полный путь папки вики, `F` — путь файла от корня, `STAGE` — `stage-5`, `stage-6` или `stage-7`, `CMD` — команда проверки, `N` — имя файла вывода (`S2-1`).
+`ROOT` is the project root, `SNAP` — the snapshot folder, `WIKI` — the full path of the wiki folder, `F` — the path of a file from the root, `STAGE` — `stage-5`, `stage-6` or `stage-7`, `CMD` — the check command, `N` — the name of the output file (`S2-1`).
 
 ```bash
-# под git ли проект; список на старте
+# whether the project is under git; the list at the start
 git -C "$ROOT" rev-parse --is-inside-work-tree 2>/dev/null
 git -C "$ROOT" status --porcelain > "$SNAP/dirty-at-start.txt"
 
-# метка
+# the marker
 touch "$ROOT/.swork-marker"
 
-# проверка: полный вывод в файл, код завершения самой команды, конец вывода.
-# Команда на другой машине через PowerShell: ssh pc '<команда>; exit $LASTEXITCODE'
+# a check: the full output into a file, the exit code of the command itself, the end of the output.
+# A command on another machine through PowerShell: ssh pc '<command>; exit $LASTEXITCODE'
 mkdir -p "$SNAP/checks"
-bash -o pipefail -c "$CMD" > "$SNAP/checks/$N.txt" 2>&1; echo "код: $?"; tail -n 40 "$SNAP/checks/$N.txt"
+bash -o pipefail -c "$CMD" > "$SNAP/checks/$N.txt" 2>&1; echo "code: $?"; tail -n 40 "$SNAP/checks/$N.txt"
 
-# копия файла «изменить» (существующую не трогает)
+# a copy of a "change" file (does not touch an existing one)
 [ -e "$SNAP/base/$F" ] || { mkdir -p "$SNAP/base/$(dirname "$F")" && cp -p "$ROOT/$F" "$SNAP/base/$F"; }
 
-# файл «создать»
+# a "create" file
 grep -qxF "$F" "$SNAP/new-files.txt" 2>/dev/null || echo "$F" >> "$SNAP/new-files.txt"
 
-# изменения
+# the changes
 (cd "$SNAP/base" && find . -type f | sed 's|^\./||') | while read -r f; do diff -u "$SNAP/base/$f" "$ROOT/$f"; done
 cat "$SNAP/new-files.txt"
 
-# ступень: для каждого изменённого и нового файла (существующую не трогает)
+# a checkpoint: for every changed and new file (does not touch an existing one)
 [ -e "$SNAP/$STAGE/$F" ] || { mkdir -p "$SNAP/$STAGE/$(dirname "$F")" && cp -p "$ROOT/$F" "$SNAP/$STAGE/$F"; }
 
-# откат файла к состоянию до начала / к ступени / удаление нового
+# rolling a file back to the state before the start / to the checkpoint / deleting a new one
 cp -p "$SNAP/base/$F" "$ROOT/$F"
 cp -p "$SNAP/$STAGE/$F" "$ROOT/$F"
 rm "$ROOT/$F"
 
-# файлы новее метки; из вывода вычесть файлы пройденных срезов, исключения и known.txt.
-# Вики у проекта нет — условие с WIKI убери: с пустым WIKI оно скроет все файлы
+# the files newer than the marker; subtract from the output the files of the slices already gone through, the exclusions and known.txt.
+# If the project has no wiki, remove the condition with WIKI: with an empty WIKI it will hide all the files
 find "$ROOT" -type f -newer "$ROOT/.swork-marker" \
   -not -path "$SNAP/*" -not -path "$WIKI/*" -not -name .swork-marker -not -path '*/.git/*'
 
-# под git: игнорируется ли (код 0 — да), отслеживается ли (код 0 — да)
+# under git: whether it is ignored (code 0 — yes), whether it is tracked (code 0 — yes)
 git -C "$ROOT" check-ignore -q "$F"
 git -C "$ROOT" ls-files --error-unmatch "$F" >/dev/null 2>&1
 
-# под git: вернуть отслеживаемый (сохранив изменённый, время — как у метки) / убрать новый неотслеживаемый
+# under git: restore a tracked one (keeping the changed one, the time — as the marker's) / remove a new untracked one
 mkdir -p "$SNAP/removed/$(dirname "$F")" && cp -p "$ROOT/$F" "$SNAP/removed/$F" \
   && git -C "$ROOT" checkout -- "$F" && touch -r "$ROOT/.swork-marker" "$ROOT/$F"
 mkdir -p "$SNAP/removed/$(dirname "$F")" && mv "$ROOT/$F" "$SNAP/removed/$F"
 
-# работа принята
+# the work is accepted
 rm -rf "$SNAP" "$ROOT/.swork-marker"
 ```
 
-## Команды: PowerShell 5.1
-
-Те же имена: `$Root`, `$Snap`, `$Wiki`, `$F`, `$Stage`, `$Cmd`, `$N`.
-
-```powershell
-# под git ли проект; список на старте; метка
-git -C $Root rev-parse --is-inside-work-tree 2>$null
-git -C $Root status --porcelain | Set-Content "$Snap\dirty-at-start.txt"
-New-Item -ItemType File -Force "$Root\.swork-marker" | Out-Null
-
-# проверка: полный вывод в файл, код завершения самой команды, конец вывода
-New-Item -ItemType Directory -Force "$Snap\checks" | Out-Null
-cmd /c "$Cmd > `"$Snap\checks\$N.txt`" 2>&1"; "код: $LASTEXITCODE"; Get-Content "$Snap\checks\$N.txt" -Tail 40
-
-# копия файла «изменить» и ступень (существующие не трогает): $Dir — base или $Stage
-$dst = Join-Path $Snap "$Dir\$F"
-if (-not (Test-Path $dst)) {
-    New-Item -ItemType Directory -Force (Split-Path $dst) | Out-Null
-    Copy-Item (Join-Path $Root $F) $dst
-}
-
-# файл «создать»
-$list = "$Snap\new-files.txt"
-if (-not (Test-Path $list) -or (Get-Content $list) -notcontains $F) { Add-Content $list $F }
-
-# изменения одного файла
-Compare-Object (Get-Content (Join-Path $Snap "base\$F")) (Get-Content (Join-Path $Root $F))
-
-# откат файла к состоянию до начала или к ступени ($Dir) / удаление нового
-Copy-Item (Join-Path $Snap "$Dir\$F") (Join-Path $Root $F) -Force
-Remove-Item (Join-Path $Root $F)
-
-# файлы новее метки; из вывода вычесть файлы пройденных срезов, исключения и known.txt.
-# Вики у проекта нет — условие с $Wiki убери
-$m = (Get-Item "$Root\.swork-marker").LastWriteTime
-Get-ChildItem $Root -Recurse -File -Force |
-    Where-Object { $_.LastWriteTime -gt $m -and $_.FullName -notlike "$Snap\*" -and
-                   $_.FullName -notlike "$Wiki\*" -and $_.Name -ne '.swork-marker' -and
-                   $_.FullName -notlike '*\.git\*' } |
-    ForEach-Object FullName
-
-# под git: игнорируется ли, отслеживается ли (после каждой — $LASTEXITCODE, 0 — да)
-git -C $Root check-ignore -q $F
-git -C $Root ls-files --error-unmatch $F 2>$null | Out-Null
-
-# под git: вернуть отслеживаемый (сохранив изменённый, время — как у метки) / убрать новый неотслеживаемый
-$rm = Join-Path $Snap "removed\$F"
-New-Item -ItemType Directory -Force (Split-Path $rm) | Out-Null
-Copy-Item (Join-Path $Root $F) $rm; git -C $Root checkout -- $F; (Get-Item (Join-Path $Root $F)).LastWriteTime = $m
-Move-Item (Join-Path $Root $F) $rm
-
-# работа принята
-Remove-Item -Recurse -Force $Snap, "$Root\.swork-marker"
-```
+The PowerShell 5.1 commands are in `references/snapshot-powershell.md`: read it only on Windows.

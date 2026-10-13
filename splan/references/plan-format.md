@@ -1,188 +1,228 @@
-# Формат плана
+# Plan format
 
-Читается на шаге 7 — после согласованной нарезки и до записи плана — и на шаге 9, когда пользователь одобрил план.
+Read at step 7 — after the agreed slicing and before the plan is written — and at step 9, when the user has approved the plan.
 
-План читает исполнитель, который не видел ни разговора, ни разведки. Он умеет писать код на языке проекта и сам сделает разумный выбор там, где план его оставил. Чего он знать не может — что решил ты: какие файлы, какие имена и сигнатуры, какие точные значения из требований, чем проверяется каждый срез. Это и записывай.
+The plan is read by an executor that has seen neither the conversation nor the recon. It can write code in the project's language and will itself make a reasonable choice wherever the plan left the choice to it. What it cannot know is what you decided: which files, which names and signatures, which exact values from the requirements, how each slice is checked. Write exactly that down.
 
-## Где лежит план
+## Where the plan lies
 
-В папке темы `work/<тема>/` вики проекта, рядом с карточками требований. План — это карточки; отдельного файла плана нет. Где вики, пределы карточки и индекса, скрипт проверки — в `references/wiki-rules.md`; здесь только то, что добавляет план. Пути внутри плана — относительно корня проекта.
+In the topic folder `work/<topic>/` of the project wiki, next to the requirements cards. The plan is cards; there is no separate plan file. Where the wiki is, the limits of a card and of an index, the check script — in `references/wiki-rules.md`; here is only what the plan adds. Paths inside the plan are relative to the project root.
 
-**Папки темы нет** — задача без темы, размер «Карточки». Заведи её сам: `00-index.md` и `state.md` по шаблонам из `references/topic-cards.md` скила `sbrain`; `<тема>` — латиницей, через дефис. В индексе темы — строки только тех карточек, которые есть. Чужую папку с тем же именем не трогай: добавь к имени своей `-2`.
+**There is no topic folder** — a task without a topic, the size "Cards". Set it up yourself: `00-index.md` and `state.md` by the templates from `references/topic-cards.md` of the `sbrain` skill; `<topic>` is in Latin letters, hyphenated. The topic index holds lines only for the cards that exist. Do not touch someone else's folder with the same name: add `-2` to the name of yours.
 
-## Карточки плана
+## Plan cards
 
-| Карточка | Что несёт |
+| Card | What it carries |
 |---|---|
-| `plan.md` | Шапка: цель, «Сверено с кодом», «Общие ограничения», «Не делаем», «Отложенные вопросы», правило расхождений |
-| `plan-decisions.md` | «Технические решения» и «Фокус проверки» |
-| `plan-checks.md` | Строки проверки — таблицей |
-| `plan-s<N>-<имя>.md` | Срез: по карточке на каждый |
+| `plan.md` | The header: the goal, "Checked against code", "Shared constraints", "Not doing", "Assumptions", "Deferred questions", the discrepancy rule |
+| `plan-decisions.md` | "Technical decisions" and "Check focus" |
+| `plan-checks.md` | The check lines — as a table |
+| `plan-s<N>-<name>.md` | A slice: a card for each |
+| `plan-overview.md` | The overview: the same plan as one file, for a person |
 
-**Карточка** — заголовок, строка сути, строка в индексе и деление переросшей — по `references/wiki-rules.md`, разделы «Карточка и пределы» и «Проверка». Разделы внутри карточки идут под заголовками `## …`. Строки проверки делятся по группам — `plan-checks-<группа>.md`, нумерация остаётся сквозной.
+**A card** — the title, the hook line, the line in the index and the splitting of an overgrown card — by `references/wiki-rules.md`, sections "Card and limits" and "Check". The sections inside a card go under `## …` headings. Check lines are split by groups — `plan-checks-<group>.md`, the numbering stays continuous. An overgrown header is split into `plan.md` and `plan-2.md`, a slice card — into `plan-s<N>-<name>.md` and `plan-s<N>-<name>-2.md`: the slice fields stay in the first part, the continuation of "What to do" goes into the second; the title of the part is `# S<N>. <title> — part 2`, it has no "Status" line.
 
-Пустой раздел не пиши, кроме «Фокуса проверки»: там пустота означает «проверил и не нашёл» и так и записывается.
+Do not write an empty section, except "Check focus": there emptiness means "checked and found nothing" and is written down just so.
 
-В шаблонах слова в угловых скобках замени, остальное перенеси как есть.
+In the templates replace the words in angle brackets, carry the rest over as it is.
 
-### Шапка — `plan.md`
+### Header — `plan.md`
 
 ```markdown
-# План темы <тема>
+# Plan of topic <topic>
 
-> Шапка плана: цель, общие ограничения, что не делаем и правило для исполнителя.
+> Plan header: goal, shared constraints, what we do not do, and the rule for the executor.
 
-- **Цель:** <одна фраза: что получится>
-- **Требования:** <карточки требований этой темы; если их нет — задача словами пользователя>
-- **Сверено с кодом:** <коммит и ветка; если проект не под git — дата и время сверки>
-- **Исполнение:** срезы по порядку зависимостей; правило расхождений — в конце карточки
+- **Goal:** <the confirmed goal of the topic in one phrase; for a task without a topic — what will come out>
+- **Requirements:** <the requirements cards of this topic; if there are none — the task in the user's words>
+- **Checked against code:** <the commit and the branch; if the project is not under git — the date and time of the check>
+- **Execution:** slices in dependency order; the discrepancy rule is at the end of the card
 
-## Общие ограничения
+## Shared constraints
 
-- <ограничение>
+- <constraint>
 
-## Не делаем
+## Not doing
 
-- <что исполнитель не трогает>
+- <what the executor does not touch>
 
-## Отложенные вопросы
+## Assumptions
 
-- <вопрос> — <кто и когда ответит>; до ответа: <что принято>
+- <what is assumed> — slices: S<N>, S<M> | all
 
-## Если код расходится с планом
+## Deferred questions
 
-Остановись и сообщи: **ожидал** — что написано в плане; **нашёл** — что в коде, с путём;
-**почему важно** — что из-за этого не сходится. Не подгоняй код под план и план под код молча.
-Мелкое расхождение (файл переехал, имя изменилось, смысл тот же) исправь на месте и отметь в плане.
+- <question> — <who will answer and when>; until answered: <what is assumed>
+
+## If the code differs from the plan
+
+Stop and report: **expected** — what the plan says; **found** — what is in the code, with the path;
+**why it matters** — what fails to line up because of it. Do not silently bend the code to the plan or the plan to the code.
+Report a minor discrepancy too (a file moved, a name changed, the meaning is the same): the slice card is fixed by `swork`, not by you.
 ```
 
-- **Общие ограничения** — требования, которые действуют на все срезы: версии, платформа, запреты, правила названий. По строке на каждое, точные значения переписаны из требований дословно. Каждый срез их подразумевает.
-- **Не делаем** — то, о чём исполнитель подумает «заодно поправлю»: соседние изъяны, обобщения, перестройка, о которой не просили. «Не входит» из `scope.md` темы или из его части `scope-<часть>.md` сюда не переписывай — сошлись на эту карточку.
-- **Отложенные вопросы** — только вопросы, ответ на которые не меняет срезы, подход и проверку. По строке: вопрос, кто и когда ответит, что принято до ответа. Вопрос, от которого зависит нарезка, в плане остаться не может — задай его.
-- **Правило расхождений** — раздел «Если код расходится с планом» — записывается в каждый план дословно.
+- **Shared constraints** — the requirements that apply to all slices: versions, the platform, prohibitions, naming rules. A line for each, the exact values copied from the requirements verbatim. Every slice implies them.
+- **Not doing** — what the executor will think "I will fix it while I am at it" about: neighbouring flaws, generalizations, a rebuild that nobody asked for. Do not copy "Out of scope" from the topic's `scope.md` or from its part `scope-<part>.md` here — refer to that card.
+- **Assumptions** — everything the plan assumed without the user's confirmation, including the blocking questions that the user lifted. A line for each: what is assumed and which slices depend on it.
+- **Deferred questions** — only questions whose answer does not change the slices, the approach or the check. A line for each: the question, who will answer and when, what is assumed until the answer. A question that the slicing depends on cannot stay in the plan — ask it.
+- **The discrepancy rule** — the section "If the code differs from the plan" — is written into every plan verbatim.
 
-### Технические решения и фокус проверки — `plan-decisions.md`
+### Technical decisions and check focus — `plan-decisions.md`
 
 ```markdown
-# Технические решения темы <тема>
+# Technical decisions of topic <topic>
 
-> Что выбрал план, вместо чего и почему; какие отказы и виды входа он проверяет сверх названных.
+> What the plan chose, instead of what and why; which failures and kinds of input it checks beyond the named ones.
 
-## Технические решения
+## Technical decisions
 
-- **<что выбрано>** — вместо <чего>: <почему>
+- **<what was chosen>** — instead of <what>: <why>
 
-## Фокус проверки
+## Check focus
 
-- <условие> → <поведение, которого разумный человек ожидает> — S<N>, строка <№>
+- <condition> → <the behaviour a reasonable person expects> — S<N>, line <No.>
 ```
 
-- **Технические решения** — что выбрано, вместо чего и почему, по два-три предложения. Только решения, которые принял `splan`: решённое в требованиях не повторяй, сошлись на номер.
-- **Фокус проверки** — до пяти отказов или видов входа, которые требования подразумевают, но ни одна строка проверки ещё не ловит, — в порядке вероятности. По строке: условие и поведение, которого разумный человек ожидает. Молчание требований о входе не разрешает программе на нём ломаться. Каждой строке припиши срез, который владеет этим кодом, и заведи на неё строку проверки.
+- **Technical decisions** — what was chosen, instead of what and why, two or three sentences each. Only the decisions that `splan` made: do not repeat what is decided in the requirements. Write a value from the requirements that the executor needs in words in "Shared constraints" or in the slice.
+- **Check focus** — up to five failures or kinds of input that the requirements imply but no check line catches yet — in order of likelihood. A line for each: the condition and the behaviour a reasonable person expects. The requirements' silence about an input does not permit the program to break on it. Assign to every line the slice that owns this code, and set up a check line for that line. These lines were set up back at step 4, before the stop before writing: here they are only written down.
 
-### Строки проверки — `plan-checks.md`
+### Check lines — `plan-checks.md`
 
 ```markdown
-# Строки проверки темы <тема>
+# Check lines of topic <topic>
 
-> Чем проверяется каждое требование: сценарий, команда, ожидаемое и срез-владелец.
+> How each requirement is checked: scenario, command, expected result and the owning slice.
 
-| № | Требование | Сценарий | Команда | Ожидаемое | Срез | Результат |
+| No. | Requirement | Scenario | Command | Expected | Slice | Result |
 |---|---|---|---|---|---|---|
-| 1 | R2 | <условие → что должно получиться> | `<команда>` | <вывод или состояние, означающее успех> | S1 | не запускалась |
-| 2 | R5 | <условие → что должно получиться> | проверяется вручную: <шаги> | <что увидеть> | S2 | не запускалась |
+| 1 | R2 | <condition → what should come out> | `<command>` | <the output or the state that means success> | S1 | not run |
+| 2 | R5 | <condition → what should come out> | checked manually: <steps> | <what to see> | S2 | not run |
 ```
 
-- **№** — сквозной номер строки. На него ссылаются срезы и исполнитель.
-- **Требование** — номер требования, которое проверяет строка. Строка из «Фокуса проверки» называет требование, которое её вход подразумевает. У темы без карточек требований в колонке стоит слово «задача». У сквозной строки, которая проверяет цель плана целиком, — слово «цель».
-- **Сценарий** — «условие → что должно получиться», с точными значениями из требований. Не «при неверном вводе ошибка», а «пустое имя → отказ с текстом из R4».
-- **Команда** — команда, которая проверяет сценарий. Командой его не проверить — слова `проверяется вручную: <шаги>`.
-- **Ожидаемое** — вывод или состояние, означающее успех; у ручной строки — что увидеть.
-- **Срез** — срез, которому принадлежит строка: ровно один.
-- **Результат** — пишет исполнитель: `не запускалась`, `зелёная ГГГГ-ММ-ДД`, `красная ГГГГ-ММ-ДД`, `ждёт ручной проверки`, `не запускалась: <причина>`. `splan` всегда пишет `не запускалась`.
+- **No.** — the continuous number of the line. The slices and the executor refer to it.
+- **Requirement** — the number of the requirement that the line checks. A line from "Check focus" names the requirement that implies its input. For a topic without requirements cards the column holds the word "task". For an end-to-end line that checks the goal of the plan as a whole — the word "goal".
+- **Scenario** — "condition → what should come out", with the exact values from the requirements. Not "an error on wrong input" but "an empty name → a refusal with the text 'Enter a name'": write the value in words, not as a reference to the requirement number — the executor does not get the requirements cards.
+- **Command** — a command that prints the result of the scenario; do not write a comparison with the expected result into it: `swork` makes the comparison by the "Expected" column. If the scenario cannot be checked with a command — the words `checked manually: <steps>`.
+- **Expected** — the command output that means success, verbatim or a part of it; for a manual line — what to see.
+- **Slice** — the slice the line belongs to: exactly one.
+- **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`. `splan` always writes `not run`.
 
-### Срез — `plan-s<N>-<имя>.md`
+### Slice — `plan-s<N>-<name>.md`
 
-`<N>` — номер среза; `<имя>` — короткое, латиницей, через дефис: `plan-s1-login.md`.
+`<N>` is the slice number; `<name>` is short, in Latin letters, hyphenated: `plan-s1-login.md`.
 
 ```markdown
-# S<N>. <Название среза>
+# S<N>. <Slice title>
 
-> <что заработает — одной фразой, с точки зрения пользователя>
+> <what will start working — in one phrase, from the user's point of view>
 
-- **Статус:** не начат
-- **Закрывает:** R2, R5
-- **Зависит от:** нет | S1, S3
-- **Файлы:**
-  - создать: `путь/к/файлу`
-  - изменить: `путь/к/файлу` (<функция или область>)
-- **Интерфейсы:**
-  - берёт: <что использует из готовых срезов — точные имена и сигнатуры>
-  - отдаёт: <на что опираются следующие срезы — имена, параметры, типы результата>
-- **Готовое:** <имя, сигнатура и файл каждого готового куска: функции, класса или скрипта> | готового нет — искал: <папки и слова поиска>
-- **Что сделать:** <решения, которые исполнитель не примет сам: подход, точные значения, место в коде, образец в проекте, которому следовать>
-- **Проверки:** строки 1, 2
-- **Откат:** <что сохранить до начала и как вернуть> — только у среза с необратимым действием
+- **Status:** not started
+- **Covers:** R2, R5
+- **Depends on:** none | S1, S3
+- **Marks:** no behavior change; ready text
+- **Files:**
+  - create: `path/to/file`
+  - change: `path/to/file` (<function or area>)
+- **Interfaces:**
+  - takes: <what it uses from the slices already done — exact names and signatures>
+  - gives: <what the next slices rely on — names, parameters, result types>
+- **Reuse:** <the name, the signature and the file of every ready-made piece: a function, a class or a script> | nothing to reuse — searched: <the folders and the search words>
+- **What to do:** <the decisions the executor will not make itself: the approach, the exact values, the place in the code, the example in the project to follow>
+- **Checks:** lines 1, 2
+- **Rollback:** <what to save before the start and how to bring it back> — only for a slice with an irreversible action
 ```
 
-Правила среза:
+Slice rules:
 
-- **Статус пишет исполнитель.** Значения: `не начат`, `готов`, `ждёт ручной проверки`, `остановлен`. `splan` всегда пишет `не начат`.
-- **Номера постоянны.** Срез убран — его номер не переиспользуется; добавлен — получает следующий. На номера ссылаются другие срезы и исполнитель.
-- **Интерфейсы — точные.** Исполнитель среза может видеть только свой срез; из этого блока он узнаёт имена и типы соседей. Функция, названная в `S3` одним именем, а в `S7` другим, — ошибка плана.
-- **Файлы — проверенные.** Путь к существующему файлу проверен по коду. Нового файла ещё нет — так и помечен: «создать».
-- **«Что сделать» — решения, а не пересказ.** Исполнитель должен из каждой строки написать ровно одну разумную вещь. «Добавить нужную проверку», «обработать крайние случаи», «написать тесты к этому» — строки, которые ничего не решают.
-- **У каждого среза есть строки проверки.** Сценариев и команд в карточке среза нет: они лежат строками в `plan-checks.md`, а «Проверки» называют номера тех строк, у которых в колонке «Срез» стоит этот срез. Срез, который нечем проверить, — не срез: объедини его с тем, где появляется проверяемое поведение.
-- **Необратимое — с откатом.** Срез, который переносит или удаляет данные, меняет права или схему, называет, что сохранить до начала и какой командой вернуть прежнее состояние. Сохранение — первый шаг этого же среза, а не отдельный срез.
-- **Готовое — проверенное.** Каждое названное имя есть в коде по названному пути. Поле не бывает пустым: либо перечень, либо «готового нет — искал: …».
+- **Status is written by `swork`.** The values: `not started`, `done`, `awaiting manual check`, `stopped`. `splan` always writes `not started`.
+- **The numbers are permanent.** A slice is removed — its number is not reused; one is added — it gets the next number. Other slices and the executor refer to the numbers.
+- **Interfaces — exact.** The executor of a slice can see only its own slice; from this block it learns the names and the types of the neighbours. A function named one way in `S3` and another way in `S7` is a plan error. This holds also when the slices edit one file — one script or one text: the name of a function, a variable, a key or a section that a neighbouring slice takes is named in "gives" of the slice that introduces it.
+- **Files — verified.** The path to an existing file is checked against the code. A new file does not exist yet — it is marked just so: "create". A file is created by an earlier slice — write "change: `path` (created in S<N>)": a file has "create" in only one slice.
+- **"What to do" — decisions, not a retelling.** From every line the executor must write exactly one reasonable thing. "Add the needed check", "handle the edge cases", "write tests for this" are lines that decide nothing.
+- **Every slice has check lines.** The slice card has no scenarios and no commands: they lie as lines in `plan-checks.md`, and "Checks" names the numbers of the lines that have this slice in the "Slice" column. A slice that there is nothing to check with is not a slice: merge it with the one where checkable behaviour appears.
+- **The irreversible — with a rollback.** A slice that moves or deletes data, changes permissions or the schema names what to save before the start and which command brings the earlier state back. The saving is the first step of that same slice, not a separate slice.
+- **Reuse — verified.** Every name named is in the code at the named path. The field is never empty: either a list or "nothing to reuse — searched: …".
+- **Marks — only where they apply.** `no behavior change` — for a rebuild slice: its checks are green even before the edits. No mark — no line. `ready text` — for a slice whose "What to do" gives the text of every edit verbatim.
 
-## Порядок записи
+### Overview — `plan-overview.md`
 
-1. **Папка темы.** Её нет — заведи по разделу «Где лежит план».
-2. **Карточки плана** — по шаблонам выше.
-3. **Строки в индексе темы** — по строке на каждую новую карточку:
+The same plan as one file, for a person. It is written after the cards and is rewritten in full after every edit of the plan cards. The source is the slice cards: where they differ, the card is right. The overview is not passed to the executor. Write the prose of the overview in the language of the user; slice numbers, statuses, field names, paths and commands stay exactly as in the slice cards.
+
+````markdown
+# Plan overview of topic <topic>
+
+> The plan as one file for reading; the source is the slice cards: where they differ, the card is right.
+
+- **Goal:** <the goal from `plan.md`>
+
+## S<N>. <title> — <status>
+
+<what will start working>
+
+- **Files:** <create and change>
+- **Depends on:** <slices | none>
+- **Steps:** <the items of "What to do", each on a new line>
+- **Checks:** line <No.> — <scenario>; expected: <expected>
+
+  ```
+  <command>
+  ```
+
+## Technical decisions
+
+## Not doing
+
+## Not agreed
+````
+
+The overview has no limit on the number of lines or on the total size; a line is at most 200 characters: wrap a long item onto the next line with an indent, a long command — onto new lines of the block at `&&`.
+
+## Order of writing
+
+1. **The topic folder.** If there is none — set it up by the section "Where the plan lies".
+2. **The plan cards** — by the templates above.
+3. **The overview** — `plan-overview.md` by the section "Overview"; the line in the topic index: `- [Plan overview](plan-overview.md) — the plan as one file; the source is the slice cards`.
+4. **Lines in the topic index** — a line for every new card:
 
    ```markdown
-   - [План](plan.md) — цель, общие ограничения, что не делаем и правило расхождений
-   - [Технические решения](plan-decisions.md) — что выбрано, вместо чего, и фокус проверки
-   - [Строки проверки](plan-checks.md) — строки 1–<последняя>: чем проверяется каждое требование
-   - [S<N>. <название среза>](plan-s<N>-<имя>.md) — <что заработает>
+   - [Plan](plan.md) — goal, shared constraints, what we do not do, and the discrepancy rule
+   - [Technical decisions](plan-decisions.md) — what was chosen, instead of what, and the check focus
+   - [Check lines](plan-checks.md) — lines 1–<last>: how each requirement is checked
+   - [S<N>. <slice title>](plan-s<N>-<name>.md) — <what will start working>
    ```
 
-4. **`state.md`** — фаза `план записан` и следующий шаг; что `splan` пишет в каждую строку — ниже.
-5. **Строка темы в «В работе» корневого индекса** — с фазой `план записан`; формы строк индексов — в `references/wiki-rules.md`, раздел «Состав». Фаза и следующий шаг в ней — те же, что в `state.md`, и меняются вместе с ними.
-6. **Тему завёл ты** — ещё две строки. В `work/00-index.md` — строка темы: ссылка `[<тема>]` на `<тема>/00-index.md` и суть темы. В журнале текущего месяца — строка цепочки: `- ГГГГ-ММ-ДД · [<тема>](../work/<тема>/00-index.md): <цель одной фразой> — план записан`. У темы от `sbrain` строка цепочки уже есть: она одна на всю цепочку `sbrain → splan → swork`, её не трогай.
-7. **Скрипт проверки вики** — запусти и исправь названное: `references/wiki-rules.md`, раздел «Проверка».
+5. **`state.md`** — the phase `plan written` and the next step; what `splan` writes into each line is below.
+6. **The topic's line in "In progress" of the root index** — with the phase `plan written`; the forms of the index lines are in `references/wiki-rules.md`, section "Composition". The phase and the next step in it are the same as in `state.md` and change together with them.
+7. **You set up the topic** — two more lines. In `work/00-index.md` — the topic's line: a link `[<topic>]` to `<topic>/00-index.md` and the essence of the topic. In the journal of the current month — the chain's line: `- YYYY-MM-DD · [<topic>](../work/<topic>/00-index.md): <the goal in one phrase> — plan written`. A topic from `sbrain` already has the chain's line: it is one for the whole chain `sbrain → splan → swork`, do not touch it.
+8. **The wiki check script** — run it and fix what it names: `references/wiki-rules.md`, section "Check".
 
-Вики или её части ещё нет — заведи по `references/wiki-rules.md`.
+If the wiki or a part of it does not exist yet — set it up by `references/wiki-rules.md`.
 
-**Строки `state.md`, которые пишет `splan`:**
+**The lines of `state.md` that `splan` writes:**
 
-- **Фаза** — `план записан`, когда карточки плана записаны; `план подтверждён` — после «да» пользователя по плану. С датой записи.
-- **Путь** — у темы от `sbrain` не трогай; тему завёл ты — `без sbrain`.
-- **Журнал** — у темы от `sbrain` не трогай; тему завёл ты — файл и дата строки цепочки, которую ты открыл.
-- **Проверено** — в новой карточке `нет`, в готовой не трогай: строку ведёт исполнитель.
-- **Следующий шаг** — пока план не одобрен: пользователь читает карточки плана и отвечает, одобряем или правим. После его «да»: исполнить план через `swork`. Остановился раньше, чем записал план, — фазу не меняй, запиши только шаг: чего ждёшь от пользователя.
+- **Phase** — `plan written` when the plan cards are written; `plan confirmed` — after the user's "yes" to the plan. With the date of the record.
+- **Journal** — for a topic from `sbrain` do not touch it; if you set up the topic — the file and the date of the chain's line that you opened.
+- **Next step** — after the cards are written: independent plan review; after it: the user reads the plan and answers whether we approve or edit. After their "yes": execute the plan through `swork`. If you stopped before you wrote the plan — do not change the phase, write only the step: what you are waiting for from the user.
 
-## Код в плане
+## Code in the plan
 
-План — не программа. Код допустим там, где он точнее слов:
+The plan is not a program. Code is allowed where it is more exact than words:
 
-- **сигнатуры и типы** — всегда;
-- **проверки с точными значениями** — в проекте, где тесты есть: имя теста и его утверждения;
-- **алгоритм** — только если сигнатура и сценарии его не определяют;
-- **текст, который требования фиксируют дословно** — сообщения, названия, запросы.
+- **signatures and types** — always;
+- **checks with exact values** — in a project that has tests: the name of the test and its assertions;
+- **an algorithm** — only when the result of the scenarios depends on its choice: two reasonable algorithms would give different output on them; otherwise the executor chooses it;
+- **text that the requirements fix verbatim** — messages, names, queries.
 
-Тело функции, которое однозначно следует из сигнатуры и сценариев, в план не идёт: его напишет исполнитель.
+A function body that follows unambiguously from the signature and the scenarios does not go into the plan: the executor will write it.
 
-## Подробность
+## Level of detail
 
-Предела размера у плана нет: большой работе — большой план. Предел есть у карточки: переросшая делится. Мера одна — польза исполнителю. Два признака, что мера нарушена:
+The plan has no size limit: a big piece of work gets a big plan. A card has a limit: an overgrown one is split. There is one measure — usefulness to the executor. Two signs that the measure is broken:
 
-- **слишком мало** — исполнителю придётся выдумывать поведение, имя или границу;
-- **слишком много** — блоки кода занимают большую часть плана, то есть программа уже написана в нём.
+- **too little** — the executor will have to invent a behaviour, a name or a boundary;
+- **too much** — code blocks take up most of the plan, that is, the program is already written in it.
 
-## Работа над планом после записи
+## Working on the plan after it is written
 
-- Позднее решение отменило раннее — исправь на месте, а не дописывай слой сверху.
-- Исполнитель пишет статус в карточке среза, результат — в строке проверки, свои заметки — в `progress.md` темы; цель, ограничения и «Не делаем» он не правит.
+- A later decision cancelled an earlier one — fix it in place, do not add a layer on top.
+- The slice status, the result of a check line and "Progress log" are written by `swork`, not by the executor of the slice; nobody edits the goal, the constraints or "Not doing".

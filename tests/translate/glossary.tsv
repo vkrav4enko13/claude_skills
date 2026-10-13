@@ -1,0 +1,74 @@
+скил	skill
+цепочка	chain
+тема	topic
+папка темы	topic folder
+вики	wiki
+карточка	card
+индекс	index
+корневой индекс	root index
+архив	archive
+журнал	journal
+заметка	note
+правила проекта	project rules
+строка сути	hook line
+требование	requirement
+решение	decision
+допущение	assumption
+сводка	summary
+опрос	survey
+фронт	front
+дерево решений	decision tree
+подход	approach
+дизайн по частям	design by parts
+путь (брейншторма)	path
+проба	probe
+размер (плана)	size
+разведка	recon
+строка проверки	check line
+нарезка	slicing
+срез	slice
+план	plan
+обзор плана	plan overview
+готовое	ready-made code
+пометка	mark
+исполнитель	executor
+проверяющий	reviewer
+основная сессия	main session
+подагент	subagent
+пакет (среза)	packet
+сверка с планом	conformance check
+упрощение	simplification
+ревью	review
+отчёт	report
+ход исполнения	progress log
+снимок	snapshot
+остановка	stop
+мелкое расхождение	minor discrepancy
+попытка	attempt
+ручная проверка	manual check
+этап	stage
+фаза	phase
+статус	status
+уход (пользователя)	absence
+полное описание	full description
+ловушки	traps
+блокирующий вопрос	blocking question
+пользователь	user
+<тема>	<topic>
+<имя>	<name>
+<путь>	<path>
+<пути>	<paths>
+<часть>	<part>
+<папка>	<folder>
+<папка вики>	<wiki folder>
+<папка скила>	<skill folder>
+<папка темы>	<topic folder>
+<шаги>	<steps>
+<причина>	<reason>
+<статус>	<status>
+<команда>	<command>
+<оригинал>	<original>
+Когда (начало требования)	When
+Пока (начало требования)	While
+Если … то (требование)	If … then
+Где (начало требования)	Where

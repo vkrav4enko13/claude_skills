@@ -1,18 +1,15 @@
-# Малое изменение
+# Small change
 
-Читается, когда план из чата или задача без плана.
+Read when there is a plan from the chat or a task without a plan.
 
-## Малое изменение
+## Small change
 
-Для плана из чата и задачи без плана.
-
-- Исполняет основная сессия, подагент-исполнитель не нужен.
-- Снимок — папка `.swork/` в корне проекта. Папки темы нет и она не заводится, поэтому статусы, результаты проверок, ход и исключения поиска называй в чате.
-- Проверка до правок, две попытки и остановки из раздела 4 действуют так же.
-- Сверку и ревью выполняет **один** свежий подагент, не видевший разговора. Передай ему одним сообщением дословно два задания — сверка из `references/conformance.md` и ревью из `references/review.md` — и «план»: текст плана из чата или твои два предложения о задаче. Правка добавила новый код — функцию, класс, скрипт, новый файл с кодом — добавь оба задания из `references/simplify.md`; тексты, настройки и отдельные строки существующего кода упрощением не проверяются. Допиши проверяющему: читай изменения и то, на что они прямо ссылаются; проект шире не исследуй.
-- Что делать с находками — по разделам 5–7, правила те же. Проверяющий читал код до твоих правок по сверке и упрощению: находку ревью о месте, которое с тех пор изменилось, проверь по нынешнему коду.
-- После работы — одна строка журнала и остальные записи по `references/wiki-rules.md`, раздел «Запись»; затем скрипт проверки вики. Записанное назови в отчёте, в «Записано в вики», с теми же пометками «новая» и «дополнена» и той же копией в снимок, что в шаге 8 раздела 3.
-- Отчёт — по разделу 8. Темы нет, поэтому `state.md` перед отчётом не пишется, а из порядка «Принять работу» действует только последний пункт: снимок и метка.
-- До правки назови в чате готовый код, который берёшь, — имя и файл — либо где искал и не нашёл.
-- Задания упрощения проверяющий ищет по всему проекту, а не только в изменениях. Переданы они — слова «проект шире не исследуй» допиши ему с оговоркой: «кроме задания о дублях и задания об избыточном — они ищут по всему проекту».
-- Снимок, метку и копии делай по `references/snapshot.md` — до первой правки.
+- The main session executes, an executor subagent is not needed.
+- The snapshot is the folder `.swork/` in the project root. There is no topic folder and none is set up, so name the statuses, the check results, the progress and the search exclusions in the chat.
+- The check before the edits, the two attempts and the stops from section 4 apply in the same way.
+- The conformance check and the review are done by **one** fresh subagent that has not seen the conversation. Pass it two tasks in one message — the conformance check from `references/conformance.md` and the review from `references/review.md`, each separate from the other, — and the "plan": the text of the plan from the chat or your two sentences about the task. If the edit added new code — a function, a class, a script, a new file with code — add both tasks from `references/simplify.md`; texts, settings and separate lines of existing code are not checked by the simplification. Add for the reviewer: the prohibitions and rules of each task apply only inside it; return the findings as a separate list for each task; read the changes and what they refer to directly, do not explore the project more widely — except for the task about duplicates and the task about what is redundant: they search across the whole project, not only in the changes.
+- What to do with the findings — by sections 5–7, the rules are the same. The reviewer read the code before your edits made on the conformance check and the simplification: check a review finding about a place that has changed since then against the present code.
+- After the work — one journal line and the other records by `references/wiki-rules.md`, section "Writing"; then the wiki check script. In the report, in "Written to the wiki", name what was written, with the same marks "new" and "extended" and the same copy into the snapshot as in step 8 of section 3.
+- The report — by section 8. There is no topic, so `state.md` is not written before the report, and of the "Accept the work" order only the last item applies: the snapshot and the marker.
+- Before the edit name in the chat the ready-made code that you take — the name and the file — or where you searched and did not find any.
+- Before the first edit name in the chat the files that you will edit and create. This list replaces the "Files" block of a slice: by it the copies are taken, `new-files.txt` is written and the files are subtracted in the search for unreported edits. Another file is needed — first name it and take a copy. Make the snapshot, the marker and the copies by `references/snapshot.md`.

@@ -1,113 +1,128 @@
-# Правила вики проекта
+# Project wiki rules
 
-Читается перед первой записью в вики в сессии. Правила вики записаны только здесь: скилы и общие инструкции ссылаются на этот файл и его не пересказывают.
+Read before the first write to the wiki in a session. The wiki rules are written only here: the skills and the shared instructions refer to this file and do not retell it.
 
-Вики — записи проекта карточками: что в работе, что отложено, что сделано и что о проекте уже выяснено. Пишет её агент, читает — следующая сессия.
+The wiki is the project's records kept as cards: what is in progress, what is deferred, what is done and what has already been found out about the project. An agent writes it, the next session reads it.
 
-## Где вики
+## Where the wiki is
 
-Корень проекта — вывод `git rev-parse --show-toplevel`; в проекте без git — папка, где запущена сессия. Иди по порядку и остановись на первом пункте, который подошёл:
+The project root is the output of `git rev-parse --show-toplevel`; in a project without git it is the folder where the session was started. Go in order and stop at the first item that fits:
 
-1. **У проекта свои правила записей** — в его инструкциях сказано, где и как их вести. Действуют они; вики по этому файлу не заводится.
-2. **Есть файл `.wiki-path`** — в папке запуска или выше. В нём одна строка: путь к папке вики от корня проекта — папки, где лежит сам этот файл, — либо `off` — в этом проекте вики не ведётся.
-3. **Есть `docs/00-index.md`** — в корне проекта или выше. Это вики: пользуйся ею и вторую не заводи.
-4. **`docs/` есть, а `00-index.md` в ней нет** — папка занята другим содержимым. Один раз спроси пользователя: вести записи здесь, в другой папке или не вести. «Здесь» — вики заводится в `docs/`, рядом с тем, что там лежит. Другая папка — её путь от корня проекта записывается в `.wiki-path` в корне. «Не вести» — в `.wiki-path` записывается `off`. Ответ лежит в проекте, второй раз не спрашивай.
-5. **`docs/` нет** — вики заводится в `docs/` при первой правке: корневой индекс и файл журнала текущего месяца, больше ничего.
+1. **The project has its own rules for records** — its instructions say where and how to keep them. Those rules apply; no wiki is set up by this file.
+2. **There is a `.wiki-path` file** — in the launch folder or above it. It holds one line: the path to the wiki folder from the project root — from the folder where this file itself lies — or `off` — the wiki is not kept in this project.
+3. **There is a `docs/00-index.md`** — in the project root or above it. This is the wiki: use it and do not set up a second one.
+4. **There is `docs/`, but no `00-index.md` in it** — the folder is taken by other content. Ask the user once: keep the records here, in another folder, or not keep them. "Here" — the wiki is set up in `docs/`, next to what lies there. Another folder — its path from the project root is written to `.wiki-path` in the root. "Do not keep" — `off` is written to `.wiki-path`. The answer is stored in the project; do not ask a second time.
+5. **There is no `docs/`** — the wiki is set up in `docs/` at the first edit: the root index and the journal file of the current month, nothing else.
 
-Пункты 4 и 5 срабатывают, только когда появилось, что записать (раздел «Запись»): сессия, которая читала и отвечала, не спрашивает и вики не заводит. Формы файлов новой вики — в разделе «Состав».
+Items 4 and 5 fire only when there is something to write (section "Writing"): a session that read and answered does not ask and does not set up a wiki. The forms of the files of a new wiki are in the "Composition" section.
 
-**В домашней и временной папке вики не заводится.** Домашняя — сама `$HOME` (на Windows — `%USERPROFILE%`), но не папки внутри неё. Временные — `/tmp`, `/private/tmp`, `/var/folders`, `$TMPDIR`, `%TEMP%` и всё, что в них лежит. Сессия запущена в такой папке — пункты 4 и 5 не действуют: вместо записи скажи одной строкой, что вики здесь не заводится.
+**No wiki is set up in the home folder or in a temporary folder.** The home folder is `$HOME` itself (on Windows — `%USERPROFILE%`), but not the folders inside it. Temporary folders are `/tmp`, `/private/tmp`, `/var/folders`, `$TMPDIR`, `%TEMP%` and everything that lies in them. If the session was started in such a folder, items 4 and 5 do not apply: instead of writing, say in one line that no wiki is set up here.
 
-## Состав
+## The wiki is not kept
 
-Папка вики `W` — по умолчанию `docs/` в корне проекта. В вики пять частей: `00-index.md`, `rules.md`, `journal/`, `work/` и `notes/`. Всё остальное в папке `W` и папки с точкой в начале имени на любой глубине — не вики: правила их не касаются, скрипт проверки их не видит.
+The wiki is not kept in the project in three cases: the project has its own rules for records; `.wiki-path` holds `off`; the session was started in the home folder or in a temporary folder and the project has no wiki. If the project already has a wiki, it is kept from a temporary folder too.
 
-| Путь | Что это |
+If the wiki is not kept but the work needs a topic folder, it lies where the user named it; if they did not name it, ask once where to put it. Write only to the topic cards: skip the writes to the root index, the journal and `notes/`, do not run the check script, check the card limits yourself and say so in the final message.
+
+## Composition
+
+The wiki folder `W` is `docs/` in the project root by default. The wiki has five parts: `00-index.md`, `rules.md`, `journal/`, `work/` and `notes/`. Everything else in the folder `W` and folders with a dot at the start of the name at any depth are not the wiki: the rules do not concern them, the check script does not see them.
+
+| Path | What it is |
 |---|---|
-| `W/00-index.md` | Корневой индекс: `# <Проект>`, строка `> <проект одной фразой>`, разделы `## В работе`, `## Отложено`, `## Разделы` |
-| `W/rules.md` | `# Правила проекта`, строка сути, строки `- <правило> — ГГГГ-ММ-ДД, со слов пользователя` |
-| `W/journal/ГГГГ-ММ.md` | Только строки записей, без заголовка: `- ГГГГ-ММ-ДД · <что сделано> — <зачем> · <ссылки>` |
-| `W/notes/<имя>.md` | Карточка: `# <заголовок>`, `> <суть одной строкой>`, пункты, последний — `- Источник: <файл:строка, команда или слова пользователя с датой>` |
-| `W/work/<тема>/` | Папка темы: карточки одной работы; `<тема>` — латиницей, через дефис |
-| `W/<папка>/00-index.md` | Индекс папки: `# <Название>`, строка сути, `## Карточки`, строки `- [<заголовок>](<файл>) — <суть>` |
-| `W/<папка>/00-archive.md` | Индекс архива той же формы: сюда уходят строки законченных тем |
-| `.wiki-path` в корне проекта | Одна строка: путь к папке вики от корня либо `off` — «не вести» |
+| `W/00-index.md` | The root index: `# <Project>`, a line `> <the project in one phrase>`, sections `## In progress`, `## Deferred`, `## Sections` |
+| `W/rules.md` | `# Project rules`, a hook line, lines `- <rule> — YYYY-MM-DD, in the user's words` |
+| `W/journal/YYYY-MM.md` | Only the lines of records, without a title: `- YYYY-MM-DD · <what was done> — <why> · <links>` |
+| `W/notes/<name>.md` | A card: `# <title>`, `> <the essence in one line>`, items, the last one — `- Source: <file:line, a command or the user's words with the date>` |
+| `W/work/<topic>/` | A topic folder: the cards of one piece of work; `<topic>` is in Latin letters, hyphenated |
+| `W/<folder>/00-index.md` | A folder index: `# <Name>`, a hook line, `## Cards`, lines `- [<title>](<file>) — <essence>` |
+| `W/<folder>/00-archive.md` | An archive index of the same form: the lines of finished topics go here |
+| `.wiki-path` in the project root | One line: the path to the wiki folder from the root, or `off` — "do not keep" |
 
-- **Корневой индекс** держит проект одной фразой, список «В работе» — тема, фаза, следующий шаг, — список «Отложено» и ссылки на разделы. Строка «В работе»: `- [<тема>](work/<тема>/00-index.md) — <фаза> — дальше: <следующий шаг>`. Строка «Отложено»: `- <что отложено> — <почему или до чего>`. «Разделы» называют только существующие части вики.
-- **`rules.md`** держит правила проекта — решения и ответы, верные для всего проекта, — по строке на правило.
-- **Журнал** ведётся файлом на месяц, строка на задачу: дата, что сделано, зачем, ссылки на затронутые карточки.
-- **Индекс папки** держит строку на каждую карточку своей папки.
+- **The root index** holds the project in one phrase, the "In progress" list — topic, phase, next step — the "Deferred" list and the links to the sections. A line of "In progress": `- [<topic>](work/<topic>/00-index.md) — <phase> — next: <next step>`. A line of "Deferred": `- <what is deferred> — <why or until what>`. "Sections" names only the existing parts of the wiki.
+- **`rules.md`** holds the project rules — decisions and answers that hold for the whole project — a line per rule.
+- **The journal** is kept as a file per month, a line per task: the date, what was done, why, the links to the cards touched.
+- **A folder index** holds a line for every card of its folder.
 
-Ссылка пишется от папки файла, в котором стоит: из журнала на заметку — `../notes/<имя>.md`.
+A link is written from the folder of the file it stands in: from the journal to a note — `../notes/<name>.md`.
 
-## Карточка и пределы
+```markdown
+- [Project rules](rules.md) — decisions and answers that hold for the whole project
+- [Journal](journal/) — a line per task, a file per month
+- [Topics](work/00-index.md) — topic folders
+- [Notes](notes/00-index.md) — facts that cannot be recovered from the code
+```
 
-Карточка держит один факт: заголовок, суть одной строкой, пункты. Карточки — все файлы `.md` в `notes/` и `work/`, кроме `00-index.md` и `00-archive.md`.
+A wiki that has just been set up has one line in "Sections" — the journal; the others are added together with their part. The "In progress" and "Deferred" lists of a new wiki are empty. If no cards were touched, the journal line ends at "why". An index names a nested folder by a link to its index. The archive is set up when the first line is moved into it.
 
-Каждая карточка названа в индексе: её имя стоит целью ссылки в `00-index.md` или `00-archive.md` её папки. Каждая папка названа так же: на её `00-index.md` ссылается индекс или архив уровнем выше; для `notes/` и `work/` уровень выше — «Разделы» корневого индекса.
+## Card and limits
 
-| Что | Предел |
+A card holds one fact: a title, the essence in one line, items. Cards are all the `.md` files in `notes/` and `work/`, except `00-index.md`, `00-archive.md` and the plan overview `plan-overview.md`.
+
+Every card is named in an index: its name stands as the target of a link in the `00-index.md` or `00-archive.md` of its folder. Every folder is named the same way: its `00-index.md` is linked from the index or the archive one level up; for `notes/` and `work/` the level up is "Sections" of the root index.
+
+| What | Limit |
 |---|---|
-| Карточка | 30 строк и 3000 знаков |
-| Корневой индекс | 40 строк |
-| `rules.md` | 30 строк |
-| Индекс папки `00-index.md` | 50 строк |
-| Строка корневого индекса, индекса папки, архива, `rules.md` и журнала | 200 знаков |
+| A card | 30 lines and 3000 characters |
+| The root index | 40 lines |
+| `rules.md` | 30 lines |
+| A folder index `00-index.md` | 50 lines |
+| A line of the root index, of a folder index, of an archive, of `rules.md`, of the journal and of the plan overview | 200 characters |
 
-У файла журнала и у архива `00-archive.md` предела числа строк нет; предел длины строки действует и в них. Знаки — буквы, а не байты: русская буква — один знак.
+A journal file, the archive `00-archive.md` and the plan overview `plan-overview.md` have no limit on the number of lines or on the total size; the line length limit applies in them too. Characters are letters, not bytes: a Russian letter is one character.
 
-## Чтение
+## Reading
 
-Когда сессия берёт первую задачу в проекте с вики, прочитай — один раз за сессию, вместе не больше 80 строк:
+When the session takes its first task in a project with a wiki, read — once per session, at most 80 lines together:
 
 - `00-index.md`;
 - `rules.md`;
-- хвост журнала — последние 10 строк самого нового файла `journal/ГГГГ-ММ.md`; в нём меньше десяти — добери недостающие с конца предыдущего.
+- the tail of the journal — the last 10 lines of the newest file `journal/YYYY-MM.md`; if it has fewer than ten, take the missing ones from the end of the previous one.
 
-Остальные карточки читай по ссылке из индекса или по поиску, по одной.
+Read the other cards by a link from an index or by search, one at a time.
 
-## Запись
+## Writing
 
-- **Пишет только основная сессия.** Подагент в вики не пишет.
-- **Сессия только отвечала на вопросы или читала** — в вики не пиши и вики не заводи.
-- **Закончена задача, которая что-то изменила** — допиши в журнал ровно одну строку. Файла текущего месяца нет — заведи его.
-- **После задачи осталось незаконченное или отложенное** — запиши его строкой в «В работе» или «Отложено» корневого индекса.
-- **Узнал неочевидный факт или наступил на грабли** — напиши карточку в `notes/`. Только если этого не восстановить из кода и уже написанных карточек.
-- **Карточка о том же уже есть** — правь её, новую не заводи. Перед новой карточкой поищи в индексе папки.
-- **Новой карточке — строку в индексе её папки.** Первая карточка в папке заводит и сам индекс папки, а строку о нём — в индексе уровнем выше.
-- **Правило проекта** записывается в `rules.md` только со слов пользователя. Своё наблюдение правилом не записывай.
-- **Утверждение вики о коде сверь с кодом**, прежде чем на него опереться. Карточка устарела — исправь её.
-- **Записал — назови.** Всё, что записано в вики, назови одной строкой в итоговом сообщении.
+- **Only the main session writes.** A subagent does not write to the wiki. Write wiki cards in English, both the format and the content. Words of the user are recorded in English translation. Cards written earlier in another language are read as they are and are not translated.
+- **The session only answered questions or read** — do not write to the wiki and do not set up a wiki.
+- **A task that changed something is finished** — add exactly one line to the journal. If there is no file for the current month, set it up.
+- **Something unfinished or deferred is left after the task** — write it as a line in "In progress" or "Deferred" of the root index.
+- **You learned a non-obvious fact or hit a pitfall** — write a card in `notes/`. Only if it cannot be recovered from the code and the cards already written.
+- **A card about the same thing already exists** — edit it, do not start a new one. Before a new card, search the folder index.
+- **A new card gets a line in the index of its folder.** The first card in a folder also sets up the folder index itself, and a line about it in the index one level up.
+- **A project rule** is written to `rules.md` only from what the user said. Do not write an observation of your own as a rule.
+- **Check a wiki statement about the code against the code** before you rely on it. If a card is out of date, fix it.
+- **Wrote it — name it.** Name everything written to the wiki in one line in the final message.
 
-## Замена и архив
+## Replacement and archive
 
-- **Факт изменился** — исправь его карточку на месте, новую не заводи.
-- **Решение заменено** — старая карточка остаётся со статусом «заменено» и ссылкой на новую; новая получает статус «в силе».
-- **Индекс папки перерос предел** — перенеси строки законченных тем в соседний индекс архива `00-archive.md`. Сами карточки и папки тем остаются на месте.
-- **Прошлые месяцы журнала и архивные индексы** читай только поиском.
-- **Записи вики не пересказываются и не сжимаются.**
+- **A fact has changed** — fix its card in place, do not start a new one.
+- **A decision is replaced** — the old card stays with the status "superseded" and a link to the new one; the new one gets the status "in force".
+- **A folder index has outgrown the limit** — move the lines of finished topics into the neighbouring archive index `00-archive.md`. The cards themselves and the topic folders stay in place.
+- **Past months of the journal and archive indexes** — read them only by search.
+- **Wiki records are not retold and not compressed.**
 
-## Проверка
+## Check
 
-После каждой записи в вики запусти скрипт проверки и исправь всё, что он назвал. Скрипт лежит в папке скила, рядом с `references/`:
+After every write to the wiki run the check script and fix everything it names. The script lies in the skill folder, next to `references/`:
 
 ```bash
-bash <папка скила>/scripts/check.sh <папка вики>
+bash <skill folder>/scripts/check.sh <wiki folder>
 ```
 
-Нарушений нет — строка `вики в порядке`, код 0. Есть — код 1 и по строке на нарушение: `<путь от папки вики>[:<номер строки>]: <нарушение>`. Код 2 — путь не передан или в папке нет `00-index.md`. Сам скрипт ничего не меняет. Исправил — запусти снова.
+No violations — the line `wiki is fine`, code 0. If there are any — code 1 and a line per violation: `<path from the wiki folder>[:<line number>]: <violation>`. Code 2 — the path was not given or the folder has no `00-index.md`. The script itself changes nothing. Once fixed, run it again.
 
-| Нарушение | Как исправить |
+| Violation | How to fix |
 |---|---|
-| `карточка длиннее 30 строк`, `карточка длиннее 3000 знаков` | Раздели карточку по смыслу на две — `<имя>-<часть>.md` — и обе назови в индексе |
-| `индекс длиннее 50 строк` | Перенеси строки законченных тем в `00-archive.md` той же папки; карточки не трогай |
-| `корневой индекс длиннее 40 строк` | Убери из «В работе» строки законченных тем, из «Отложено» — сделанное и снятое |
-| `правил больше 30 строк` | Спроси пользователя, какие правила устарели: они записаны с его слов, сам их не убирай |
-| `строка длиннее 200 знаков` | Сократи строку |
-| `нет строки в индексе <папка>/00-index.md` | Дай карточке или папке строку в названном индексе |
-| `битая ссылка <цель>` | Исправь ссылку или убери её |
-| `нет заголовка или строки сути` | Дай карточке заголовок `# …` и строку сути `> …` |
+| `card is longer than 30 lines`, `card is longer than 3000 characters` | Split the card by meaning into two — `<name>-<part>.md` — and name both in the index |
+| `index is longer than 50 lines` | Move the lines of finished topics into `00-archive.md` of the same folder; do not touch the cards |
+| `root index is longer than 40 lines` | Remove the lines of finished topics from "In progress", and what is done or withdrawn from "Deferred" |
+| `rules are longer than 30 lines` | Ask the user which rules are out of date: they are written from what the user said, do not remove them yourself |
+| `line is longer than 200 characters` | Shorten the line |
+| `no line in index <folder>/00-index.md` | Give the card or the folder a line in the named index |
+| `broken link <target>` | Fix the link or remove it |
+| `no title or hook line` | Give the card a title `# …` and a hook line `> …` |
 
-Нарушение, которое не исправить без решения пользователя, назови ему и спроси.
+Name to the user a violation that cannot be fixed without their decision, and ask.
 
-**Скрипт не запускается** — проверь пределы сам, по таблице из «Карточки и пределов», и скажи об этом в итоговом сообщении.
+**The script does not run** — check the limits yourself, by the table from "Card and limits", and say so in the final message.

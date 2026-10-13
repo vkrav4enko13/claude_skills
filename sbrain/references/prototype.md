@@ -1,13 +1,13 @@
-# Одноразовый прототип
+# Throwaway prototype
 
-Читается, когда решение дорого переиграть, разговором и наброском его не закрыть, и пользователь согласился на прототип. Приём взят из compound-engineering (`ce-prototype`, MIT) и изложен своими словами.
+Read when a decision is expensive to redo, conversation and a sketch cannot close it, and the user has agreed to a prototype. The technique is taken from compound-engineering (`ce-prototype`, MIT) and set out in our own words.
 
-Прототип отвечает на один названный вопрос об ощущениях: как это двигается, читается, лежит в руке. Решает восприятие пользователя, а не твоя оценка того, что получилось.
+A prototype answers one named question about how it feels: how it moves, how it reads, how it sits in the hand. The user's perception decides, not your assessment of what came out.
 
-1. **Назови вопрос и что считаем ответом** — по одной фразе; согласуй до начала.
-2. **Не подделывай то, что проверяется.** Вопрос о поведении — как идёт сценарий, как отвечает элемент — закрывается работающим взаимодействием: картинка экрана на него не отвечает. Вопрос о виде — как читается макет, цвет, плотность — закрывается видом в настоящем качестве: грубый набросок на него не отвечает.
-3. **Строй вне продукта** — в отдельной одноразовой папке, путь назови пользователю. Внутри проекта — только если вопрос о существующем экране или пользователь попросил; такую правку не коммить и убери за собой: верни свои файлы и назови те, что вернуть не смог.
-4. **Пользователь посмотрел и выбрал** — запиши выбор решением, его словами. Прототип не дорабатывай и в продукт не переноси; удаляй его только по просьбе.
-5. **Ответ изменил то, что строим,** а не закрыл вопрос — вернись к опросу с тем, что выяснилось.
+1. **Name the question and what we count as an answer** — one phrase each; agree on them before you start.
+2. **Do not fake what is being checked.** A question about behaviour — how a scenario goes, how an element responds — is closed by working interaction: a picture of the screen does not answer it. A question about the look — how the mock-up, the colour, the density read — is closed by the look in real quality: a rough sketch does not answer it.
+3. **Build outside the product** — in a separate throwaway folder; name the path to the user. Inside the project — only if the question is about an existing screen or the user asked; do not commit such an edit and clean up after yourself: restore your files and name those you could not restore.
+4. **The user has looked and chosen** — record the choice as a decision, in their words. Do not refine the prototype and do not carry it into the product; delete it only on request.
+5. **The answer changed what we build,** rather than closed the question — go back to the survey with what has come to light.
 
-Человека за экраном нет — прототип не строится: смотреть некому. Вопрос, который закрывает дешёвый набросок, идёт по `references/visual.md`, а не сюда.
+If there is no person at the screen, no prototype is built: there is nobody to look. A question that a cheap sketch closes goes by `references/visual.md`, not here.

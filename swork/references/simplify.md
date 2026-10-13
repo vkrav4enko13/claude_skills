@@ -1,97 +1,97 @@
-# Упрощение
+# Simplification
 
-Читается перед запуском сверки, если срезы добавили новый код: оба задания уходят проверяющему сверки. Правки — на шаге 6, после правок сверки и до ревью. Нового кода нет — этап пропускается, файл не нужен.
+Read before the conformance check is started, if the slices added new code: both tasks go to the reviewer of the conformance check. The edits are at step 6, after the edits of the conformance check and before the review. There is no new code — the stage is skipped, the file is not needed.
 
-Оба задания читает проверяющий сверки и ничего не меняет. Правишь ты — по разделу «Что не трогать».
+Both tasks are read by the reviewer of the conformance check, and it changes nothing. You do the editing — by the "What not to touch" section.
 
-Общая шапка обоих заданий:
-
-```
-Корень проекта: <путь>. Изменённые файлы: <пути>; их состояние до работы —
-в <путь к base/>. Новые файлы: <пути>. План: <путь к папке темы или текст>.
-Смотри только на код, появившийся в этой работе. Ничего не меняй — только читай.
-```
-
-## Переиспользование
+The shared header of both tasks:
 
 ```
-Найди, где новый код повторяет то, что уже есть. Для каждого нового куска
-поищи равное по поведению:
-
-1. Функции и помощники этого проекта. Ищи по смыслу, а не по имени:
-   то же действие может называться иначе и лежать в другой папке.
-2. Средства стандартной библиотеки, языка и среды исполнения.
-3. Гарантии платформы, фреймворка или соседнего кода, которые новый код
-   поддерживает вручную: проверка того, что уже проверено выше,
-   преобразование того, что уже преобразовано.
-
-Ищи по всему проекту, а не только в изменениях.
-
-Замену предлагай, только если поведение совпадает для тех значений, которые
-здесь бывают. Отличия в локали, порядке, устойчивости сортировки, сериализации,
-тексте ошибки — причина не предлагать.
-
-Верни находки списком:
-- вид: переиспользование
-- место: файл:строка
-- что: что повторено
-- вместо: что взять, с путём и именем
-
-Нечего назвать — так и напиши.
-ПРОЧИТАНО: <пути файлов, которые ты открыл и прочитал> — одной строкой после всех находок.
+Project root: <path>. Reply in English. Changed files: <paths>; their state before the work is
+in <the path to base/>. New files: <paths>. The plan: <the path to the topic folder or the text>.
+Look only at the code that appeared in this work. Change nothing — only read.
 ```
 
-## Избыточное
+## Reuse
 
 ```
-Найди код, без которого результат тот же. Для каждого куска иди по лестнице
-сверху вниз и остановись на первой подходящей ступени:
+Find where the new code repeats what already exists. For every new piece
+look for something equal in behaviour:
 
-1. Удалить целиком — поведение не нужно: его никто не просил и никто
-   не вызывает.
-2. Переиспользовать — в проекте уже есть то же самое.
-3. Взять из стандартной библиотеки или среды.
-4. Упростить на месте — код нужен, но может быть меньше.
+1. The functions and helpers of this project. Search by meaning, not by name:
+   the same action may be called differently and lie in another folder.
+2. The facilities of the standard library, the language and the runtime.
+3. Guarantees of the platform, the framework or the neighbouring code which the new code
+   maintains by hand: a check of what is already checked above,
+   a conversion of what is already converted.
 
-Что искать:
-- мёртвый код: то, что не вызывается, не достижимо, закомментировано.
-  «Не вызывается» утверждай только после поиска по всему проекту, включая
-  вызовы по имени-строке: скрипты, настройки, таблицы, отражение.
-  Не уверен — не называй;
-- обёртки, классы и параметры, у которых одно место использования
-  и одно значение;
-- проверки значений, которые гарантированы вызывающим кодом или типом;
-- try/except и подобное вокруг кода, который не бросает;
-- переменные, типы и переэкспорты на один раз;
-- комментарии, пересказывающие код.
+Search across the whole project, not only in the changes.
 
-Что оставить и не называть:
-- проверки на границах системы: ввод пользователя, внешние вызовы,
-  чтение и запись файлов, сеть, база данных;
-- защиту от потери данных и проверки безопасности;
-- то, что план велит сделать именно так.
+Propose a replacement only if the behaviour is the same for the values that
+occur here. Differences in locale, order, sort stability, serialization,
+the error text are a reason not to propose it.
 
-Верни находки списком:
-- вид: избыточное
-- место: файл:строка
-- что: что лишнее и почему результат без него тот же
-- гарантия: для лишней проверки — файл:строка, где значение уже проверено
-  или гарантировано; для мёртвого кода — где искал вызовы
-- вместо: «удалить» либо на что заменить
+Return the findings as a list:
+- kind: reuse
+- place: file:line
+- what: what is repeated
+- instead of: what to take, with the path and the name
 
-Нечего назвать — так и напиши.
-ПРОЧИТАНО: <пути файлов, которые ты открыл и прочитал> — одной строкой после всех находок.
+Nothing to name — say so.
+READ: <the paths of the files you opened and read> — as one line after all the findings.
 ```
 
-## Что не трогать
+## What is redundant
 
-Правка упрощения:
+```
+Find the code without which the result is the same. For every piece go down the ladder
+from the top and stop at the first rung that fits:
 
-- **не меняет поведение** — выводы, ошибки, побочные действия и их порядок остаются теми же;
-- **не убирает проверки на границах системы**, защиту от потери данных и проверки безопасности;
-- **не отменяет «Технические решения» плана**, включая намеренное дублирование или разделение;
-- **не выходит за изменения этой работы**: чужой код рядом не правится, даже если он хуже.
+1. Delete it entirely — the behaviour is not needed: nobody asked for it and nobody
+   calls it.
+2. Reuse — the project already has the same thing.
+3. Take it from the standard library or the runtime.
+4. Simplify it in place — the code is needed, but it can be smaller.
 
-Не удаётся установить, что поведение сохранено, — находка пропускается. Так же пропускается находка о лишней проверке или мёртвом коде без названной гарантии: проверка без доказанного дубля что-то держит.
+What to look for:
+- dead code: what is not called, not reachable, commented out.
+  Claim "not called" only after a search across the whole project, including
+  calls by a name in a string: scripts, settings, tables, reflection.
+  Not sure — do not name it;
+- wrappers, classes and parameters that have one place of use
+  and one value;
+- checks of values that are guaranteed by the calling code or by the type;
+- try/except and the like around code that does not throw;
+- variables, types and re-exports for a single use;
+- comments that retell the code.
 
-Цель — отсутствие лишнего, а не число строк: понятный код из десяти строк лучше хитрого из трёх.
+What to leave and not name:
+- checks at the boundaries of the system: user input, external calls,
+  reading and writing files, the network, the database;
+- protection against data loss and security checks;
+- what the plan tells you to do exactly this way.
+
+Return the findings as a list:
+- kind: redundant
+- place: file:line
+- what: what is superfluous and why the result is the same without it
+- guarantee: for a superfluous check — file:line where the value is already checked
+  or guaranteed; for dead code — where you searched for calls
+- instead of: "delete" or what to replace it with
+
+Nothing to name — say so.
+READ: <the paths of the files you opened and read> — as one line after all the findings.
+```
+
+## What not to touch
+
+A simplification edit:
+
+- **does not change the behaviour** — the outputs, the errors, the side effects and their order stay the same;
+- **does not remove checks at the boundaries of the system**, protection against data loss and security checks;
+- **does not cancel the plan's "Technical decisions"**, including deliberate duplication or separation;
+- **does not go beyond the changes of this work**: someone else's code nearby is not edited, even if it is worse.
+
+It cannot be established that the behaviour is preserved — the finding is skipped. A finding about a superfluous check or dead code that has no named guarantee is skipped in the same way: a check without a proven duplicate is holding something.
+
+The goal is the absence of anything superfluous, not the number of lines: clear code of ten lines is better than clever code of three.

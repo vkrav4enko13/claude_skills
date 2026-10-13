@@ -1,0 +1,11 @@
+# Строки проверки темы chain-cleanup: читатели, порции 1–5
+
+> Строки 98–102: читатели, порции 1–5.
+
+| № | Требование | Сценарий | Команда | Ожидаемое | Срез | Результат |
+|---|---|---|---|---|---|---|
+| 98 | R83 | читатель сверил порцию 1 — `saway` — с оригиналом → о каждом файле есть строка отчёта, устройство прежнее, прежние строки проверки зелёные | `cd "$HOME/Documents/my/claude_skills" && bash tests/translate/compare.sh --portion 1 --reviewed > /dev/null && bash tests/translate/lines.sh > /dev/null && echo "порция 1 сверена"` | `порция 1 сверена` | S36 | зелёная 2026-10-13 |
+| 99 | R83 | читатель сверил порцию 2 — три `SKILL.md` цепочки — с оригиналом → о каждом файле есть строка отчёта, устройство прежнее, прежние строки проверки зелёные | `cd "$HOME/Documents/my/claude_skills" && bash tests/translate/compare.sh --portion 2 --reviewed > /dev/null && bash tests/translate/lines.sh > /dev/null && echo "порция 2 сверена"` | `порция 2 сверена` | S37 | зелёная 2026-10-13 |
+| 100 | R83 | читатель сверил порцию 3 — `sbrain`: опрос и контекст — с оригиналом → о каждом файле есть строка отчёта, устройство прежнее, прежние строки проверки зелёные | `cd "$HOME/Documents/my/claude_skills" && bash tests/translate/compare.sh --portion 3 --reviewed > /dev/null && bash tests/translate/lines.sh > /dev/null && echo "порция 3 сверена"` | `порция 3 сверена` | S38 | зелёная 2026-10-13 |
+| 101 | R83 | читатель сверил порцию 4 — `sbrain`: сводка и карточки темы — с оригиналом → о каждом файле есть строка отчёта, устройство прежнее, прежние строки проверки зелёные | `cd "$HOME/Documents/my/claude_skills" && bash tests/translate/compare.sh --portion 4 --reviewed > /dev/null && bash tests/translate/lines.sh > /dev/null && echo "порция 4 сверена"` | `порция 4 сверена` | S39 | зелёная 2026-10-13 |
+| 102 | R83, R90 | читатель сверил порцию 5 — `sbrain`: правила вики и малые файлы — с оригиналом → о каждом файле есть строка отчёта, устройство прежнее, прежние строки проверки зелёные | `cd "$HOME/Documents/my/claude_skills" && bash tests/translate/compare.sh --portion 5 --reviewed > /dev/null && bash tests/translate/lines.sh > /dev/null && echo "порция 5 сверена"` | `порция 5 сверена` | S40 | зелёная 2026-10-13 |

@@ -1,10 +1,10 @@
-# Вердикт о готовом решении
+# Verdict on a ready-made solution
 
-Читается, когда вопрос — брать ли названное готовое: «переходить ли на X?», «X или Y для этого проекта?». Это не брейншторм. Приём взят из compound-engineering (`ce-pov`, MIT) и изложен своими словами.
+Read when the question is whether to take a named ready-made thing: "should we move to X?", "X or Y for this project?". This is not a brainstorm. The technique is taken from compound-engineering (`ce-pov`, MIT) and set out in our own words.
 
-1. **Вердикт заслуживается фактами проекта.** Сначала найди сам: чем проект пользуется сейчас, что от кандидата нужно, какие ограничения его исключают. Сказанное в разговоре фактом не считается, пока не проверено.
-2. **Кандидата проверь по свежим источникам:** документация, ограничения, зрелость, цена перехода. Источник назови.
-3. **Пользователя не опрашивай, чтобы понять, что оценивать.** Не хватает сведения, которое изменило бы вердикт, и найти его нельзя — так и скажи: чего не хватает и что это закроет.
-4. **Ответ начинается с решения:** «да», «нет» или «не сейчас». Затем — на чём оно стоит, чем платим, что неизвестно и при каком условии вердикт изменится.
+1. **A verdict is earned by the facts of the project.** First find out yourself: what the project uses now, what is needed from the candidate, which constraints rule it out. What was said in the conversation does not count as a fact until it is checked.
+2. **Check the candidate against fresh sources:** documentation, limitations, maturity, the cost of the move. Name the source.
+3. **Do not survey the user to understand what to evaluate.** If a piece of information that would change the verdict is missing and cannot be found, say so: what is missing and what would close it.
+4. **The answer starts with the decision:** "yes", "no" or "not now". Then — what it stands on, what we pay, what is unknown and under what condition the verdict will change.
 
-Вердикт — итог: ничего не внедряй. Пользователь решил переходить — это новая задача со своим путём.
+The verdict is the result: do not implement anything. If the user has decided to move, that is a new task with its own path.
