@@ -1,0 +1,242 @@
+skills	heading	В работе	In progress	strict
+skills	heading	Отложено	Deferred	loose
+skills	heading	Разделы	Sections	loose
+skills	heading	Правила проекта	Project rules	strict
+skills	heading	Карточки	Cards	loose
+skills	heading	Ждёт пользователя	Waiting for the user	strict
+skills	heading	Кратко	In brief	loose
+skills	heading	Задача	Task	loose
+skills	heading	Критерии успеха	Success criteria	strict
+skills	heading	Требования	Requirements	loose
+skills	heading	Примеры приёмки	Acceptance examples	strict
+skills	heading	Дизайн	Design	loose
+skills	heading	Принятые решения	Decisions made	strict
+skills	heading	Не входит	Out of scope	strict
+skills	heading	Допущения и открытые вопросы	Assumptions and open questions	strict
+skills	heading	Состояние темы	State of topic	strict
+skills	heading	Требования темы	Requirements of topic	strict
+skills	heading	Решено без пользователя темы	Decided without the user in topic	strict
+skills	heading	План темы	Plan of topic	strict
+skills	heading	Технические решения темы	Technical decisions of topic	strict
+skills	heading	Строки проверки темы	Check lines of topic	strict
+skills	heading	Обзор плана темы	Plan overview of topic	strict
+skills	heading	Общие ограничения	Shared constraints	strict
+skills	heading	Не делаем	Not doing	strict
+skills	heading	Допущения	Assumptions	loose
+skills	heading	Отложенные вопросы	Deferred questions	strict
+skills	heading	Если код расходится с планом	If the code differs from the plan	strict
+skills	heading	Технические решения	Technical decisions	strict
+skills	heading	Фокус проверки	Check focus	strict
+skills	heading	Несогласованное	Not agreed	strict
+skills	heading	Ход исполнения	Progress log	strict
+skills	heading	часть 2	part 2	strict
+skills	field	Фаза	Phase	loose
+skills	field	Журнал	Journal	loose
+skills	field	Следующий шаг	Next step	strict
+skills	field	Слова пользователя	User's words	strict
+skills	field	Причина	Reason	loose
+skills	field	Отвергнуто	Rejected	loose
+skills	field	Статус	Status	loose
+skills	field	Заменяет	Replaces	loose
+skills	field	Источник	Source	loose
+skills	field	Откат	Rollback	loose
+skills	field	Цель	Goal	loose
+skills	field	Сверено с кодом	Checked against code	strict
+skills	field	Исполнение	Execution	loose
+skills	field	Закрывает	Covers	loose
+skills	field	Зависит от	Depends on	strict
+skills	field	Пометки	Marks	loose
+skills	field	Файлы	Files	loose
+skills	field	создать	create	loose
+skills	field	изменить	change	loose
+skills	field	Интерфейсы	Interfaces	loose
+skills	field	берёт	takes	loose
+skills	field	отдаёт	gives	loose
+skills	field	Готовое	Reuse	loose
+skills	field	Что сделать	What to do	strict
+skills	field	Проверки	Checks	loose
+skills	field	Шаги	Steps	loose
+skills	field	№	No.	loose
+skills	field	Требование	Requirement	loose
+skills	field	Сценарий	Scenario	loose
+skills	field	Команда	Command	loose
+skills	field	Ожидаемое	Expected	loose
+skills	field	Срез	Slice	loose
+skills	field	Результат	Result	loose
+skills	value	требования записаны	requirements written	strict
+skills	value	требования подтверждены	requirements confirmed	strict
+skills	value	план записан	plan written	strict
+skills	value	план подтверждён	plan confirmed	strict
+skills	value	исполнение идёт	execution in progress	strict
+skills	value	готово	done	loose
+skills	value	не начат	not started	strict
+skills	value	готов	done	loose
+skills	value	ждёт ручной проверки	awaiting manual check	strict
+skills	value	остановлен	stopped	loose
+skills	value	в силе	in force	strict
+skills	value	заменено	superseded	loose
+skills	value	снято	withdrawn	loose
+skills	value	выбрал пользователь	user chose	strict
+skills	value	согласился	agreed	loose
+skills	value	нет	none	loose
+skills	value	Проба	Probe	loose
+skills	value	Малая	Small	loose
+skills	value	Большая	Large	loose
+skills	value	Опрос	Grill	loose
+skills	value	Не про код	Non-software	strict
+skills	value	не запускалась	not run	strict
+skills	value	зелёная	green	loose
+skills	value	красная	red	loose
+skills	value	ГГГГ-ММ-ДД	YYYY-MM-DD	strict
+skills	value	ГГГГ-ММ	YYYY-MM	strict
+skills	value	проверяется вручную	checked manually	strict
+skills	value	задача	task	loose
+skills	value	цель	goal	loose
+skills	value	не меняет поведения	no behavior change	strict
+skills	value	готовый текст	ready text	strict
+skills	value	все	all	loose
+skills	value	готового нет — искал:	nothing to reuse — searched:	strict
+skills	value	независимая проверка плана	independent plan review	strict
+skills	value	выбор пользователя после отчёта	user's choice after the report	strict
+skills	value	нет — работа принята	none — work accepted	strict
+skills	value	серьёзная	serious	loose
+skills	value	мелкая	minor	loose
+skills	value	новая	new	loose
+skills	value	дополнена	extended	loose
+skills	tail	со слов пользователя	in the user's words	strict
+skills	tail	дальше:	next:	loose
+skills	tail	вместо	instead of	loose
+skills	tail	строка от	line of	strict
+skills	tail	выбрано:	chosen:	loose
+skills	tail	почему:	why:	loose
+skills	tail	иначе:	otherwise:	loose
+skills	tail	сделано:	done:	loose
+skills	tail	ожидал:	expected:	loose
+skills	tail	нашёл:	found:	loose
+skills	tail	почему важно:	why it matters:	strict
+skills	tail	начат	started	loose
+skills	tail	попытка 1 из 2	attempt 1 of 2	strict
+skills	tail	попытка	attempt	loose
+skills	tail	Записано в вики:	Written to the wiki:	strict
+skills	tail	замечено вне среза	noticed outside the slice	strict
+skills	tail	этап 5 начат	stage 5 started	strict
+skills	tail	этап 5 закончен	stage 5 finished	strict
+skills	tail	этап 6 пропущен: нового кода нет	stage 6 skipped: no new code	strict
+skills	tail	отклонено:	declined:	strict
+skills	tail	не тронуто:	left untouched:	strict
+skills	tail	срезы:	slices:	loose
+skills	tail	до ответа:	until answered:	strict
+skills	tail	создаётся в	created in	strict
+skills	tail	строки	lines	loose
+skills	tail	строка	line	loose
+skills	tail	ожидаемое:	expected:	loose
+skills	tail	ручная проверка темы	manual check of topic	strict
+skills	tail	до слов пользователя	until the user says so	strict
+skills	tail	имя(сигнатура) — файл	name(signature) — file	strict
+skills	tail	путь/к/файлу	path/to/file	strict
+skills	phrase	Фаза темы и шаг, с которого начнёт следующая сессия.	Topic phase and the step the next session starts from.	strict
+skills	phrase	решения и ответы, верные для всего проекта	decisions and answers that hold for the whole project	strict
+skills	phrase	строка на задачу, файл на месяц	a line per task, a file per month	strict
+skills	phrase	Темы	Topics	loose
+skills	phrase	папки тем	topic folders	strict
+skills	phrase	Заметки	Notes	loose
+skills	phrase	факты, которых не восстановить из кода	facts that cannot be recovered from the code	strict
+skills	phrase	Состояние	State	loose
+skills	phrase	фаза темы и следующий шаг	topic phase and next step	strict
+skills	phrase	что строим, для кого и как поймём, что получилось	what we build, for whom, and how we will know it worked	strict
+skills	phrase	Решения	Decisions	loose
+skills	phrase	что выбрано, вместо чего и чьё решение	what was chosen, instead of what, and whose decision	strict
+skills	phrase	Границы	Scope	loose
+skills	phrase	что не входит, допущения и открытые вопросы	what is out of scope, assumptions and open questions	strict
+skills	phrase	Шапка плана: цель, общие ограничения, что не делаем и правило для исполнителя.	Plan header: goal, shared constraints, what we do not do, and the rule for the executor.	strict
+skills	phrase	срезы по порядку зависимостей; правило расхождений — в конце карточки	slices in dependency order; the discrepancy rule is at the end of the card	strict
+skills	phrase	Остановись и сообщи: **ожидал** — что написано в плане; **нашёл** — что в коде, с путём;	Stop and report: **expected** — what the plan says; **found** — what is in the code, with the path;	strict
+skills	phrase	**почему важно** — что из-за этого не сходится. Не подгоняй код под план и план под код молча.	**why it matters** — what fails to line up because of it. Do not silently bend the code to the plan or the plan to the code.	strict
+skills	phrase	О мелком расхождении (файл переехал, имя изменилось, смысл тот же) тоже сообщи: карточку среза правит `swork`, а не ты.	Report a minor discrepancy too (a file moved, a name changed, the meaning is the same): the slice card is fixed by `swork`, not by you.	strict
+skills	phrase	Что выбрал план, вместо чего и почему; какие отказы и виды входа он проверяет сверх названных.	What the plan chose, instead of what and why; which failures and kinds of input it checks beyond the named ones.	strict
+skills	phrase	Чем проверяется каждое требование: сценарий, команда, ожидаемое и срез-владелец.	How each requirement is checked: scenario, command, expected result and the owning slice.	strict
+skills	phrase	План одним файлом для чтения; источник — карточки срезов: при расхождении верна карточка.	The plan as one file for reading; the source is the slice cards: where they differ, the card is right.	strict
+skills	phrase	Обзор плана	Plan overview	strict
+skills	phrase	план одним файлом; источник — карточки срезов	the plan as one file; the source is the slice cards	strict
+skills	phrase	План	Plan	loose
+skills	phrase	цель, общие ограничения, что не делаем и правило расхождений	goal, shared constraints, what we do not do, and the discrepancy rule	strict
+skills	phrase	что выбрано, вместо чего, и фокус проверки	what was chosen, instead of what, and the check focus	strict
+skills	phrase	Строки проверки	Check lines	strict
+skills	phrase	чем проверяется каждое требование	how each requirement is checked	strict
+skills	reply	saway: работа закончена	saway: work finished	strict
+skills	reply	saway: работа стоит — ждёт пользователя	saway: work stopped — waiting for the user	strict
+skills	reply	СТАТУС	STATUS	strict
+skills	reply	расхождение	discrepancy	loose
+skills	reply	нужен файл	need a file	strict
+skills	reply	не смог	could not	strict
+skills	reply	ИЗМЕНЕНО	CHANGED	strict
+skills	reply	СОЗДАНО	CREATED	strict
+skills	reply	ПРОВЕРКА	CHECK	strict
+skills	reply	ОЖИДАЛ / НАШЁЛ / ПОЧЕМУ ВАЖНО	EXPECTED / FOUND / WHY IT MATTERS	strict
+skills	reply	НУЖЕН ФАЙЛ	NEED A FILE	strict
+skills	reply	СОЗДАНЫ ФУНКЦИИ	FUNCTIONS CREATED	strict
+skills	reply	ЗАМЕЧЕНО	NOTICED	strict
+skills	reply	ГРАБЛИ	PITFALLS	strict
+skills	reply	НЕДОСТАЁТ	MISSING	strict
+skills	reply	СВЕРХ ПЛАНА	BEYOND THE PLAN	strict
+skills	reply	НЕВЕРНО	WRONG	strict
+skills	reply	ПРОЧИТАНО	READ	strict
+skills	reply	недостаёт	missing	loose
+skills	reply	сверх плана	beyond the plan	strict
+skills	reply	неверно	wrong	loose
+skills	reply	переиспользование	reuse	loose
+skills	reply	избыточное	redundant	loose
+skills	reply	удалить	delete	loose
+skills	reply	блокирует	blocking	loose
+skills	reply	стоит исправить	worth fixing	strict
+skills	reply	мелочь	nit	loose
+skills	message	запуск: bash check.sh <папка вики>	usage: bash check.sh <wiki folder>	strict
+skills	message	это не вики — нет 00-index.md	not a wiki: no 00-index.md	strict
+skills	message	корневой индекс длиннее 40 строк	root index is longer than 40 lines	strict
+skills	message	правил больше 30 строк	rules are longer than 30 lines	strict
+skills	message	индекс длиннее 50 строк	index is longer than 50 lines	strict
+skills	message	карточка длиннее 30 строк	card is longer than 30 lines	strict
+skills	message	карточка длиннее 3000 знаков	card is longer than 3000 characters	strict
+skills	message	строка длиннее 200 знаков	line is longer than 200 characters	strict
+skills	message	битая ссылка	broken link	strict
+skills	message	нет заголовка или строки сути	no title or hook line	strict
+skills	message	нет строки в индексе	no line in index	strict
+skills	message	вики в порядке	wiki is fine	strict
+stand	judge	правило	rule	loose
+stand	judge	посев	seed	loose
+stand	judge	да	yes	loose
+stand	judge	нет	no	loose
+stand	judge	сомнение	unsure	loose
+stand	judge	неприменимо	not applicable	loose
+stand	judge	найден	found	loose
+stand	judge	не найден	not found	loose
+stand	judge	сверка	conformance	loose
+stand	judge	ревью	review	loose
+stand	judge	никем	nobody	loose
+stand	trace	Запрос	Request	loose
+stand	trace	Ответ	Reply	loose
+stand	trace	Задание	Task	loose
+stand	trace	Последний ответ	Last reply	loose
+stand	message	все строки зелёные	all lines green	loose
+stand	message	красная	red	loose
+stand	message	скрипт в порядке	script is fine	loose
+stand	message	замера нет:	no measurement:	loose
+stand	message	нарушений: до	violations: before	loose
+stand	message	посев найден: до	seeds found: before	loose
+stand	message	минут по часам: до	wall-clock minutes: before	loose
+stand	message	после	after	loose
+stand	message	не больше	not more	loose
+stand	message	больше	more	loose
+stand	message	не меньше	not less	loose
+stand	message	меньше	less	loose
+stand	message	готов	done	loose
+stand	message	принято	accepted	loose
+stand	message	отклонено	rejected	loose
+old	field	Путь	Path	loose
+old	field	Проверено	Verified	loose
+old	field	Требования подтверждены	Requirements confirmed	loose
+old	tail	цель:	goal:	loose
+old	value	большая	large	loose
+old	value	опрос	grill	loose
+old	value	без sbrain	without sbrain	loose
+stand	message	этап 7 закончен	stage 7 finished	loose
