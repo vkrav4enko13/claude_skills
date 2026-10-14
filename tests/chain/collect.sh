@@ -8,7 +8,8 @@
 # stage; for work and seed — also every slice of the topic has the status
 # "done" or "awaiting manual check" and the progress log has the record
 # "stage 7 finished"; for away — only that record: the slice statuses and the
-# phase are not looked at; api_ms — duration_api_ms of the last turn: the field is
+# phase are not looked at; for survey and grill — only that ended.txt exists: a run that
+# ended for any reason is measured; api_ms — duration_api_ms of the last turn: the field is
 # cumulative; wall_s — from wall.txt, no file — 0. The session records are
 # copied from the profile into raw/ together with subagents/; chat.md — the
 # requests and all the reply texts of the main session; agents/NN.md — the task
@@ -32,6 +33,8 @@ case "$stage" in
     work) topic=count; phase='done' ;;
     seed) topic=longest; phase='done' ;;
     away) topic=longest; phase='' ;;
+    survey) topic=''; phase='' ;;
+    grill) topic=''; phase='' ;;
     *) echo "unknown stage: $stage" >&2; exit 2 ;;
 esac
 
@@ -63,6 +66,11 @@ case "$stage" in
         if grep -qs 'stage 7 finished' "$cards"/progress*.md; then
             finished=true
         fi
+        ;;
+    survey | grill)
+        # The run ended — for any reason, written in ended.txt.
+        finished=false
+        if [ -f "$dir/ended.txt" ]; then finished=true; fi
         ;;
 esac
 wall=0

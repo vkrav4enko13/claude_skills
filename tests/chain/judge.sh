@@ -16,8 +16,14 @@
 # run does not have is skipped. The run path in the copied texts is replaced
 # with /stand, its form with hyphens in place of the other characters — with
 # -stand.
+# A run with a stage folder survey or grill is packed otherwise:
+# chat-survey.md, chat-grill.md, agents-survey/, agents-grill/;
+# project-survey/ — a copy of surveybox/wiki-trial/clean, project-grill/ — a
+# copy of grillbox/wiki-trial/clean, both without .claude/, .swork/ and
+# .swork-marker; rules-survey.md and seeds-survey.md next to the script. The
+# persona files are not copied.
 # The judge is a claude -p session in the label folder with the text of
-# judge-prompt.md, the tools Read Glob Grep Write and the flag --restricted:
+# judge-prompt.md — for a survey run, of judge-survey-prompt.md — the tools Read Glob Grep Write and the flag --restricted:
 # it can read nothing outside the label folder; its reply goes to
 # blind/<label>.json.
 # The sessions of the labels of the named series go at the same time; a label
@@ -41,6 +47,7 @@ key="$blind/key.tsv"
 rules="$B/before/rules.md"
 if [ ! -f "$rules" ]; then rules="$here/rules.md"; fi
 prompt="$(cat "$here/judge-prompt.md")"
+survey_prompt="$(cat "$here/judge-survey-prompt.md")"
 
 mkdir -p "$blind"
 if [ ! -f "$key" ]; then : > "$key"; fi
@@ -67,14 +74,25 @@ pack() {
     own="${R%/*}/rules.md"
     if [ ! -f "$own" ]; then own="$rules"; fi
     mkdir "$D"
-    for s in brain plan work seed; do
-        if [ -f "$R/$s/chat.md" ]; then cp "$R/$s/chat.md" "$D/chat-$s.md"; fi
-        if [ -d "$R/$s/agents" ]; then cp -R "$R/$s/agents" "$D/agents-$s"; fi
-    done
-    project "$R/wiki-trial/clean" "$D/project"
-    project "$R/seedbox/wiki-trial/clean" "$D/project-seed"
-    cp "$here/seeds.md" "$D/seeds.md"
-    cp "$own" "$D/rules.md"
+    if [ -d "$R/survey" ] || [ -d "$R/grill" ]; then
+        for s in survey grill; do
+            if [ -f "$R/$s/chat.md" ]; then cp "$R/$s/chat.md" "$D/chat-$s.md"; fi
+            if [ -d "$R/$s/agents" ]; then cp -R "$R/$s/agents" "$D/agents-$s"; fi
+        done
+        project "$R/surveybox/wiki-trial/clean" "$D/project-survey"
+        project "$R/grillbox/wiki-trial/clean" "$D/project-grill"
+        cp "$here/rules-survey.md" "$D/rules-survey.md"
+        cp "$here/seeds-survey.md" "$D/seeds-survey.md"
+    else
+        for s in brain plan work seed; do
+            if [ -f "$R/$s/chat.md" ]; then cp "$R/$s/chat.md" "$D/chat-$s.md"; fi
+            if [ -d "$R/$s/agents" ]; then cp -R "$R/$s/agents" "$D/agents-$s"; fi
+        done
+        project "$R/wiki-trial/clean" "$D/project"
+        project "$R/seedbox/wiki-trial/clean" "$D/project-seed"
+        cp "$here/seeds.md" "$D/seeds.md"
+        cp "$own" "$D/rules.md"
+    fi
     # The run path names the series — also in the form $S, where every
     # character except Latin letters and digits has become a hyphen: this is
     # how the project folders are named in the profile and in the temporary
@@ -89,12 +107,14 @@ pack() {
     done < <(grep -rlF -e "$R" -e "$S" "$D" || true)
 }
 
-# The judge session in the label folder $1.
+# The judge session in the label folder $1; a survey run — with the survey prompt.
 judge() {
+    local text="$prompt"
+    if [ -f "$blind/$1/rules-survey.md" ]; then text="$survey_prompt"; fi
     (
         cd "$blind/$1"
         CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/claude/personal}" \
-            "$HOME/.local/bin/claude" -p "$prompt" \
+            "$HOME/.local/bin/claude" -p "$text" \
             --setting-sources project,local --permission-prompts none \
             --permission-mode acceptEdits \
             --allowedTools Read Glob Grep Write \

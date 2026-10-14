@@ -15,7 +15,10 @@
 # stands take the skills from the copy. The runs — the folders 1, 2, 3 — go at
 # the same time, the lanes of a run — one after another: count — the stages
 # brain plan work on the project wiki-trial/clean, then longest — the stage
-# seed on the project seedbox/wiki-trial/clean after seed.sh. A lane whose
+# seed on the project seedbox/wiki-trial/clean after seed.sh, then survey —
+# the stage survey on the project surveybox/wiki-trial/clean, then grill — the
+# stage grill on the project grillbox/wiki-trial/clean with grill-longest.sh as
+# longest.sh and grill-plan.md as plan-shortest.md in its root. A lane whose
 # named stages are all passed (done in stage.json) is not touched; otherwise
 # its project and the folders of its stages are erased and it goes anew. On a
 # lane that is not passed the run ends. Then measure.sh. Per run — a line
@@ -53,7 +56,7 @@ case "$effort" in
 esac
 for s in $stages; do
     case "$s" in
-        brain | plan | work | seed) ;;
+        brain | plan | work | seed | survey | grill) ;;
         *) echo "unknown stage: $s" >&2; exit 2 ;;
     esac
 done
@@ -92,6 +95,8 @@ lane() {
     case "$2" in
         count) all='brain plan work'; box="$R" ;;
         longest) all=seed; box="$R/seedbox" ;;
+        survey) all=survey; box="$R/surveybox" ;;
+        grill) all=grill; box="$R/grillbox" ;;
     esac
     project="$box/wiki-trial/clean"
     # The named stages of the lane — in its order.
@@ -109,6 +114,10 @@ lane() {
     if [ "$2" = longest ]; then
         "$BASH" "$here/seed.sh" "$project" || return 1
     fi
+    if [ "$2" = grill ]; then
+        cp "$here/grill-longest.sh" "$project/longest.sh"
+        cp "$here/grill-plan.md" "$project/plan-shortest.md"
+    fi
     for s in $mine; do
         "$BASH" "$here/drive.sh" "$project" "$s" "$R/$s" "$effort" || return 1
         stage_done "$R/$s" || return 1
@@ -119,7 +128,7 @@ lane() {
 run() {
     local R="$S/$1" name failed=""
     mkdir -p "$R"
-    for name in count longest; do
+    for name in count longest survey grill; do
         if ! lane "$R" "$name"; then
             failed=$name
             break

@@ -1,0 +1,14 @@
+# Check lines of topic sbrain-quality
+
+> Lines 1–8: the stand-in user, the two stages and the judge.
+
+| No. | Requirement | Scenario | Command | Expected | Slice | Result |
+|---|---|---|---|---|---|---|
+| 1 | R1, R2 | the persona and a question about N → the stand-in user answers from the persona in Russian | `bash tests/chain/answer.sh tests/chain/persona.md <(printf 'Откуда брать N и какое оно по умолчанию?')` | an answer in Cyrillic: N is the first argument, 5 without it — decision-1 of the persona | S1 | green 2026-10-14 |
+| 2 | R3 | a one-run series of the stage `survey` → the run ended and the chat holds the stand-in user's answers | `S="$HOME/Documents/my/chain-stand/sv-smoke/1/survey"; jq -r '.done, .turns' "$S/stage.json"; grep -c '^## Request' "$S/chat.md"` | `true`, a number of turns from 1 to 13, then a count of 1 or more | S1 | green 2026-10-14 |
+| 3 | R2 | a question the persona does not cover → «не знаю, решай сам» | `bash tests/chain/answer.sh tests/chain/persona.md <(printf 'Какой цвет вывода в терминале?')` | a line that holds «не знаю» | S1 | green 2026-10-14 |
+| 4 | R4 | a one-run series of the stage `grill` → the plan file lies in the project, `sbrain` was started on it and the stand-in user ended the run | `S="$HOME/Documents/my/chain-stand/gr-smoke/1"; ls "$S/grillbox/wiki-trial/clean/plan-shortest.md"; jq -r .done "$S/grill/stage.json"; grep -c 'plan-shortest' "$S/grill/chat.md"` | the path, `true`, a count of 1 or more | S2 | green 2026-10-14 |
+| 5 | R4 | the grill plan → five flaws, each named in `seeds-survey.md` | `grep -c '^- flaw-[1-5]\.' tests/chain/seeds-survey.md; grep -c '^- decision-[1-5]\.' tests/chain/seeds-survey.md` | `5`, `5` | S2 | green 2026-10-14 |
+| 6 | R5, R6 | the judge reads a survey run → a verdict of the rule lines of `rules-survey.md`, five decision lines and five flaw lines | `L=$(awk -F'\t' '$2=="sv-smoke"{print $1}' $HOME/Documents/my/chain-stand/blind/key.tsv); awk -F'\t' '{n[$1]++} END{print n["rule"]+0, n["decision"]+0, n["flaw"]+0}' $HOME/Documents/my/chain-stand/blind/$L/verdict.tsv; grep -c '^- sv-' tests/chain/rules-survey.md` | three numbers: the rule count equal to the last line, then `5`, `5` | S3 | green 2026-10-14 |
+| 7 | R7 | the judge's folder of a survey run → no persona prompt, the stand-in user's prompt holds no seeds | `L=$(awk -F'\t' '$2=="sv-smoke"{print $1}' $HOME/Documents/my/chain-stand/blind/key.tsv); ls $HOME/Documents/my/chain-stand/blind/$L; grep -c 'flaw-' tests/chain/persona.md tests/chain/persona-prompt.md; grep -c 'only after the rule lines' tests/chain/judge-survey-prompt.md; true` | no `persona` file in the list; `:0` for both; 1 or more | S3 | green 2026-10-14 |
+| 8 | R5 | the survey rules → each names its place in the `sbrain` texts | `awk '/^- sv-/{n++; if ($0 !~ / — sbrain\/[^ ]+:[0-9]+$/) bad++} END{print n, bad+0}' tests/chain/rules-survey.md` | six or more, then `0` | S3 | green 2026-10-14 |

@@ -8,7 +8,7 @@
 # input. A line is words separated by one space, the first word is the section.
 # A series is the folder $CHAIN_BASE/<series>, by default
 # ~/Documents/my/chain-stand/<series>; its runs are the folders [0-9]*, in a
-# run the stage folders brain plan work seed away, whichever exist, in a stage
+# run the stage folders brain plan work seed away survey grill, whichever exist, in a stage
 # raw/*.jsonl — the main sessions, raw/subagents/agent-*.jsonl with
 # agent-*.meta.json — the subagents. A request is the assistant records of one
 # requestId of a file: the usage of the last record, the content blocks of all
@@ -50,7 +50,7 @@ stages=""
 for r in [0-9]*; do
     [ -d "$r" ] || continue
     runs=$((runs + 1))
-    for s in brain plan work seed away; do
+    for s in brain plan work seed away survey grill; do
         [ -d "$r/$s" ] || continue
         case " $stages " in *" $s "*) ;; *) stages="$stages $s" ;; esac
         for f in "$r/$s"/raw/*.jsonl "$r/$s"/raw/subagents/agent-*.jsonl; do
