@@ -2,10 +2,14 @@
 # Runs a series of chain runs on the stand without a person and takes their
 # measurement.
 #
-#   bash tests/chain/series.sh <series> <skills folder> [--runs N] [--stages "<stages>"]
+#   bash tests/chain/series.sh <series> <skills folder> [--runs N] [--stages "<stages>"] [--effort <level>]
 #
-# By default three runs and the stages brain plan work seed. A series is the
+# By default three runs, the stages brain plan work seed and the effort level
+# medium; the levels are low medium high xhigh max. A series is the
 # folder $CHAIN_BASE/<series>, by default ~/Documents/my/chain-stand/<series>.
+# The level of a series is the line of its file effort; a series folder with
+# skills/ and without that file was run at xhigh. A series asked at another
+# level than its own — "series <name> was run at <level>" and code 2.
 # The four skills and tests/chain/rules.md, if it exists, are copied into it
 # once — into skills/ and rules.md, while there is no skills/ folder: the
 # stands take the skills from the copy. The runs — the folders 1, 2, 3 — go at
@@ -22,7 +26,7 @@ export LC_ALL=C.UTF-8
 set -euo pipefail
 
 usage() {
-    echo 'usage: bash series.sh <series> <skills folder> [--runs N] [--stages "<stages>"]' >&2
+    echo 'usage: bash series.sh <series> <skills folder> [--runs N] [--stages "<stages>"] [--effort <level>]' >&2
     exit 2
 }
 [ $# -ge 2 ] || usage
@@ -31,16 +35,22 @@ src="$(cd "$2" && pwd)"
 shift 2
 runs=3
 stages='brain plan work seed'
+effort=medium
 while [ $# -gt 0 ]; do
     [ $# -ge 2 ] || usage
     case "$1" in
         --runs) runs="$2" ;;
         --stages) stages="$2" ;;
+        --effort) effort="$2" ;;
         *) usage ;;
     esac
     shift 2
 done
 [[ $runs =~ ^[1-9][0-9]*$ ]] || usage
+case "$effort" in
+    low | medium | high | xhigh | max) ;;
+    *) usage ;;
+esac
 for s in $stages; do
     case "$s" in
         brain | plan | work | seed) ;;
@@ -51,6 +61,16 @@ done
 here="$(cd "$(dirname "$0")" && pwd)"
 S="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}/$series"
 
+# The level the series was run at: a series made before the file effort — xhigh.
+if [ -d "$S/skills" ]; then
+    was=xhigh
+    if [ -f "$S/effort" ]; then was="$(cat "$S/effort")"; fi
+    if [ "$was" != "$effort" ]; then
+        echo "series $series was run at $was" >&2
+        exit 2
+    fi
+fi
+
 rm -f "$S/done"
 if [ ! -d "$S/skills" ]; then
     mkdir -p "$S/skills"
@@ -59,6 +79,7 @@ if [ ! -d "$S/skills" ]; then
     done
     if [ -f "$here/rules.md" ]; then cp "$here/rules.md" "$S/rules.md"; fi
 fi
+echo "$effort" > "$S/effort"
 
 # The stage is passed: $1 — the stage folder.
 stage_done() {
@@ -89,7 +110,7 @@ lane() {
         "$BASH" "$here/seed.sh" "$project" || return 1
     fi
     for s in $mine; do
-        "$BASH" "$here/drive.sh" "$project" "$s" "$R/$s" || return 1
+        "$BASH" "$here/drive.sh" "$project" "$s" "$R/$s" "$effort" || return 1
         stage_done "$R/$s" || return 1
     done
 }

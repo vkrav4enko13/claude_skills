@@ -39,13 +39,15 @@ A direct and a short result is already shown in the chat. Show a plan in cards i
 
 Ask for the approval of the plan and the next step with one request. The options, by the situation:
 
-- "Yes, execute" — `swork`; if it is not installed — an ordinary session by this plan;
+- "Yes, execute" — `swork`; if it is not installed — an ordinary session by this plan. For a plan in cards this option becomes two, in this order:
+  - "Yes, execute — in a new session" — its description gives the lines to paste: `/clear`, then `/swork <topic>`, the topic by its name or by the path to its folder;
+  - "Yes, execute — in this session" — the user types `/swork <topic>` here;
 - "Yes, stop here";
 - "Fix" — make the fix, show the corrected version and ask again;
 - go back to `sbrain` — if it turned out during the planning that the requirements have to be changed.
 
-Add "Do nothing" to the menu: the approval is not recorded, the phase does not change. If there are more than four options, "Yes, stop here" is the first to be dropped.
+Add "Do nothing" to the menu: the approval is not recorded, the phase does not change. If there are more than four options, "Yes, stop here" is the first to be dropped. For a plan in cards the menu keeps four options — the two options of the execution, "Fix" and "Do nothing"; going back to `sbrain`, when it applies, is named in the question for the user to type.
 
 An option with "Yes" is both the approval of the plan and the choice of the step. For a plan in cards first record the approval: in `state.md` — the phase `plan confirmed`, in the topic's line in "In progress" of the root index — the same phase (the forms of the lines are in `references/plan-format.md`); then name how to start what was chosen. The other options do not count as approval. "The plan is good" as text, without a choice of the step, is approval but not a step: record the approval and ask for the step.
 
-Give the recommendation in one phrase with a reason from the plan itself. Do not start the execution yourself: "Yes, execute" means that `swork` is started by the user. The plan lies as cards in the topic folder — advise a new session: everything needed lies in the topic folder, and a long session carries its whole history anew on every request. A direct or a short result lies only in the chat — do not advise a new session: the plan will not be in it. Do not commit to git until you are asked.
+Give the recommendation in one phrase with a reason from the plan itself. Do not start the execution yourself: "Yes, execute" means that `swork` is started by the user. A direct or a short result lies only in the chat — do not advise a new session: the plan will not be in it; for it the single option "Yes, execute" stays. Do not commit to git until you are asked.

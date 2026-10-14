@@ -2,7 +2,7 @@
 
 > Факты о проекте, которых не восстановить из кода.
 
-## Карточки
+## Cards
 
 - [Срезы swork с общими файлами исполнены одним проходом](swork-one-pass.md) — S1–S6 правили одни файлы: текст написан за проход, проверки срезов прогнаны после
 - [После сверки на посеве упрощению и ревью нечего искать](swork-seed-after-conformance.md) — их задания проверены только на нетронутом посеве
@@ -27,3 +27,5 @@
 - [Отказы разрешений на стенде](stand-permission-denials.md) — проверку опасных удалений не снимают ни `auto`, ни `--add-dir`, ни песочница
 - [Замер chain-cleanup: где ушло время](chain-cleanup-speed-recon.md) — дольше идут проверяющие `swork`; прогон `before/3` принял недоделанную работу
 - [Скорость серии на английских текстах](chain-speed-en-series.md) — отличий от «до» сверх разброса нет; прибавляют обзор плана и чтение задания из файла
+- [Where the chain spends tokens at `xhigh`](chain-token-map-xhigh.md) — thinking 59–66 % of output, checkers 46 %, ordered writing about 11 %; scripts kept next to the stand data
+- [Effort on Opus 5.5](opus55-effort.md) — the default and the advice are `medium`; the stand and the measured sessions ran at `xhigh`

@@ -2,17 +2,20 @@
 name: swork
 description: "Personal execution of a plan: goes through the plan slice by slice, checks each slice with a command, then itself checks what was done against the plan, removes what is superfluous, runs a review and stops with a report. Works in a folder without git too. Use when the user asks to execute a plan, to do it by the plan, to continue after splan or to continue an interrupted execution, or gives a small clear task for one pass. Not for finding out what to build (that is sbrain) and not for planning (that is splan)."
 argument-hint: "[topic, plan from the chat or small task]"
+effort: medium
 ---
 
 # Plan execution
 
 Builds what was decided before it: **what** — in `sbrain`, **how** — in `splan`. The chain: `sbrain → splan → swork`.
 
-Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a plan nor a task in the request, ask what we are executing and go no further.
+Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. This holds from the very first reply, the short notes between tool calls included. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a plan nor a task in the request, ask what we are executing and go no further.
 
 **Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for consent at a stop, for the choice of an option and for the step after the report with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat.
 
 **Every stop says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If you stop and nothing is needed from the user, say so plainly in the last line of the message.
+
+**Subagents run at `medium`.** Launch every subagent of this skill with effort `medium`, using the effort parameter of the subagent launch tool; if there is no such parameter, at the session level.
 
 A task for a subagent is a code block in the task file: `references/executor.md`, `conformance.md`, `review.md`, `simplify.md`. Do not retype it and do not retell it: cut the block out with a command into a temporary file, once per run, — `awk '/^\140\140\140/{f=!f; if (f) print "=== block ==="; next} f' <task file> > <temporary folder>/<name>.txt` — and write to the subagent: "Read the task in the file <path> and carry it out word for word". `simplify.md` has three blocks: a shared header and two tasks. "Pass the task" here and in the `references/` files means exactly this; the message carries only what stands in angle brackets in the task — the paths, the texts and the packet. If there is nothing to cut with, pass the block word for word. In a retelling the "what not to touch" rules get lost.
 

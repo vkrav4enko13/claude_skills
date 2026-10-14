@@ -6,7 +6,7 @@ A slice of a plan in the topic folder is executed by a fresh subagent. It has se
 
 ## Packet
 
-Collect it from the topic cards and pass it as text:
+Run the script into a file: `bash <skill folder>/scripts/packet.sh <topic folder> <slice number> <project root> [<created.txt>] > <temporary folder>/packet-S<N>.txt`. Do not retype the text of the cards. If the script cannot be run, collect the packet by hand into the same file, in the same order:
 
 1. **Its own slice** — the slice card in full, with all its parts.
 2. **Its check lines** — the lines from the check cards with the numbers from the "Checks" field of the slice, together with the header row of the table.
@@ -19,7 +19,7 @@ Collect it from the topic cards and pass it as text:
 
 The path to the topic folder, the overview `plan-overview.md`, the cards of other slices, the check lines of other slices and the requirements cards are not passed: an executor that sees a neighbouring slice starts doing it along the way. Everything it needs from the neighbours is already written in the "Interfaces" block of its slice.
 
-On an attempt to fix, added to the packet are: the end of the output of the failed check or the text of the conformance check finding, and the list of what has already been tried.
+On an attempt to fix, the packet file stays the same; the end of the output of the failed check or the text of the conformance check finding, and the list of what has already been tried, go into the message itself.
 
 ## Task
 
@@ -42,8 +42,7 @@ Rules:
    why it matters. Do not bend the code to the plan or the plan to the code. This applies to a minor
    discrepancy too (a file moved, a name changed):
    the slice card is fixed by whoever started you, not by you, — even if the plan rule says "fix it in place".
-6. Run the commands from the check lines passed to you, give the exit code and the end
-   of the output of each. It does not pass and you do not know why — return "could not" with the output
+6. Run the commands from the check lines passed to you. It does not pass and you do not know why — return "could not" with the output
    instead of writing a workaround. Fix the code, not the check: do not change the expected value
    to fit the code, do not disable or skip the test. The check contradicts the slice or
    passes only if the code is fitted to it with a special case — stop
@@ -60,12 +59,11 @@ Return exactly in this form:
 STATUS: done | discrepancy | need a file | could not
 CHANGED: <paths from the project root>
 CREATED: <paths from the project root>
-CHECK: <the commands, the exit code and the end of the output of each, if you ran them>
 EXPECTED / FOUND / WHY IT MATTERS: <only for a discrepancy>
 NEED A FILE: <the path and what for — only with this status>
 FUNCTIONS CREATED: <name(signature) — file, one per line; created none — "none">
 NOTICED: <file:line — what is wrong; did not fix it; nothing to name — "none">
 PITFALLS: <a non-obvious fact or a pitfall you ran into: what and where; nothing to name — "none">
 
-<packet>
+The packet lies in the file <packet path>: read it in full before anything else.
 ```

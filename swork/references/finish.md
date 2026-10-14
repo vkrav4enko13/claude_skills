@@ -12,7 +12,7 @@ Read `references/conformance.md`. The conformance check and the simplification t
 
 First check every finding against the code yourself: the reviewer makes mistakes too, and a slice recognized as done even before the edits is legitimately untouched. Before the edits take the checkpoint `stage-5` by `references/snapshot.md`. The order of the edits matters: a red check caused by something left unfinished would cancel the removal of what is superfluous.
 
-1. **"missing" and "wrong"** — an attempt to fix for the owning slice, as in step 6 of section 3: the executor gets the packet of the slice and the text of the finding. After the attempt check the finding against the code yourself. It is not closed in two attempts — it goes into the report as unclosed; the edits of the attempts stay as long as the check of the slice is green. There is no stop here.
+1. **"missing" and "wrong"** — an attempt to fix for the owning slice, as in step 6 of section 3: the executor gets the packet file of the slice; the text of the finding and the list of what has already been tried go into the message itself. After the attempt check the finding against the code yourself. It is not closed in two attempts — it goes into the report as unclosed; the edits of the attempts stay as long as the check of the slice is green. There is no stop here.
 2. **"beyond the plan"** — bring back to the state before the start only what is superfluous: a superfluous file as a whole, a superfluous piece with an edit. Run the checks of the affected slices.
    - They passed — it is removed, a line goes into the report.
    - They did not pass — so something needs it: restore it from `stage-5` and name it in the report.

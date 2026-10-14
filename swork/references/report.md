@@ -10,12 +10,12 @@ Before the report write "Next step" into `state.md` — "user's choice after the
 
 Show it in sections; do not show an empty section, except "Deviations from the plan":
 
-- **Slices** — for each: the status, the commands of its check lines, the end of the output of each and the file with the full output. There is no output obtained in this work — there is no word "done". For a line with a manual check, instead of the output — "the check is manual".
+- **Slices** — for each: the status, the commands of its check lines — each word for word, in backticks, not a description of it, the end of the output of each — quoted, not described — and the file with the full output. There is no output obtained in this work — there is no word "done". For a line with a manual check, instead of the output — "the check is manual".
 - **Deviations from the plan** — everything you decided without the user: the minor discrepancies fixed in the plan, the files added to a slice, the doubts outside the list of stops. There was not a single one — say so: "the plan was executed as written".
 - **Removed as beyond the plan** — what was removed and by which line of the plan.
 - **Simplified** — what was replaced with ready-made code and what was deleted as redundant; how many findings were skipped.
 - **Fixed after the review** — what was broken and how it was fixed; the declined findings — a line each, with the reason.
-- **Found and left untouched** — every finding with the reason: it requires going outside the plan, the check failed after the edit, it was not closed in two attempts, the check is only manual, it was found by the second round of the review, it could not be established.
+- **Found and left untouched** — every finding, and on the same line its reason: it requires going outside the plan, the check failed after the edit, it was not closed in two attempts, the check is only manual, it was found by the second round of the review, it could not be established.
 - **Noticed by the executors** — the flaws outside the slices from the "noticed outside the slice" lines of "Progress log": the place and the essence of each; they were not fixed.
 - **Not checked by the conformance check** — what the reviewer could not check by the changes.
 - **Not read by the reviewers** — the changed and new files that are not in the READ line, and who did not read them: the checking did not cover them.

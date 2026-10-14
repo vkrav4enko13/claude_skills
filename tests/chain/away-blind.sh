@@ -2,7 +2,7 @@
 # Gives the scenarios of work without the user to a blind reader and compares its answers
 # with the required ones.
 #
-#   bash tests/chain/away-blind.sh <skills folder> <out folder>
+#   bash tests/chain/away-blind.sh <skills folder> <out folder> [<scenarios file> <expected file>]
 #
 # <out folder> is erased and created anew. Into it go saway, sbrain, splan and swork from
 # the skills folder and away-scenarios.md; away-expected.tsv never gets there. The reader
@@ -13,17 +13,26 @@
 # per scenario and the last line "<k> of 15 ok". Code 0 when the reader answered every
 # scenario, whatever the answers; fewer answers — "reader gave <k> answers", no result.txt
 # and code 1.
+# With the two extra arguments that scenarios file goes into <out folder> under its own name in
+# place of away-scenarios.md, the answers are compared with that expected file, and the reader
+# decides what the main session does; the last line is "<k> of <scenarios> ok".
 # Takes from ten minutes to an hour.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
-if [ $# -ne 2 ]; then
-    echo "usage: bash away-blind.sh <skills folder> <out folder>" >&2
+if [ $# -ne 2 ] && [ $# -ne 4 ]; then
+    echo "usage: bash away-blind.sh <skills folder> <out folder> [<scenarios file> <expected file>]" >&2
     exit 2
 fi
 here="$(cd "$(dirname "$0")" && pwd)"
 src="$(cd "$1" && pwd)"
 out="${2%/}"
+scenarios="$here/away-scenarios.md"
+expected="$here/away-expected.tsv"
+if [ $# -eq 4 ]; then
+    scenarios="$(cd "$(dirname "$3")" && pwd)/$(basename "$3")"
+    expected="$(cd "$(dirname "$4")" && pwd)/$(basename "$4")"
+fi
 
 rm -rf "$out"
 mkdir -p "$out"
@@ -31,9 +40,12 @@ out="$(cd "$out" && pwd)"
 for skill in saway sbrain splan swork; do
     cp -R "$src/$skill" "$out/$skill"
 done
-cp "$here/away-scenarios.md" "$out/"
+cp "$scenarios" "$out/"
 
 prompt='The user has left and `saway/SKILL.md` drives the work. For every scenario of `away-scenarios.md` decide by the skill texts alone what happens and write `verdict.tsv`: `B<N>⇥<letter>⇥<the sentence of the text you rely on>`.'
+if [ $# -eq 4 ]; then
+    prompt="For every scenario of \`$(basename "$scenarios")\` decide by the skill texts alone what the main session does and write \`verdict.tsv\`: \`<id>⇥<letter>⇥<the sentence of the text you rely on>\`."
+fi
 
 # A failed session leaves no answers: the count below reports it.
 (
@@ -51,7 +63,7 @@ prompt='The user has left and `saway/SKILL.md` drives the work. For every scenar
 verdict="$out/verdict.tsv"
 if [ ! -f "$verdict" ]; then verdict=/dev/null; fi
 
-# The first answer of the reader to every scenario of away-expected.tsv, in its order.
+# The first answer of the reader to every scenario of the expected file, in its order.
 if result="$(LC_ALL=C awk -F'\t' '
     FILENAME == ARGV[1] { want[$1] = $2; order[++n] = $1; next }
     {
@@ -69,7 +81,7 @@ if result="$(LC_ALL=C awk -F'\t' '
         }
         print (ok + 0) " of " n " ok"
     }
-' "$here/away-expected.tsv" "$verdict")"; then
+' "$expected" "$verdict")"; then
     printf '%s\n' "$result" > "$out/result.txt"
     cat "$out/result.txt"
 else

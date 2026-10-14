@@ -8,17 +8,18 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 
 - sbrain-1. The topic folder holds six cards: `00-index.md`, `state.md`, `task.md`, `requirements.md`, `decisions.md` and `scope.md` — sbrain/references/topic-cards.md:21
 - sbrain-2. The requirements are written in `requirements.md` as lines `- R<N>. …` with continuous numbers in the order of the summary — sbrain/references/topic-cards.md:14
-- sbrain-3. The condition of a requirement stands at its start: "When", "While", "If" or "Where" — sbrain/references/topic-cards.md:91
-- sbrain-4. The requirements do not have the word "system": the actor is named — sbrain/references/topic-cards.md:92
+- sbrain-3. The condition of a requirement stands at its start: "When", "While", "If" or "Where" — sbrain/references/topic-cards.md:85
+- sbrain-4. The requirements do not have the word "system": the actor is named — sbrain/references/topic-cards.md:86
 - sbrain-5. No addition of its own that nobody named has got into the requirements, the decisions and the success criteria: an action log, a switch, a notification, an extra safeguard — sbrain/references/synthesis.md:51
 - sbrain-6. Every line of `decisions.md` names what was chosen, instead of what, why, whose decision it is and the status — sbrain/references/topic-cards.md:25
 - sbrain-7. "Out of scope" from the summary is written into `scope.md` — sbrain/references/topic-cards.md:18
-- sbrain-8. `work/00-index.md` has the topic's line: a link to `<topic>/00-index.md` and the essence of the topic — sbrain/references/topic-cards.md:114
-- sbrain-9. The user's words that hold for the whole project are written as a line in the wiki's `rules.md` — sbrain/references/topic-cards.md:116
-- sbrain-10. The journal has one line of the topic's chain: `sbrain` writes it once and does not touch it after the "yes" to the cards — sbrain/references/topic-cards.md:117
-- sbrain-11. After the user's "yes" to the cards `sbrain` sets the phase of the topic to `requirements confirmed` — sbrain/references/topic-cards.md:65
-- sbrain-12. `sbrain` does not write product code and does not call implementation skills — sbrain/SKILL.md:21
-- sbrain-13. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — sbrain/SKILL.md:11
+- sbrain-8. `work/00-index.md` has the topic's line: a link to `<topic>/00-index.md` and the essence of the topic — sbrain/references/topic-cards.md:108
+- sbrain-9. The user's words that hold for the whole project are written as a line in the wiki's `rules.md` — sbrain/references/topic-cards.md:110
+- sbrain-10. The journal has one line of the topic's chain: `sbrain` writes it once and does not touch it after the "yes" to the cards — sbrain/references/topic-cards.md:111
+- sbrain-11. After the user's "yes" to the cards `sbrain` sets the phase of the topic to `requirements confirmed` — sbrain/references/topic-cards.md:61
+- sbrain-12. `sbrain` does not write product code and does not call implementation skills — sbrain/SKILL.md:22
+- sbrain-13. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — sbrain/SKILL.md:12
+- sbrain-14. The handoff menu of a result written into the topic folder names first the option that starts `splan` in a new session and gives the lines to paste — sbrain/references/handoff.md:16
 
 ## splan
 
@@ -46,21 +47,22 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 - splan-22. Before it is shown to the user, a plan in cards is read by a separate agent that has not seen the conversation — splan/references/review.md:24
 - splan-23. The task for the plan reviewer has no arguments of the author and no conclusion "the plan is good" — splan/references/review.md:26
 - splan-24. After the user's "yes" to the plan `splan` sets the phase of the topic to `plan confirmed` — splan/references/plan-format.md:161
-- splan-25. `splan` does not execute the plan: there is no product code in the project after it — splan/SKILL.md:80
-- splan-26. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — splan/SKILL.md:11
+- splan-25. `splan` does not execute the plan: there is no product code in the project after it — splan/SKILL.md:83
+- splan-26. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — splan/SKILL.md:12
+- splan-27. The handoff menu of a plan written into the topic folder names first the option that starts `swork` in a new session and gives the lines to paste — splan/references/approval.md:43
 
 ## swork
 
 - swork-1. Every slice of a plan in the topic folder is executed by a separate fresh subagent — swork/references/executor.md:5
-- swork-2. The executor gets the packet of its own slice only: its task has no cards of other slices — swork/SKILL.md:100
+- swork-2. The executor gets the packet of its own slice only: its task has no cards of other slices — swork/SKILL.md:105
 - swork-3. The executor's packet holds the check lines of its slice together with the header row of the table — swork/references/executor.md:12
 - swork-4. The exclusions for the search for unreported edits are written into "Progress log" before the first slice — swork/references/slices.md:12
-- swork-5. "Progress log" is kept as the card `progress.md` in the topic folder, and the topic index has a line about it — swork/references/slices.md:26
-- swork-6. A slice gets the status "done" after a check that the main session ran itself after the executor's reply — swork/references/slices.md:42
-- swork-7. The "Result" column of a check line with a command holds `green YYYY-MM-DD` or `red YYYY-MM-DD` — swork/SKILL.md:69
-- swork-8. Every attempt to fix is written into "Progress log" as a line "S<N>: attempt <k> of 2" with what was tried and how it ended — swork/references/slices.md:43
-- swork-9. The executor and the reviewers do not write to the wiki: only the main session edits the cards — swork/SKILL.md:117
-- swork-10. `swork` adds nothing beyond the plan: no neighbouring edits, no generalizations "for the future", no items from "Not doing" — swork/SKILL.md:27
+- swork-5. "Progress log" is kept as the card `progress.md` in the topic folder, and the topic index has a line about it — swork/references/slices.md:28
+- swork-6. A slice gets the status "done" after a check that the main session ran itself after the executor's reply — swork/references/slices.md:44
+- swork-7. The "Result" column of a check line with a command holds `green YYYY-MM-DD` or `red YYYY-MM-DD` — swork/SKILL.md:72
+- swork-8. Every attempt to fix is written into "Progress log" as a line "S<N>: attempt <k> of 2" with what was tried and how it ended — swork/references/slices.md:45
+- swork-9. The executor and the reviewers do not write to the wiki: only the main session edits the cards — swork/SKILL.md:122
+- swork-10. `swork` adds nothing beyond the plan: no neighbouring edits, no generalizations "for the future", no items from "Not doing" — swork/SKILL.md:30
 - swork-11. The start and the end of every stage 5–7 that was passed are written into "Progress log" with the words "stage <N> started" and "stage <N> finished" — swork/references/finish.md:7
 - swork-12. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation — swork/references/finish.md:11
 - swork-13. The conformance check task has no executors' reports and no conclusion "everything is done" — swork/references/conformance.md:14
@@ -70,10 +72,10 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 - swork-17. The review is read by a second reviewer, after the edits of the conformance check and the simplification — swork/references/finish.md:45
 - swork-18. Every declined finding of the review is named in the report as a line: what was proposed and why it was declined — swork/references/review.md:65
 - swork-19. A second round of the review goes only if a serious finding was fixed — swork/references/review.md:69
-- swork-20. For every slice the report names the status, the commands of its check lines and the end of the output of each — swork/references/report.md:11
-- swork-21. The report has the section "Deviations from the plan" (in the user's language): there was not a single one — it holds the words "the plan was executed as written" — swork/references/report.md:12
-- swork-22. Every finding in the report section "Found and left untouched" (in the user's language) is named with the reason why it was left untouched — swork/references/report.md:16
-- swork-23. After "accept the work" (in the user's language) `state.md` holds the phase `done` and the next step "none — work accepted" — swork/references/report.md:38
-- swork-24. After "accept the work" (in the user's language) the tail of the chain's journal line is `done: <the outcome in one phrase>`, and the journal has no second line of the topic — swork/references/report.md:39
-- swork-25. After "accept the work" (in the user's language) the topic's line is not in "In progress" of the root index — swork/references/report.md:40
-- swork-26. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — swork/SKILL.md:11
+- swork-20. For every slice the report names the status, the commands of its check lines and the end of the output of each — swork/references/report.md:13
+- swork-21. The report has the section "Deviations from the plan" (in the user's language): there was not a single one — it holds the words "the plan was executed as written" — swork/references/report.md:14
+- swork-22. Every finding in the report section "Found and left untouched" (in the user's language) is named with the reason why it was left untouched — swork/references/report.md:18
+- swork-23. After "accept the work" (in the user's language) `state.md` holds the phase `done` and the next step "none — work accepted" — swork/references/report.md:40
+- swork-24. After "accept the work" (in the user's language) the tail of the chain's journal line is `done: <the outcome in one phrase>`, and the journal has no second line of the topic — swork/references/report.md:41
+- swork-25. After "accept the work" (in the user's language) the topic's line is not in "In progress" of the root index — swork/references/report.md:42
+- swork-26. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — swork/SKILL.md:12

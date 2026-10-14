@@ -1,0 +1,12 @@
+lever	group	kind	tokens	percent	verdict	basis
+R17	output	behaviour	6860	6.9	taken	medium roles prompt: executor 10756 + fixer 9825 over 3 runs
+R12	reading	behaviour	2846	2.9	deferred	medium plan-review output 16830 x skill 3161 / reads 6230; conformance, review, review-2 read no skill or task; over 3 runs
+R16	output	behaviour	1682	1.7	deferred	medium overview first writes 1601 + 1682 + 1763 over 3 runs
+R20	round	behaviour	1631	1.6	deferred	medium roles output: review-2 4895, no plan-review-2; over 3 runs
+R13	reading	behaviour	1454	1.5	deferred	medium main output 202938 x task 6912 / reads 321509 over 3 runs
+R15	output	behaviour	706	0.7	deferred	medium overview later writes: run 3 3881 - 1763, runs 1 and 2 one write; over 3 runs
+R18	output	behaviour	15	0.0	deferred	away-m main text tokens 2021 in 46 requests minus the last request 2006
+R14	reading	behaviour	0	0.0	deferred	medium reads session-max wiki-rules 1: on the stand a session runs one skill, no repeat to remove
+R19	deletion	deletion	0	0.0	taken	deletion: not ranked
+R21	context	input	0	0.0	taken	input side: taken without the threshold, the user's decision of 2026-10-13
+R22	context	input	0	0.0	taken	input side: taken without the threshold, the user's decision of 2026-10-13

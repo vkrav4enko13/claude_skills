@@ -13,7 +13,7 @@ Start a small change by reading `references/small.md` — before the first edit.
 
 **Continuing interrupted work.** If the phase in `state.md` is `execution in progress`, the slices have statuses other than "not started", "Progress log" — the `progress.md` card — has records, or the snapshot folder `.swork/` already lies in the topic folder — the work is being continued. The next step in `state.md` is "user's choice after the report" — this means that the report has been shown but the choice has not been made: do not repeat the slices and the stages, show the report from the records of "Progress log" — by `references/report.md` — and ask for the choice. Otherwise — before the first slice:
 
-- check the plan line "Checked against code" against the present code and name the discrepancies;
+- check the plan line "Checked against code" against the present code and name the discrepancies; a discrepancy in a slice that is already done is not a stop: the slice stays done, and the conformance check of stage 5 takes the discrepancy;
 - find the files outside the plan that were changed since the last session, by `references/snapshot.md`, show them as a list and ask once whose edits these are. Write the ones the user called their own into the snapshot's `known.txt`; deal with the rest by the table from the same file;
 - run anew the checks of the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: between sessions what was done could have broken. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; while it is red, do not start the next slice;
 - do not move the time marker, do not touch the copies and the checkpoints in the snapshot.

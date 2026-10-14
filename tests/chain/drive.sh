@@ -3,9 +3,10 @@
 # session with project-level skills; the questions of the skill are answered
 # by the fixed line of the stage.
 #
-#   bash tests/chain/drive.sh <project> <stage> <stage folder>
+#   bash tests/chain/drive.sh <project> <stage> <stage folder> [<level>]
 #
-# Stages: brain, plan, work, seed, away. The first turn starts the skill. While
+# The level is the effort of the session: low medium high xhigh max, without
+# it — medium. Stages: brain, plan, work, seed, away. The first turn starts the skill. While
 # the topic phase in state.md is not the one the stage is passed with — one more
 # turn with the stage answer into the same session, at most six answers. The
 # stage away is exactly one turn and no answer: saway reads any answer as the
@@ -16,10 +17,16 @@
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
-if [ $# -ne 3 ]; then
-    echo "usage: bash drive.sh <project> <stage> <stage folder>" >&2
+usage() {
+    echo "usage: bash drive.sh <project> <stage> <stage folder> [<level>]" >&2
     exit 2
-fi
+}
+[ $# -eq 3 ] || [ $# -eq 4 ] || usage
+effort="${4:-medium}"
+case "$effort" in
+    low | medium | high | xhigh | max) ;;
+    *) usage ;;
+esac
 project="${1%/}"
 stage="$2"
 dir="${3%/}"
@@ -74,7 +81,7 @@ turn() {
             --setting-sources project,local --permission-prompts none \
             --permission-mode acceptEdits \
             --allowedTools Bash Read Edit Write Glob Grep Agent Skill \
-            --model claude-opus-5-5 --effort xhigh --output-format json \
+            --model claude-opus-5-5 --effort "$effort" --output-format json \
             < /dev/null > "$out"
     )
 }

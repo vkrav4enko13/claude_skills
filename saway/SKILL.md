@@ -2,18 +2,19 @@
 name: saway
 description: "Working without the user: when the user leaves and asks to have the job seen through to the end without them, answers the questions of the `sbrain → splan → swork` chain itself, drives the chain from the stage it is at, records every decision of its own and leaves a full description at the end. Use when the user says they have left or are leaving and asks to finish without them — to decide yourself and not wait for their answers. Not for work where the user is present: their 'decide yourself' in the middle of a conversation is not an absence. The user's absence is handled by this skill, not by the autonomous plugin skills: it commits nothing and pushes nothing."
 argument-hint: "[topic or task; if not named, the started one is taken]"
+effort: medium
 ---
 
 # Working without the user
 
 The user has left and asks you to see the work through to the end. You drive it in their place: you answer the questions that `sbrain`, `splan` and `swork` would have asked them, until the work ends or runs into something that must not be done without them. `saway` starts the skill that is needed and decides for the user; where its text and theirs differ about a stop, an approval or an edit of a card, `saway` is right.
 
-Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. Every chat message and the full description are in the language the user wrote in before leaving. `away.md` and the other cards stay English; the description retells them in the user's language in full, not by a link.
+Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. This holds from the very first reply, the short notes between tool calls included. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. Every chat message and the full description are in the language the user wrote in before leaving. `away.md` and the other cards stay English; the description retells them in the user's language in full, not by a link.
 
 ## What changes while the user is away
 
 - **Do not ask the user questions.** Do not call the blocking question tool and do not end a turn with a question: there is no one to answer, and the work will stall.
-- **`saway` is stronger than the "wait for an answer" rules.** Where `sbrain`, `splan` or `swork` tell you to ask, to show a menu, to wait for a "yes", not to move on to the next stage without a choice, or to start the next skill in a new session, decide yourself by section 3 and go on in this same session. Of the general instructions, only the form of confirmation — a request with options — gives way; their "only with the user's consent" conditions remain prohibitions. The other rules of the three skills apply as written; their stops are answered by section 3.
+- **`saway` is stronger than the "wait for an answer" rules.** Where `sbrain`, `splan` or `swork` tell you to ask, to show a menu, to wait for a "yes", not to move on to the next stage without a choice, or to start the next skill in a new session, decide yourself by section 3 and start the next stage. Of the general instructions, only the form of confirmation — a request with options — gives way; their "only with the user's consent" conditions remain prohibitions. The other rules of the three skills apply as written; their stops are answered by section 3.
 - **The mode ends with the user's return.** A return is a message from the user themselves; their remark right after the mode is switched on, while they have not left yet, is a clarification, not a return. A turn started by the `/goal` command, an idle check and the result of a background task are not a return. When the user has returned, show the description from section 5, tell them to type `/goal clear` if the goal is still set, and from then on ask as usual.
 - **Before starting each skill of the chain and before writing the full description, reread this file:** after context compaction its text may be gone, while the stage texts tell you to ask.
 - **Every chat message ends with a progress line**, shown in the user's language: `Progress: slices <done>/<total> · now: <what runs> · ahead: <stages left>`; before there is a plan — `Progress: no plan yet · now: … · ahead: …`. `<done>` — the slices with the status `done`, `<total>` — all slices. In the full description it stands right before the last line.
@@ -32,7 +33,7 @@ This is not done even if such an option is recommended. Write the item into "Wai
 
 ## 1. What you take on
 
-In your first message give the user the `/goal` line from the section "How to leave so that the session does not stall" — in case they are still here; do not wait for an answer. In the same message say in one sentence which work you are driving. If the root holds a `.saway.md` from a previous run, append to it under a line with today's date: the whole file will go into the description.
+In your first message give the user the `/goal` line from the section "How to leave so that the session does not stall" — in case they are still here; do not wait for an answer. In the same message say in one sentence which work you are driving. It ends with the progress line, as every message does: the line closes this first message too, and a short note between tool calls as well. If the root holds a `.saway.md` from a previous run, append to it under a line with today's date: the whole file will go into the description.
 
 - The request names a topic or a task — that one.
 - It is not named — the one that was going on in this conversation.
@@ -56,7 +57,21 @@ Read the stage from the records, not from memory: for a topic this is the `state
 | the `swork` report has been shown: the step in `state.md` is "user's choice after the report" | section 5 with the line `saway: work finished` |
 | done | section 5 with the line `saway: work finished` |
 
-Start the skill yourself. When it has finished its stage, reread `state.md` and take the next row of the table. The approval is recorded by the skill itself, in all of its places: you choose the "Yes" option in its menu, and in the card from section 4 you record that it was given without the user. A plan from the chat that the user did not approve — reread it before starting `swork` and record that you approved it yourself.
+While the topic folder exists, a stage is not run in this session: launch a fresh subagent with effort `medium` and the description `Stage <skill> of <topic>`, using the effort parameter of the subagent launch tool, with this task:
+
+```
+Project root: <path>. Topic: <topic>.
+Read in full <path to the SKILL.md of the stage's skill> and <path to saway/SKILL.md>, then carry out one stage of the work: the stage of <skill>. The user is away: decide for them by the sections "What changes while the user is away", "What not to do without the user", 3 and 4 of saway/SKILL.md.
+You stand in for the main session of the stage: write the topic cards and the wiki as the skill tells, and launch the subagents of the skill; they do not write.
+The user's words that bear on the stage: <quoted word for word>.
+Start no other skill.
+Reply in English, exactly in this form:
+PHASE: <phase and next step of state.md>
+ENDED: <stage over | stopped — why>
+FOR THE USER: <what is not in the cards>
+```
+
+Before each launch and after each reply write a chat message with the progress line. After the reply reread `state.md` and take the next row of the table. Without a topic folder run the stage in this session: start the skill yourself; when it has finished its stage, reread `state.md` and take the next row of the table. The approval is recorded by the skill itself, in all of its places: you choose the "Yes" option in its menu, and in the card from section 4 you record that it was given without the user. A plan from the chat that the user did not approve — reread it before starting `swork` and record that you approved it yourself.
 
 ## 3. How to decide for the user
 

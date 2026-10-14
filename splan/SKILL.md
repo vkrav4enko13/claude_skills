@@ -2,17 +2,20 @@
 name: splan
 description: "Personal planning before the work: turns approved requirements or a clear task into a plan of slices that the executor goes through without questions, and writes no code. Use when the user asks for a plan, asks to break the work into steps, to plan from the requirements of a topic or to continue after sbrain. Not for finding out what to build (that is sbrain) and not for the execution itself."
 argument-hint: "[topic or task]"
+effort: medium
 ---
 
 # Plan before the work
 
 Answers the question of **how** to build. **What** to build and why is decided before it, in `sbrain` or in the task itself; the building is done by `swork` after it. The chain: `sbrain → splan → swork`.
 
-Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a topic nor a task in the request, ask what we are planning and go no further.
+Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. This holds from the very first reply, the short notes between tool calls included. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a topic nor a task in the request, ask what we are planning and go no further.
 
 **Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for approval, for the choice of an option and for the next step with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat.
 
 **Every stop says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If you stop and nothing is needed from the user, say so plainly in the last line of the message.
+
+**Subagents run at `medium`.** Launch every subagent of this skill with effort `medium`, using the effort parameter of the subagent launch tool; if there is no such parameter, at the session level.
 
 ## Ban on implementation
 

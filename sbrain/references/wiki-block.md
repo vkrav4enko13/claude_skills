@@ -11,5 +11,5 @@ The project has a wiki — records for the next session. The full rules: `{{RULE
 - **After a write** run `{{CHECK}} <wiki folder>`{{NOTE}} and fix what it names; if it does not run, check the limits yourself and say so.
 - **In the final message** name in one line what you wrote to the wiki.
 - **Records are a hint:** check a statement about the code against the code, fix an out-of-date card.
-- **A subagent** does not write to the wiki.
+- **A subagent** does not write to the wiki; a stage subagent of `saway` stands in for the main session of its stage and writes as it does.
 <!-- project-wiki:end -->

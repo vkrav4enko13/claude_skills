@@ -83,7 +83,7 @@ Read the other cards by a link from an index or by search, one at a time.
 
 ## Writing
 
-- **Only the main session writes.** A subagent does not write to the wiki. Write wiki cards in English, both the format and the content. Words of the user are recorded in English translation. Cards written earlier in another language are read as they are and are not translated.
+- **Only the main session writes.** A subagent does not write to the wiki; a stage subagent of `saway` stands in for the main session of its stage and writes as it does. Write wiki cards in English, both the format and the content. Words of the user are recorded in English translation. Cards written earlier in another language are read as they are and are not translated.
 - **The session only answered questions or read** — do not write to the wiki and do not set up a wiki.
 - **A task that changed something is finished** — add exactly one line to the journal. If there is no file for the current month, set it up.
 - **Something unfinished or deferred is left after the task** — write it as a line in "In progress" or "Deferred" of the root index.

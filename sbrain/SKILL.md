@@ -2,17 +2,20 @@
 name: sbrain
 description: "Personal brainstorm with a survey: turns a vague idea or a ready plan into agreed requirements and does not let code start before approval. Also sets up the project wiki and moves requirements files of the earlier form into cards. Use when the user asks for a brainstorm, to discuss an idea, to survey them, to 'grill' them or to stress-test a plan, or when the task is new and it is unclear what exactly to build. Not for work that is already spelled out and not for questions with one definite answer."
 argument-hint: "[idea, task or plan] [grill — a survey: of a ready plan or of an idea without a plan]"
+effort: medium
 ---
 
 # Brainstorm and survey
 
 Answers the question of **what** to build and **why exactly this way**; how to build is a matter for the plan after it. The skill implements nothing.
 
-Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is no idea in the request, ask what we are discussing and go no further.
+Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. This holds from the very first reply, the short notes between tool calls included. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is no idea in the request, ask what we are discussing and go no further.
 
 **Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for approval, for the choice of an option and for the next step with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat. Open survey questions still go as text.
 
 **Every stop says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If you stop and nothing is needed from the user, say so plainly in the last line of the message.
+
+**Subagents run at `medium`.** Launch every subagent of this skill with effort `medium`, using the effort parameter of the subagent launch tool; if there is no such parameter, at the session level.
 
 ## Ban on implementation
 
