@@ -112,6 +112,7 @@ while IFS= read -r file; do
     dir_of "$rel"
     lines=$(($(wc -l < "$file")))
     kind=list
+    width=200
     case "$rel" in
         00-index.md)
             if [ $lines -gt 40 ]; then say "$rel" "root index is longer than 40 lines"; fi
@@ -119,15 +120,17 @@ while IFS= read -r file; do
         rules.md)
             if [ $lines -gt 30 ]; then say "$rel" "rules are longer than 30 lines"; fi
             ;;
-        journal/* | */00-archive.md | */plan-overview.md) ;;
+        journal/*) ;;
+        */00-archive.md | */plan-overview.md) width=400 ;;
         */00-index.md)
             kind=folder
-            if [ $lines -gt 50 ]; then say "$rel" "index is longer than 50 lines"; fi
+            width=400
+            if [ $lines -gt 100 ]; then say "$rel" "index is longer than 100 lines"; fi
             ;;
         *)
             kind=card
-            if [ $lines -gt 30 ]; then say "$rel" "card is longer than 30 lines"; fi
-            if [ $(($(wc -m < "$file"))) -gt 3000 ]; then say "$rel" "card is longer than 3000 characters"; fi
+            if [ $lines -gt 60 ]; then say "$rel" "card is longer than 60 lines"; fi
+            if [ $(($(wc -m < "$file"))) -gt 6000 ]; then say "$rel" "card is longer than 6000 characters"; fi
             ;;
     esac
 
@@ -137,8 +140,8 @@ while IFS= read -r file; do
     fence=0
     while IFS= read -r line || [ -n "$line" ]; do
         n=$((n + 1))
-        if [ $kind != card ] && [ ${#line} -gt 200 ]; then
-            say "$rel:$n" "line is longer than 200 characters"
+        if [ $kind != card ] && [ ${#line} -gt $width ]; then
+            say "$rel:$n" "line is longer than $width characters"
         fi
         case "$line" in
             '# '*) title=1 ;;

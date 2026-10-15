@@ -14,17 +14,19 @@ Start a small change by reading `references/small.md` — before the first edit.
 **Continuing interrupted work.** If the phase in `state.md` is `execution in progress`, the slices have statuses other than "not started", "Progress log" — the `progress.md` card — has records, or the snapshot folder `.swork/` already lies in the topic folder — the work is being continued. The next step in `state.md` is "user's choice after the report" — this means that the report has been shown but the choice has not been made: do not repeat the slices and the stages, show the report from the records of "Progress log" — by `references/report.md` — and ask for the choice. Otherwise — before the first slice:
 
 - check the plan line "Checked against code" against the present code and name the discrepancies; a discrepancy in a slice that is already done is not a stop: the slice stays done, and the conformance check of stage 5 takes the discrepancy;
-- find the files outside the plan that were changed since the last session, by `references/snapshot.md`, show them as a list and ask once whose edits these are. Write the ones the user called their own into the snapshot's `known.txt`; deal with the rest by the table from the same file;
-- run anew the checks of the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: between sessions what was done could have broken. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; while it is red, do not start the next slice;
+- find the files outside the plan that were changed since the last session, by `references/snapshot.md`: they are foreign edits — write them into the snapshot's `known.txt` and name them in one `⚠` line by section 4 of `SKILL.md`; do not ask whose they are;
+- run anew the checks of the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: between sessions what was done could have broken. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — a card edit by "Decisions and bypass" of `references/slices.md`, then `bypassed` without a restore; its `done` dependents stay `done` and are named in the report as built on a broken slice. Until it is decided, do not start the next slice;
 - do not move the time marker, do not touch the copies and the checkpoints in the snapshot.
 
 Next — by the statuses and "Progress log":
 
+- read the `bypassed` statuses first: a bypassed slice is not started, not retried and not asked about; its dependents are not executed;
 - do not redo a "done" slice;
-- a "stopped" slice or a slice with a "started" record without an outcome — its files hold the edits of the past attempts. Name the reason for the stop from "Progress log" and start from step 2 of section 3. After an interruption the attempts recorded in "Progress log" count; after a stop that the user lifted, the count starts anew. For such a slice with a "Rollback" section do not repeat the saving: ask what managed to run;
-- do not execute an "awaiting manual check" slice anew — ask how the check ended;
+- a slice with a "started" record without an outcome — its files hold the edits of the past attempts. Start from step 2 of section 3. After an interruption the attempts recorded in "Progress log" count; after an own card edit the count starts anew. Such a slice with a "Rollback" section: establish by the code what managed to run; it is unclear — `bypassed`, neither the saving nor the action is redone;
+- a legacy "stopped" slice — take it as red after two attempts: "Decisions and bypass" of `references/slices.md`;
+- do not execute an "awaiting manual check" slice anew; the user has not reported how the check ended — the status `not checked`;
 - there is a "stage started" record without a "stage finished" one — restore the files from the checkpoint of this stage and go through the stage anew.
 
-There is a snapshot folder, but the statuses are all "not started" and there are no records — ask whether to continue or to start anew. Do not delete the snapshot silently.
+There is a snapshot folder, but the statuses are all "not started" and there are no records — continue with it and give a `⚠` line. Never delete the snapshot.
 
 **Assumptions.** A slice is named in a line of the plan section "Assumptions", or the line has "all" — name this assumption before the slice starts, not earlier and not later. Do not wait for an answer: this is not a stop.

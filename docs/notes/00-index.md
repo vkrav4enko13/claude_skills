@@ -29,3 +29,4 @@
 - [Скорость серии на английских текстах](chain-speed-en-series.md) — отличий от «до» сверх разброса нет; прибавляют обзор плана и чтение задания из файла
 - [Where the chain spends tokens at `xhigh`](chain-token-map-xhigh.md) — thinking 59–66 % of output, checkers 46 %, ordered writing about 11 %; scripts kept next to the stand data
 - [Effort on Opus 5.5](opus55-effort.md) — the default and the advice are `medium`; the stand and the measured sessions ran at `xhigh`
+- [Two nonstop-run.sh at once](stand-nonstop-parallel.md) — two parallel runs both fail with a missing stand project; run it alone

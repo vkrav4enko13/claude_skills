@@ -12,7 +12,7 @@ Read once per run, at step 2; reread it only if the text of the file is no longe
 |---|---|
 | `base/<path from the project root>` | A copy of the file before the first edit |
 | `new-files.txt` | The files created in this work: a path from the root per line, without repeats |
-| `known.txt` | The files outside the plan that the user called their own: a path from the root per line |
+| `known.txt` | The files outside the plan that are left as they are — foreign edits and files there is nothing to restore with: a path from the root per line |
 | `created.txt` | The functions created by the slices: `S<N>: name(signature) — file` per line; written by the main session after every run of the executor |
 | `checks/` | The full output of every run of a check: `S2-1.txt`, `S2-2.txt` — the slice and the number of the run |
 | `dirty-at-start.txt` | Only under git: the output of `git status --porcelain` at the start |
@@ -54,7 +54,7 @@ A file of a future slice that was changed ahead of time is the same kind of edit
 - Under git — the files for which `git check-ignore` answers with code 0.
 - Without git collect the list during the preparation from three sources: the project's ignore files (`.gitignore`, `.ignore` and the like); the output paths in the check commands of the slices; the standard list — `build/`, `out/`, `bin/`, `obj/`, `node_modules/`, `__pycache__/`, `*.o`, `*.obj`, `*.pdb`, `*.log`, `*.tmp`.
 
-Write the list of exclusions into "Progress log" before the first slice. Without git it is an estimate: too wide a list will hide a real edit, too narrow a list will give a needless stop.
+Write the list of exclusions into "Progress log" before the first slice. Without git it is an estimate: too wide a list will hide a real edit, too narrow a list will give needless entries in `known.txt`.
 
 **What the search does not see:** the deletion of a file and a move that keeps the time. Under git a deletion is shown by `git status`, without git — by nothing.
 
@@ -64,12 +64,12 @@ Write the list of exclusions into "Progress log" before the first slice. Without
 |---|---|
 | Under git, the file is tracked and clean at the start (it is not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, then `git checkout -- <file>` and set the time of the file back to the time of the marker, otherwise it will be found again; a line into the report |
 | Under git, the file is new and untracked, it is not in `dirty-at-start.txt` | Move it into the snapshot's `removed/` — do not delete it; a line into the report |
-| Under git, the file is in `dirty-at-start.txt` | A stop: it holds the user's edits, there is nothing to restore it with |
-| Without git | A stop: show the file, do not try to restore it |
+| Under git, the file is in `dirty-at-start.txt` | Into `known.txt` and a `⚠` line by section 4 of `SKILL.md`: it holds the user's edits, there is nothing to restore it with |
+| Without git | Into `known.txt` and a `⚠` line: do not try to restore it |
 
-If at the stop the user called the file their own, write the path into `known.txt`, or the file will stop the work after every following slice.
+Write the path into `known.txt` at once, or the file will be found again after every following slice.
 
-After the restoring or the move run the checks of the current slice, of all the slices with the status "done" and the commands of the slices with the status "awaiting manual check": a file outside the lists could have been needed by any of them. A check turned red — then the slice must need a file that is not in the plan: put the file from `removed/` back in place and stop with a discrepancy.
+After the restoring or the move run the checks of the current slice, of all the slices with the status "done" and the commands of the slices with the status "awaiting manual check": a file outside the lists could have been needed by any of them. A check turned red — then the slice must need a file that is not in the plan: put the file from `removed/` back in place and add it to the "Files" block of the slice with a card edit by "Decisions and bypass" of `references/slices.md`.
 
 ## Commands: bash
 

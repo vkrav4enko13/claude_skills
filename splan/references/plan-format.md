@@ -105,7 +105,7 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 - **Command** — a command that prints the result of the scenario; do not write a comparison with the expected result into it: `swork` makes the comparison by the "Expected" column. If the scenario cannot be checked with a command — the words `checked manually: <steps>`.
 - **Expected** — the command output that means success, verbatim or a part of it; for a manual line — what to see.
 - **Slice** — the slice the line belongs to: exactly one.
-- **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`. `splan` always writes `not run`.
+- **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`, `not checked: <reason>`. `splan` always writes `not run`.
 
 ### Slice — `plan-s<N>-<name>.md`
 
@@ -134,13 +134,13 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 
 Slice rules:
 
-- **Status is written by `swork`.** The values: `not started`, `done`, `awaiting manual check`, `stopped`. `splan` always writes `not started`.
+- **Status is written by `swork`.** The values: `not started`, `done`, `awaiting manual check`, `not checked`, `bypassed`. `splan` always writes `not started`.
 - **The numbers are permanent.** A slice is removed — its number is not reused; one is added — it gets the next number. Other slices and the executor refer to the numbers.
 - **Interfaces — exact.** The executor of a slice can see only its own slice; from this block it learns the names and the types of the neighbours. A function named one way in `S3` and another way in `S7` is a plan error. This holds also when the slices edit one file — one script or one text: the name of a function, a variable, a key or a section that a neighbouring slice takes is named in "gives" of the slice that introduces it.
 - **Files — verified.** The path to an existing file is checked against the code. A new file does not exist yet — it is marked just so: "create". A file is created by an earlier slice — write "change: `path` (created in S<N>)": a file has "create" in only one slice.
 - **"What to do" — decisions, not a retelling.** From every line the executor must write exactly one reasonable thing. "Add the needed check", "handle the edge cases", "write tests for this" are lines that decide nothing.
 - **Every slice has check lines.** The slice card has no scenarios and no commands: they lie as lines in `plan-checks.md`, and "Checks" names the numbers of the lines that have this slice in the "Slice" column. A slice that there is nothing to check with is not a slice: merge it with the one where checkable behaviour appears.
-- **The irreversible — with a rollback.** A slice that moves or deletes data, changes permissions or the schema names what to save before the start and which command brings the earlier state back. The saving is the first step of that same slice, not a separate slice.
+- **The irreversible — with a rollback.** A slice that moves or deletes data, changes permissions or the schema names what to save before the start and which command brings the earlier state back. The saving is the first step of that same slice, not a separate slice. The saving and the restore command are runnable as written: `swork` runs them without asking.
 - **Reuse — verified.** Every name named is in the code at the named path. The field is never empty: either a list or "nothing to reuse — searched: …".
 - **Marks — only where they apply.** `no behavior change` — for a rebuild slice: its checks are green even before the edits. No mark — no line. `ready text` — for a slice whose "What to do" gives the text of every edit verbatim.
 
@@ -175,7 +175,7 @@ The same plan as one file, for a person. It is written after the cards and is re
 ## Not agreed
 ````
 
-The overview has no limit on the number of lines or on the total size; a line is at most 200 characters: wrap a long item onto the next line with an indent, a long command — onto new lines of the block at `&&`.
+The overview has no limit on the number of lines or on the total size; a line is at most 400 characters: wrap a long item onto the next line with an indent, a long command — onto new lines of the block at `&&`.
 
 ## Order of writing
 

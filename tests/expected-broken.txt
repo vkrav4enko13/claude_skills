@@ -1,11 +1,11 @@
 00-index.md: root index is longer than 40 lines
 journal/2026-09.md:3: line is longer than 200 characters
-notes/00-index.md: index is longer than 50 lines
+notes/00-index.md: index is longer than 100 lines
 notes/dead-link.md:4: broken link missing.md
-notes/fat-card.md: card is longer than 3000 characters
-notes/long-card.md: card is longer than 30 lines
+notes/fat-card.md: card is longer than 6000 characters
+notes/long-card.md: card is longer than 60 lines
 notes/no-hook.md: no title or hook line
 notes/orphan.md: no line in index notes/00-index.md
 rules.md: rules are longer than 30 lines
-work/00-index.md:5: line is longer than 200 characters
-work/demo/plan-overview.md:12: line is longer than 200 characters
+work/00-index.md:5: line is longer than 400 characters
+work/demo/plan-overview.md:12: line is longer than 400 characters

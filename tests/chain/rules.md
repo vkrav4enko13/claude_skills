@@ -54,28 +54,28 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 ## swork
 
 - swork-1. Every slice of a plan in the topic folder is executed by a separate fresh subagent — swork/references/executor.md:5
-- swork-2. The executor gets the packet of its own slice only: its task has no cards of other slices — swork/SKILL.md:105
+- swork-2. The executor gets the packet of its own slice only: its task has no cards of other slices — swork/SKILL.md:106
 - swork-3. The executor's packet holds the check lines of its slice together with the header row of the table — swork/references/executor.md:12
 - swork-4. The exclusions for the search for unreported edits are written into "Progress log" before the first slice — swork/references/slices.md:12
 - swork-5. "Progress log" is kept as the card `progress.md` in the topic folder, and the topic index has a line about it — swork/references/slices.md:28
 - swork-6. A slice gets the status "done" after a check that the main session ran itself after the executor's reply — swork/references/slices.md:44
-- swork-7. The "Result" column of a check line with a command holds `green YYYY-MM-DD` or `red YYYY-MM-DD` — swork/SKILL.md:72
+- swork-7. The "Result" column of a check line with a command holds `green YYYY-MM-DD` or `red YYYY-MM-DD` — swork/SKILL.md:75
 - swork-8. Every attempt to fix is written into "Progress log" as a line "S<N>: attempt <k> of 2" with what was tried and how it ended — swork/references/slices.md:45
-- swork-9. The executor and the reviewers do not write to the wiki: only the main session edits the cards — swork/SKILL.md:122
+- swork-9. The executor and the reviewers do not write to the wiki: only the main session edits the cards — swork/SKILL.md:124
 - swork-10. `swork` adds nothing beyond the plan: no neighbouring edits, no generalizations "for the future", no items from "Not doing" — swork/SKILL.md:30
 - swork-11. The start and the end of every stage 5–7 that was passed are written into "Progress log" with the words "stage <N> started" and "stage <N> finished" — swork/references/finish.md:7
-- swork-12. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation — swork/references/finish.md:11
+- swork-12. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation — swork/references/finish.md:13
 - swork-13. The conformance check task has no executors' reports and no conclusion "everything is done" — swork/references/conformance.md:14
-- swork-14. A confirmed finding of the conformance check, "missing" or "wrong", is fixed by the executor of the owning slice, which gets the packet of the slice and the text of the finding — swork/references/finish.md:15
-- swork-15. What is confirmed as "beyond the plan" is removed from the code if the checks of the affected slices are green after that — swork/references/finish.md:16
-- swork-16. A changed or new file that is not in a reviewer's READ line is named in the report, in "Not read by the reviewers" (in the user's language) — swork/references/finish.md:25
-- swork-17. The review is read by a second reviewer, after the edits of the conformance check and the simplification — swork/references/finish.md:45
+- swork-14. A confirmed finding of the conformance check, "missing" or "wrong", is fixed by the executor of the owning slice, which gets the packet of the slice and the text of the finding — swork/references/finish.md:17
+- swork-15. What is confirmed as "beyond the plan" is removed from the code if the checks of the affected slices are green after that — swork/references/finish.md:18
+- swork-16. A changed or new file that is not in a reviewer's READ line is named in the report, in "Not read by the reviewers" (in the user's language) — swork/references/finish.md:27
+- swork-17. The review is read by a second reviewer, after the edits of the conformance check and the simplification — swork/references/finish.md:47
 - swork-18. Every declined finding of the review is named in the report as a line: what was proposed and why it was declined — swork/references/review.md:65
 - swork-19. A second round of the review goes only if a serious finding was fixed — swork/references/review.md:69
 - swork-20. For every slice the report names the status, the commands of its check lines and the end of the output of each — swork/references/report.md:13
-- swork-21. The report has the section "Deviations from the plan" (in the user's language): there was not a single one — it holds the words "the plan was executed as written" — swork/references/report.md:14
-- swork-22. Every finding in the report section "Found and left untouched" (in the user's language) is named with the reason why it was left untouched — swork/references/report.md:18
-- swork-23. After "accept the work" (in the user's language) `state.md` holds the phase `done` and the next step "none — work accepted" — swork/references/report.md:40
-- swork-24. After "accept the work" (in the user's language) the tail of the chain's journal line is `done: <the outcome in one phrase>`, and the journal has no second line of the topic — swork/references/report.md:41
-- swork-25. After "accept the work" (in the user's language) the topic's line is not in "In progress" of the root index — swork/references/report.md:42
+- swork-21. The report has the section "Deviations from the plan" (in the user's language): there was not a single one — it holds the words "the plan was executed as written" — swork/references/report.md:20
+- swork-22. Every finding in the report section "Found and left untouched" (in the user's language) is named with the reason why it was left untouched — swork/references/report.md:24
+- swork-23. After "accept the work" (in the user's language) `state.md` holds the phase `done` and the next step "none — work accepted" — swork/references/report.md:46
+- swork-24. After "accept the work" (in the user's language) the tail of the chain's journal line is `done: <the outcome in one phrase>`, and the journal has no second line of the topic — swork/references/report.md:47
+- swork-25. After "accept the work" (in the user's language) the topic's line is not in "In progress" of the root index — swork/references/report.md:48
 - swork-26. Replies to the user in the chat are in the language the user writes in; wiki cards, their format strings, and tasks to and replies from subagents are in English; the prose of the plan overview is in the language of the user. — swork/SKILL.md:12

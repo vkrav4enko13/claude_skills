@@ -7,7 +7,7 @@ Read at step 6 — after the slicing, before the plan is written, — at step 7,
 For a plan in cards, once. Show in the chat and wait for a "yes":
 
 1. **Slicing** — a line per slice: what will start working and which slices it depends on.
-2. **Check points** — where and with what the behaviour will be checked (step 4), and as a separate line the final count, which includes the lines of "Check focus": how many check lines there are and how many of them are checked manually.
+2. **Check points** — where and with what the behaviour will be checked (step 4), and as a separate line the final count, which includes the lines of "Check focus": how many check lines there are and how many of them are checked manually. Name the slices with a "Rollback" section and the manual checks that other slices depend on: the "yes" to the plan is the only consent to them, `swork` executes them without asking.
 3. **Technical decisions** — only those the user would weigh: what was chosen and instead of what. Here too go the cases that the requirements are silent about but for which there is a reasonable expectation: decide yourself and show the decision as a line.
 4. **Discrepancies** — where the code contradicts a requirement, where the requirements have a gap — a case whose answer changes the scope, and where the plan contradicts a decision with the status "in force" — with the card of that decision named.
 
@@ -35,7 +35,7 @@ The review is passed — write the next step into `state.md`: the user reads the
 
 ## 9. Showing and the next step
 
-A direct and a short result is already shown in the chat. Show a plan in cards in the chat in full, with the same text as in the overview `plan-overview.md`: for every slice — what will start working, the files, the steps, the checks with the command and the expected output, the dependencies; then the technical decisions, "Not doing" and what is not agreed — both the reviewer's findings that you disagreed with and the assumptions. After the plan name the full path to the overview and to the topic folder.
+A direct and a short result is already shown in the chat. Show a plan in cards in the chat in full, with the same text as in the overview `plan-overview.md`: for every slice — what will start working, the files, the steps, the checks with the command and the expected output, the dependencies; then the slices with a "Rollback" section and the manual checks that other slices depend on — the "yes" to the plan is the only consent to them; then the technical decisions, "Not doing" and what is not agreed — both the reviewer's findings that you disagreed with and the assumptions. After the plan name the full path to the overview and to the topic folder.
 
 Ask for the approval of the plan and the next step with one request. The options, by the situation:
 

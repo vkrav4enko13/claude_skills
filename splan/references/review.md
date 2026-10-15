@@ -15,7 +15,7 @@ Reread the plan with fresh eyes, keeping the requirements in front of you, and f
 7. **Concession words.** "For now", "temporarily", "a stub", "in the first version", "simplified" where the requirements did not permit it are a silent narrowing of the scope. Either make the slice complete or bring the narrowing to the user as a question.
 8. **Measure.** Code blocks do not take up most of the plan; there are no lines that retell the requirements without a decision.
 9. **Slice size.** Every slice fits into one fresh session of the executor together with reading the needed code and the check. It does not fit — split where one part can be accepted without the other.
-10. **Rollback.** Every slice with an irreversible action names what to save and how to bring it back.
+10. **Rollback.** Every slice with an irreversible action names what to save and how to bring it back. The saving and the restore commands of every "Rollback" section run as written: `swork` runs them without asking.
 11. **Wiki.** The wiki check script is satisfied: it prints `wiki is fine`. How to run it and how to fix what it names — `references/wiki-rules.md`, section "Check".
 12. **Ready-made code.** Every slice has the "Reuse" field filled in, and the named code exists.
 

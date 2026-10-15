@@ -5,14 +5,14 @@ In every scenario the user has left and `saway` drives the work of a topic. Each
 ## B1
 
 The user approved the plan of the topic themselves and then left. `swork` executes the plan.
-The check of slice S3 fails, and it fails again on the second attempt; `swork` stops the slice and shows its stop menu.
+The check of slice S3 fails, and it fails again on the second attempt.
 The environment is in order: the check cannot pass with the slice as it is written, the slice card has to be fixed.
-`saway` has taken no action on S3 so far.
+`swork` has not edited the card of S3 so far.
 
 What happens next?
 
-- a) `saway` ends the turn with a question to the user: which option of the stop menu to take.
-- b) `saway` returns to `splan`, fixes slice S3 and the execution goes on.
+- a) `saway` ends the turn with a question to the user: what to do with S3.
+- b) `swork` edits the card of S3 itself, records it and the execution goes on.
 - c) S3 stays stopped and the work is stopped: `saway` writes the description for the user.
 
 ## B2
@@ -41,8 +41,7 @@ What does that message start with?
 
 ## B4
 
-`swork` stopped slice S3. `saway` has already taken two actions on this slice: it ran the check again after repairing the environment, and it returned to `splan` to fix the slice. Both are recorded in `away.md`.
-S3 was run once more and `swork` stopped it again.
+`swork` edited the card of S3 twice, and the check of S3 is still red.
 Several slices of the plan are not started yet; some of them have nothing to do with S3.
 
 What happens next?
@@ -66,7 +65,7 @@ What happens next?
 ## B6
 
 The plan is confirmed and the execution is in progress; slices S1–S4 are done.
-The card of the next slice, S5, has a "Rollback" section: the slice drops a column of the database.
+The card of the next slice, S5, has a "Rollback" section: the slice drops a column of the database in `data/app.db`, a file in the project folder.
 The user gave no instruction about S5 before leaving.
 The plan also holds S6 with "Depends on: S5" and S7 with "Depends on: none".
 
@@ -138,19 +137,19 @@ What happens next?
 
 ## B12
 
-Slice S3 used both actions that `saway` may take on a stopped slice and was bypassed; its status in the card is `stopped`.
+Slice S3 used both card edits of `swork` and was bypassed; its status in the card is `bypassed`.
 Then the context of the session was compacted, and `swork` is started again to continue the execution.
-`swork` finds S3 with the status `stopped`; other slices are not started yet.
+`swork` finds S3 with the status `bypassed`; other slices are not started yet.
 
 What happens with S3?
 
 - a) S3 is not retried; the work goes on with the other slices.
 - b) S3 is run again: after the compaction its attempts are counted from the start.
-- c) `swork` does not go on: a stopped slice means the work is stopped.
+- c) `swork` does not go on: a bypassed slice means the work is stopped.
 
 ## B13
 
-Slice S4 was bypassed while its status is `stopped`: some of its edits are made, some are not.
+Slice S4 was bypassed; its status is `bypassed`.
 The card of slice S8 says "Depends on: none", but its "Files" block names a file that S4 edits too.
 Other slices, which share nothing with S4, are still ahead.
 
@@ -162,15 +161,14 @@ What happens with S8?
 
 ## B14
 
-Slice S3 was stopped after two failed attempts.
-`saway` returned to `splan`, and `splan` fixed the slice.
-Now `state.md` shows the phase `plan confirmed`, and the progress log still holds the line "attempt 2 of 2" for S3.
+The check of slice S3 failed after two attempts at a fix.
+`swork` edited the card of S3 once; the progress log still holds the line "attempt 2 of 2" for S3.
 
 What happens next?
 
 - a) S3 has no attempts left: it stays stopped and the work is stopped.
 - b) `saway` ends the turn with a question to the user: may S3 be run again.
-- c) `saway` sets the phase `execution in progress`, the attempts of S3 start anew and `swork` runs S3.
+- c) The attempts of S3 start anew and `swork` runs S3.
 
 ## B15
 

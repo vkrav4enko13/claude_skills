@@ -63,11 +63,12 @@ Every card is named in an index: its name stands as the target of a link in the 
 
 | What | Limit |
 |---|---|
-| A card | 30 lines and 3000 characters |
+| A card | 60 lines and 6000 characters |
 | The root index | 40 lines |
 | `rules.md` | 30 lines |
-| A folder index `00-index.md` | 50 lines |
-| A line of the root index, of a folder index, of an archive, of `rules.md`, of the journal and of the plan overview | 200 characters |
+| A folder index `00-index.md` | 100 lines |
+| A line of the root index, of `rules.md` and of the journal | 200 characters |
+| A line of a folder index, of an archive and of the plan overview | 400 characters |
 
 A journal file, the archive `00-archive.md` and the plan overview `plan-overview.md` have no limit on the number of lines or on the total size; the line length limit applies in them too. Characters are letters, not bytes: a Russian letter is one character.
 
@@ -114,11 +115,11 @@ No violations — the line `wiki is fine`, code 0. If there are any — code 1 a
 
 | Violation | How to fix |
 |---|---|
-| `card is longer than 30 lines`, `card is longer than 3000 characters` | Split the card by meaning into two — `<name>-<part>.md` — and name both in the index |
-| `index is longer than 50 lines` | Move the lines of finished topics into `00-archive.md` of the same folder; do not touch the cards |
+| `card is longer than 60 lines`, `card is longer than 6000 characters` | Split the card by meaning into two — `<name>-<part>.md` — and name both in the index |
+| `index is longer than 100 lines` | Move the lines of finished topics into `00-archive.md` of the same folder; do not touch the cards |
 | `root index is longer than 40 lines` | Remove the lines of finished topics from "In progress", and what is done or withdrawn from "Deferred" |
 | `rules are longer than 30 lines` | Ask the user which rules are out of date: they are written from what the user said, do not remove them yourself |
-| `line is longer than 200 characters` | Shorten the line |
+| `line is longer than 400 characters`, `line is longer than 200 characters` | Shorten the line |
 | `no line in index <folder>/00-index.md` | Give the card or the folder a line in the named index |
 | `broken link <target>` | Fix the link or remove it |
 | `no title or hook line` | Give the card a title `# …` and a hook line `> …` |

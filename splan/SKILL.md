@@ -38,7 +38,7 @@ If you are started on a topic — the user named it or gave the path to its fold
 | requirements confirmed | plan |
 | plan written | in `state.md` the next step is independent plan review: go to step 8; otherwise — to step 9: show the plan and wait for a "yes" |
 | plan confirmed | ask: do we continue from it or write anew |
-| execution in progress | read "Progress log" — `progress.md` and its parts: the reason for the stop and the slice records; check the plan against the code, name what is done and what is outdated, and ask: do we continue from it or write anew |
+| execution in progress | read "Progress log" — `progress.md` and its parts: the own decisions, the bypassed slices and the slice records; check the plan against the code, name what is done and what is outdated, and ask: do we continue from it or write anew |
 | done | ask: a new topic or a continuation of this one |
 
 Where the table tells you to stop or to ask, name the phase and wait for an answer: do not start the recon. The phase `requirements written` means that the user has not yet said "yes" to the topic cards: say so and offer `sbrain` — the requirements are approved and edited there.

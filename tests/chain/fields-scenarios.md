@@ -21,7 +21,7 @@ What does the main session do?
 
 - a) Edits `lib/config.sh` itself and sets S4 to "done".
 - b) Adds `lib/config.sh` to the "Files" block of S4 and runs the executor again.
-- c) Stops: this is not a minor discrepancy, and `swork` shows its stop menu.
+- c) Ends the turn with a question to the user: may S4 edit `lib/config.sh`.
 
 ## F3
 

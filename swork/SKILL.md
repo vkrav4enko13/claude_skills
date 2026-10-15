@@ -11,9 +11,9 @@ Builds what was decided before it: **what** — in `sbrain`, **how** — in `spl
 
 Talk to the user in their language: chat messages, menus, reports and the plan shown for approval. This holds from the very first reply, the short notes between tool calls included. Option labels and section names that this skill gives in English are shown to the user in their language. Everything written to files and to subagents is in English, and subagents are asked to reply in English. If there is neither a plan nor a task in the request, ask what we are executing and go no further.
 
-**Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for consent at a stop, for the choice of an option and for the step after the report with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat.
+**Confirmation and choice go through a request, not through asking the user to type "yes".** Ask for the choice of an option and for the step after the report with the blocking question tool (in Claude Code — `AskUserQuestion`): the options to choose from with the recommended one first, or "Yes", and always a "Fix" option — if it is chosen, ask what exactly. At most four options: a rare one the user will type in themselves. Where the text below says "wait for a 'yes'", "wait for an answer" or "wait for a choice", it means such a request. If there is no such tool, ask with a numbered list in the chat.
 
-**Every stop says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If you stop and nothing is needed from the user, say so plainly in the last line of the message.
+**Every question says what is needed from the user.** A consent menu names what exactly is being approved; the description of each option says what will happen after it; a consent menu always has "Fix" and "Do nothing" — after the latter nothing is changed and nothing is recorded. If a message ends and nothing is needed from the user, say so plainly in the last line of the message.
 
 **Subagents run at `medium`.** Launch every subagent of this skill with effort `medium`, using the effort parameter of the subagent launch tool; if there is no such parameter, at the session level.
 
@@ -21,11 +21,11 @@ A task for a subagent is a code block in the task file: `references/executor.md`
 
 If the environment has no subagents, carry out every task from `references/` yourself, one after another, and say so at the start of the report: there was no independent check.
 
-Starting `swork` is a choice of all its stages: the slices, the conformance check, the simplification and the review go one after another, and no consent is needed between them. It stops only in the cases from section 4 and after the report.
+Starting `swork` is a choice of all its stages: the slices, the conformance check, the simplification and the review go one after another, and no consent is needed between them. It does not stop before the report: section 4.
 
 ## What swork does not do
 
-- **Does not decide what to build and does not plan.** It does not survey for requirements and does not invent slices. If there is no plan for a large piece of work, offer `splan`; if it is unclear even what to build, `splan` itself will send the user back to `sbrain`.
+- **Does not decide what to build and does not plan.** It does not survey for requirements and does not invent slices; the only exception is its own edits of a slice card and its check lines by section 4. If there is no plan for a large piece of work, offer `splan`; if it is unclear even what to build, `splan` itself will send the user back to `sbrain`.
 - **Does not commit, does not create branches or merge requests** until the user has asked.
 - **Does nothing beyond the plan.** A neighbouring flaw, a generalization "for the future", an item from "Not doing" — not its job, even if it is one line.
 - **Does not pass the code to a model of another vendor.**
@@ -47,23 +47,24 @@ If you are started on a topic — the user named it or gave the path to its fold
 
 Where the table tells you not to execute or to offer `splan`, name the phase and wait for an answer: do not create a snapshot, do not start the slices. The phases `requirements written` and `plan written` mean that the user has not yet said "yes": the requirements are approved in `sbrain`, the plan — in `splan`.
 
-## 4. Stops
+## 4. Own decisions
 
-In the middle of the work `swork` stops and waits for the user only in these cases:
+`swork` does not stop and does not ask in the middle of the work; it waits only in the menu after the report and at entry by the phase table. Where it once stopped, it decides itself:
 
-- the code differs from the plan, and the discrepancy is not minor;
-- the check of a slice does not pass after two attempts at a fix;
-- a slice with an irreversible action — before it starts;
-- a slice has a manual check, and other slices depend on it;
-- a changed file outside the plan is found, and there is nothing to restore it with;
-- the check of a slice passes even before the edits, while the slice is not done and it has no `no behavior change` mark;
-- the check cannot be run because of the environment.
+| Former case | Decision |
+|---|---|
+| the code differs from the plan, and not in a minor way; `need a file` for a file that has not moved | an own edit of the slice card and its check lines, then `bypassed` — `references/slices.md`, "Decisions and bypass" |
+| the check of a slice does not pass after two attempts at a fix | the same |
+| the check passes before the edits, while the slice is not done and has no `no behavior change` mark | the same |
+| a slice with a "Rollback" section | the saving from that section, then the slice: the user's "yes" to the plan is the consent; the saving fails — `bypassed` |
+| a slice has a manual check, and other slices depend on it | the dependents are executed and marked "on unchecked ground"; "done" is set only by the user |
+| a changed file outside the plan, and there is nothing to restore it with | the path goes into `known.txt` — `references/snapshot.md` |
+| the check cannot be run because of the environment | one try to restore the environment, then the status `not checked`; the work goes on |
+| continuing interrupted work: foreign edits, an interrupted "Rollback" slice, an unreported manual check, a snapshot without records | `references/entry.md`, "Continuing interrupted work" |
 
-When continuing interrupted work it also asks — by `references/entry.md`: whose edits are in the files outside the plan; what managed to run in a slice with a "Rollback" section; how the manual check ended; whether to continue or to start anew when there is a snapshot but no records.
+Every decision is flagged in the chat, in the user's language, as a line `⚠ Decided myself — S<N>: <problem> → <choice> → <why>`, and recorded in "Progress log" as a line `S<N>: decided myself — <problem>; chosen: <what>; why: <reason>; otherwise: <what would change>`. Then the next step, without waiting. A doubt that is not in the table — resolve it the same way.
 
-At a stop: the slice gets the status "stopped" (one awaiting a manual check — "awaiting manual check"), the next slices do not start. Before showing, write the reason into "Progress log" as a line "S<N>: stopped — expected: …; found: …; why it matters: …". Show **expected** — **found** — **why it matters** and what you have already tried. There are no other stops: a doubt that is not on this list — resolve it yourself and record it in "Progress log".
-
-At a stop offer a menu of actions — `references/slices.md`, the "Stop menu" section.
+A message from the user during the run — take the correction from the next step on, without a menu.
 
 ## Rules for all stages
 
@@ -72,11 +73,11 @@ At a stop offer a menu of actions — `references/slices.md`, the "Stop menu" se
 - A line is **green** if the command finished with a success code and what the plan calls expected was obtained: for a check line this is the "Expected" column. Take the exit code from the command itself: in a pipeline (`… | tail`) and in a wrapper (`ssh`) it is lost unless it is passed on explicitly.
 - Write the full output to a file in the snapshot's `checks/` folder, read its end.
 - Record the result of every run in the "Result" column of the line: `green YYYY-MM-DD` or `red YYYY-MM-DD`.
-- The command cannot be run because of the environment — the machine is unreachable, the service is not running, there is no login — this is not a red check but a stop: attempts are not spent, the executor is not started. Into "Result" — `not run: <reason>`.
+- The command cannot be run because of the environment — the machine is unreachable, the service is not running, there is no login — this is not a red check: attempts are not spent, the executor is not started. Try once to restore the environment and run the check again; it still cannot be run — the slice gets the status `not checked` by section 4, and the work goes on. Into "Result" — `not run: <reason>`.
 
-**Who writes to the plan and to the wiki.** Only the main session: the slice statuses, the "Result" of the check lines, "Progress log", `state.md`, the notes in `notes/` and the fixes of minor discrepancies in the slices. When you change a slice status, set the same status in the overview `plan-overview.md`, if there is one: in the heading of that slice's section. Edit nothing else in the overview: `splan` rebuilds it. The executor and the reviewers do not write to the wiki. Do not write to the journal in the course of the work: the chain has one line, and its tail changes when "accept the work" is chosen. When you have written to the wiki, run the check script and fix what it names: `references/wiki-rules.md`, the "Check" section. The goal, the shared constraints and "Not doing" are edited by no one.
+**Who writes to the plan and to the wiki.** Only the main session: the slice statuses, the "Result" of the check lines, "Progress log", `state.md`, the notes in `notes/`, the fixes of minor discrepancies in the slices and the own edits of a slice card and its check lines by section 4. When you change a slice status, set the same status in the overview `plan-overview.md`, if there is one: in the heading of that slice's section. Edit nothing else in the overview: `splan` rebuilds it. The executor and the reviewers do not write to the wiki. Do not write to the journal in the course of the work: the chain has one line, and its tail changes when "accept the work" is chosen. When you have written to the wiki, run the check script and fix what it names: `references/wiki-rules.md`, the "Check" section. The goal, the shared constraints and "Not doing" are edited by no one.
 
-**Before a stop — first `state.md`.** Before any stop from section 4 first write "Next step" into `state.md` — one action that the next session will start from — and only then show where you stopped.
+**Before the report — first `state.md`.** Before the report and before the end of a session first write "Next step" into `state.md` — one action that the next session will start from.
 
 ## Stages
 
@@ -106,8 +107,9 @@ If the text refers to a section or a step from another file, read that one too.
 | "The check is already green — so the slice is done" | First check the slice against the code; a check that is green before the edits may be checking nothing |
 | "red before the edits — that is how it should be" | Only if it is red because the slice is absent; a broken build and an unreachable machine are not about the slice |
 | "The output looks normal — green" | Look at the exit code of the command itself, not at the text |
-| "The check is red, I will try once more" | Two attempts, then a stop — the third builds on the same wrong assumption |
+| "The check is red, I will try once more" | Two attempts, then an own edit of the card, then bypass — the third builds on the same wrong assumption |
 | "I will adjust the expected value and it will pass" | The code is fixed, not the check |
+| "I will wait for the user" | Flag it in the chat and go on |
 | "The file next to it needs fixing too" | The status `need a file`; only what is named in the slice is edited |
 | "This will come in handy later, I will leave it" | What was done beyond the plan is removed if the checks are green |
 | "Fewer lines is better" | The goal is the absence of anything superfluous, not the number of lines |

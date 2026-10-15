@@ -6,9 +6,9 @@
 # Calls seed.sh and adds three slices to the topic: S4 is stopped after two failed
 # attempts — its card creates VERSION with the text 1, and its check line expects 1.0:
 # the planted error; S5 deletes the draft notes-old.txt and has a "Rollback" field — the
-# action that is not done without the user; S6 depends on S5. S3 stays not started and
-# depends on nothing. notes-old.txt gets the time of the marker .swork-marker: it is older
-# than the work. Like seed.sh, it is not run a second time on the same project.
+# irreversible slice; S6 depends on S5. S3 stays not started and depends on nothing.
+# notes-old.txt gets the time of the marker .swork-marker: it is older than the work. Like
+# seed.sh, it is not run a second time on the same project.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
@@ -70,7 +70,7 @@ EOF
 
 cat >> "$W/plan-checks.md" <<EOF
 | 5 | R4 | the version file is created → it holds the one line \`1.0\` | \`cat VERSION\` | \`1.0\` | S4 | red $today |
-| 6 | R5 | the draft is deleted → the file is not found | \`ls notes-old.txt\` | \`No such file\` | S5 | not run |
+| 6 | R5 | the draft is deleted → the file is not found | \`test ! -e notes-old.txt && echo gone\` | \`gone\` | S5 | not run |
 | 7 | R6 | the line is appended → it is the last line of \`README.md\` | \`tail -1 README.md\` | \`Notes: none\` | S6 | not run |
 EOF
 

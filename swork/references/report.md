@@ -11,7 +11,13 @@ Before the report write "Next step" into `state.md` — "user's choice after the
 Show it in sections; do not show an empty section, except "Deviations from the plan":
 
 - **Slices** — for each: the status, the commands of its check lines — each word for word, in backticks, not a description of it, the end of the output of each — quoted, not described — and the file with the full output. There is no output obtained in this work — there is no word "done". For a line with a manual check, instead of the output — "the check is manual".
-- **Deviations from the plan** — everything you decided without the user: the minor discrepancies fixed in the plan, the files added to a slice, the doubts outside the list of stops. There was not a single one — say so: "the plan was executed as written".
+- **Decided myself** — every `decided myself` line of "Progress log" (for a small change — every `⚠ Decided myself` line of the chat), one per item: problem — choice — why — otherwise.
+- **Bypassed** — every `bypassed` slice: the reason and the dependent slices that were not executed.
+- **Not checked** — every `not checked` slice and the reason the check could not be run.
+- **On unchecked ground** — the slices from the `on unchecked ground` lines of "Progress log" and the manual check each one rests on.
+- **Left as found** — the paths of the snapshot's `known.txt`: the reviewers did not read them, and a rollback will not restore them.
+- **Rollback slices** — the slices with a "Rollback" section executed without asking: what was saved and the command that brings the earlier state back.
+- **Deviations from the plan** — what you decided without the user that is not in the sections above: the minor discrepancies fixed in the plan, the files added to a slice, the findings dropped about bypassed slices. There was not a single one — say so: "the plan was executed as written".
 - **Removed as beyond the plan** — what was removed and by which line of the plan.
 - **Simplified** — what was replaced with ready-made code and what was deleted as redundant; how many findings were skipped.
 - **Fixed after the review** — what was broken and how it was fixed; the declined findings — a line each, with the reason.
@@ -27,7 +33,7 @@ Then offer and wait for a choice:
 
 - **accept the work** — the topic is closed in the wiki, the snapshot and the marker are deleted: the order is below; the statuses in the plan stay as they are;
 - **fix** — ask what exactly. The fix is within the plan — make it, run the checks of the affected slices and show the report anew; the fix changes the plan — do not make it, offer `splan`;
-- **roll back everything** — by `references/snapshot.md`: the copies are put back in place, the new files are deleted. In addition — the records of this work in the wiki, by the marks in the "Written to the wiki:" lines: delete a "new" note together with its line in the `notes/` index, restore an "extended" note from the copy in the snapshot's `notes/`; remove the journal line written by this work. In the plan cards give the slices back the status `not started`, the check lines — the result `not run`; in `state.md` and in the topic's line in "In progress" bring back the phase `plan confirmed`. Name the slices with a "Rollback" section separately: `swork` does not roll them back itself, do not touch their status and results;
+- **roll back everything** — by `references/snapshot.md`: the copies are put back in place, the new files are deleted. In addition — the records of this work in the wiki, by the marks in the "Written to the wiki:" lines: delete a "new" note together with its line in the `notes/` index, restore an "extended" note from the copy in the snapshot's `notes/`; remove the journal line written by this work. In the plan cards give the slices back the status `not started` — the `bypassed` and `not checked` ones too, — the check lines — the result `not run`; in `state.md` and in the topic's line in "In progress" bring back the phase `plan confirmed`. Name the slices with a "Rollback" section that were executed separately, with their restore command: `swork` does not roll them back itself, do not touch their status and results;
 - **do nothing** — everything stays as it is, together with the snapshot.
 
 After "roll back everything" delete the snapshot folder `.swork/` and the marker — by `references/snapshot.md` — and the "Progress log" cards of this work together with their lines in the topic index: a repeated start will begin as the first one. A slice with a "Rollback" section was carried out — keep the snapshot and "Progress log" and say so: the rollback of that slice is up to the user.

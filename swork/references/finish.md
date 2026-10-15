@@ -6,7 +6,9 @@ Read at step 5 — after the last slice, — at step 6, after the edits of the c
 
 After the last slice. Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished".
 
-**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to.
+**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — "Decisions and bypass" of `references/slices.md`. A `not checked` slice is treated as one with only a manual check.
+
+**Bypassed and dependent slices.** Add to the message of every reviewer of stages 5 and 7, next to the values in brackets, one sentence: `Bypassed, not to be reported as missing or wrong: S<N> — <files>` — the bypassed and the dependent slices. Drop a finding about such a slice or about the half-made edits of a bypassed one: start no executor for it, do not fix it, do not restore its files. Name what was dropped in "Deviations from the plan" of the report.
 
 Read `references/conformance.md`. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation: the slices added new code — pass it both tasks from `references/simplify.md` word for word in the same message; there is no new code — only the conformance check task. The reviewers of this stage and of the review are passed the path to the topic folder: they read the plan cards themselves.
 
@@ -16,9 +18,9 @@ First check every finding against the code yourself: the reviewer makes mistakes
 2. **"beyond the plan"** — bring back to the state before the start only what is superfluous: a superfluous file as a whole, a superfluous piece with an edit. Run the checks of the affected slices.
    - They passed — it is removed, a line goes into the report.
    - They did not pass — so something needs it: restore it from `stage-5` and name it in the report.
-   - An affected slice has only a manual check — do not remove it, name it in the report.
+   - An affected slice has only a manual check or is `not checked` — do not remove it, name it in the report.
 
-A file outside all the lists affects all the slices with the status "done" and "awaiting manual check". There is no copy of such a file in `base/` — deal with it by the table "What to do with a found file outside the plan" from `references/snapshot.md`, including the stop.
+A file outside all the lists affects all the slices with the status "done" and "awaiting manual check". There is no copy of such a file in `base/` — deal with it by the table "What to do with a found file outside the plan" from `references/snapshot.md`.
 
 Carry the list of what the reviewer could not check over into the report as it is.
 
@@ -34,7 +36,7 @@ If the simplification findings are not in the context — the session was interr
 
 Before the edits take the checkpoint `stage-6`. You do the editing, not the reviewers, and only by the "What not to touch" section from the same file.
 
-**Batches.** The findings of slices with shared files are one batch: slices that edit one and the same file are joined, including through a chain. After a batch run the checks of its slices. A red one — restore the files of the batch from `stage-6`, the findings go into the report as untouched. A slice of the batch has only a manual check — do not apply the edits at all: there is nothing to check them with, the findings go into the report.
+**Batches.** The findings of slices with shared files are one batch: slices that edit one and the same file are joined, including through a chain. After a batch run the checks of its slices. A red one — restore the files of the batch from `stage-6`, the findings go into the report as untouched. A slice of the batch has only a manual check or is `not checked` — do not apply the edits at all: there is nothing to check them with, the findings go into the report.
 
 A finding that you judged false or that "What not to touch" forbids — skip it without a question to the user and count it in the report.
 

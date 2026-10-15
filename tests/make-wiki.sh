@@ -240,33 +240,35 @@ grow "$D/rules.md" 35 "- trial rule %d — 2026-09-01, in the user's words"
 # 3. The third line of the journal — 250 characters.
 stretch "$D/journal/2026-09.md" 3 250
 
-# 4. The notes index — 55 lines; all the cards are named except orphan.md.
+# 4. The notes index — 105 lines; all the cards are named except orphan.md.
 cat >> "$D/notes/00-index.md" <<'EOF'
 - [A long card](long-card.md) — more lines than the limit
 - [A fat card](fat-card.md) — more characters than the limit
 - [A card without a hook line](no-hook.md) — there is no hook line under the title
 - [A card with a broken link](dead-link.md) — links to a file that does not exist
 EOF
-grow "$D/notes/00-index.md" 55 "- item %d without a link — filling the index up to 55 lines"
+grow "$D/notes/00-index.md" 105 "- item %d without a link — filling the index up to 105 lines"
+# Not a violation: the seventh line of the notes index — 300 characters, under the folder index limit.
+stretch "$D/notes/00-index.md" 7 300
 
-# 5. A card of 45 lines.
+# 5. A card of 65 lines.
 cat > "$D/notes/long-card.md" <<'EOF'
 # A long card
 
-> This card has forty-five lines.
+> This card has sixty-five lines.
 
 EOF
-grow "$D/notes/long-card.md" 44 "- item %d of the long card"
+grow "$D/notes/long-card.md" 64 "- item %d of the long card"
 echo "- Source: tests/make-wiki.sh" >> "$D/notes/long-card.md"
 
-# 6. A card of 20 lines and 3200 characters: the last item takes up the remainder.
-top="# A fat card"$'\n\n'"> This card has twenty lines and three thousand two hundred characters."$'\n\n'
+# 6. A card of 34 lines and 6200 characters: the last item takes up the remainder.
+top="# A fat card"$'\n\n'"> This card has thirty-four lines and six thousand two hundred characters."$'\n\n'
 body=""
-for ((i = 1; i <= 14; i++)); do
+for ((i = 1; i <= 28; i++)); do
     body="$body$(pad "- " 200)"$'\n'
 done
 bottom="- Source: tests/make-wiki.sh"$'\n'
-rest=$((3200 - ${#top} - ${#body} - ${#bottom} - 1))
+rest=$((6200 - ${#top} - ${#body} - ${#bottom} - 1))
 printf '%s%s%s\n%s' "$top" "$body" "$(pad "- " "$rest")" "$bottom" > "$D/notes/fat-card.md"
 
 # 7. A card without a hook line.
@@ -295,17 +297,17 @@ cat > "$D/notes/dead-link.md" <<'EOF'
 - Source: tests/make-wiki.sh
 EOF
 
-# 10. The fifth line of the topics index — 250 characters.
-stretch "$D/work/00-index.md" 5 250
+# 10. The fifth line of the topics index — 450 characters.
+stretch "$D/work/00-index.md" 5 450
 
-# 11. A plan overview of 12 lines; the twelfth line — 250 characters.
+# 11. A plan overview of 12 lines; the twelfth line — 450 characters.
 cat > "$D/work/demo/plan-overview.md" <<'EOF'
 # Plan overview of topic demo
 
 > The plan as one file for reading; the source is the slice cards: where they differ, the card is right.
 EOF
 grow "$D/work/demo/plan-overview.md" 12 "- item %d of the overview — filling up to 12 lines"
-stretch "$D/work/demo/plan-overview.md" 12 250
+stretch "$D/work/demo/plan-overview.md" 12 450
 
 # ---------- empty: a project without a wiki ----------
 
