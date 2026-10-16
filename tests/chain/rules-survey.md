@@ -7,7 +7,7 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 ## sbrain survey
 
 - sv-1. Before the first question `sbrain` names a hypothesis about the task with a confidence percentage — sbrain/references/context.md:38
-- sv-2. Every question has a recommendation, an open question included — sbrain/references/survey.md:24
+- sv-2. Every survey question has a recommendation, an open question included; a consent menu and the next-step menu are not survey questions — sbrain/references/survey.md:24
 - sv-3. A round has at most four questions — sbrain/references/survey.md:13
 - sv-4. From the second round on, before the questions, there is the tree counter line: decisions closed, asked now, waiting, and the confidence percentage — sbrain/references/survey.md:22
 - sv-5. No question asks what can be found in the project files or the wiki — sbrain/references/context.md:29

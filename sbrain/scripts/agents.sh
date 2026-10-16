@@ -11,11 +11,13 @@
 #   bash agents.sh id                     this agent's id
 #
 # Every command takes --topic <topic> — the name of the topic folder, default "-".
-# Paths are taken from the current folder and kept relative to the project root, without "./".
+# Paths are taken from the current folder and kept relative to the project root, without "./";
+# a file of a wiki above the root (the folder holding docs/00-index.md) is kept with "../".
 #
 # claim: code 0 — all claimed; for each file "no changes: <file>", the diffs other agents
 #   logged since this agent last held it, or "reread: <file>" when they exceed 100 lines.
-#   Code 3 — nothing claimed, a line "busy: <file> held by <name>" per busy file.
+#   Code 3 — nothing claimed, a line "busy: <file> held by <name>" per busy file; a dead owner's
+#   claim is removed all the same and named "abandoned: <file> by <name>".
 # wait: at most 540 s (--for shortens it), checks every 2 s. Code 0 — every file is free:
 #   "free: <file>", or "abandoned: <file> by <name>" when a dead owner's claim was removed.
 #   Code 3 — still busy, call again.
@@ -104,8 +106,8 @@ essence=$(printf '%s' "$essence" | tr '\t\n' '  ')
 # --- the project root -------------------------------------------------------
 
 here=$(pwd -P)
-find_up() { # <test> <name>: the first folder from here up holding <name>
-    local d="$here"
+find_up() { # <test> <name> [<start folder>]: the first folder from the start (default here) up holding <name>
+    local d="${3:-$here}"
     while :; do
         if [ "$1" "$d/$2" ]; then
             echo "$d"
@@ -128,10 +130,13 @@ else
 fi
 A="$ROOT/.agents"
 mkdir -p "$A/diffs" "$A/held" "$A/seen"
+# The wiki root: its files above the root are kept from the root with "../".
+WIKI=$(find_up -f docs/00-index.md "$ROOT") || WIKI=""
 
-# A path from the current folder or absolute — as a path from the root, without "./" and "..".
+# A path from the current folder or absolute — as a path from the root, without "./";
+# a path under a wiki root above the root starts with "../".
 norm() {
-    local p="$1" d out="" part
+    local p="$1" d abs="" out="" part up=""
     set -f
     case "$p" in
         /*)
@@ -140,30 +145,32 @@ norm() {
             ;;
         *) p="$here/$p" ;;
     esac
-    case "$p/" in
-        "$ROOT"/*) p="${p#"$ROOT"}" ;;
-        *)
-            echo "$1: outside the project $ROOT" >&2
-            exit 2
-            ;;
-    esac
     local IFS=/
     for part in $p; do
         case "$part" in
             '' | .) ;;
-            ..)
-                case "$out" in
-                    */*) out="${out%/*}" ;;
-                    '')
-                        echo "$1: outside the project $ROOT" >&2
-                        exit 2
-                        ;;
-                    *) out="" ;;
-                esac
-                ;;
-            *) out="${out:+$out/}$part" ;;
+            ..) abs="${abs%/*}" ;;
+            *) abs="$abs/$part" ;;
         esac
     done
+    unset IFS
+    d="$ROOT"
+    while :; do
+        case "$abs/" in
+            "${d%/}"/*)
+                out="${abs#"${d%/}"}"
+                out="${out#/}"
+                break
+                ;;
+        esac
+        if [ -z "$WIKI" ] || [ "$d" = "$WIKI" ] || [ "$d" = / ]; then
+            echo "$1: outside the project $ROOT" >&2
+            exit 2
+        fi
+        d=$(dirname "$d")
+        up="../$up"
+    done
+    if [ -n "$out" ]; then out="$up$out"; fi
     if [ -z "$out" ]; then
         echo "$1: not a file" >&2
         exit 2
@@ -295,6 +302,9 @@ in_list() { # <file>: is it one of the files of this call
     for f in "${files[@]}"; do [ "$f" = "$1" ] && return 0; done
     return 1
 }
+held() { # <file>: its held copy, every "../" written as "_up/"
+    printf '%s/%s' "$HELD" "${1//..\//_up/}"
+}
 start_n() { head -n 1 "$SEEN"; }
 seen_n() { # <file>: the last log number this agent saw for it, 0 if none
     awk -F '\t' -v f="$1" 'NR > 1 && $1 == f { n = $2 } END { print n + 0 }' "$SEEN"
@@ -337,6 +347,7 @@ case "$cmd" in
                 echo "busy: $f held by $name"
                 busy=1
             else
+                drop_claims "$id" "$f"
                 gone="$gone$f$NL"
                 echo "abandoned: $f by $name"
             fi
@@ -353,10 +364,11 @@ case "$cmd" in
                 continue
             fi
             printf '%s\t%s\t%s\t%s\t%s\n' "$ID" "$NAME" "$topic" "$(now)" "$f" >>"$CL"
-            rm -f "$HELD/$f"
+            h=$(held "$f")
+            rm -f "$h"
             if [ -f "$ROOT/$f" ]; then
-                mkdir -p "$(dirname "$HELD/$f")"
-                cp -p "$ROOT/$f" "$HELD/$f"
+                mkdir -p "$(dirname "$h")"
+                cp -p "$ROOT/$f" "$h"
             fi
         done
         last=$(loglen)
@@ -428,7 +440,7 @@ case "$cmd" in
         done
         for f in "${files[@]}"; do
             tp=$(awk -F '\t' -v me="$ID" -v f="$f" '$1 == me && $5 == f { print $3; exit }' "$CL")
-            old="$HELD/$f"
+            old=$(held "$f")
             new="$ROOT/$f"
             [ -f "$old" ] || old=/dev/null
             [ -f "$new" ] || new=/dev/null
@@ -454,7 +466,7 @@ case "$cmd" in
                 fi
             fi
             drop_claims "$ID" "$f"
-            rm -f "$HELD/$f"
+            rm -f "$(held "$f")"
         done
         exit 0
         ;;
@@ -466,7 +478,7 @@ case "$cmd" in
         else
             for f in "${files[@]}"; do
                 drop_claims "$ID" "$f"
-                rm -f "$HELD/$f"
+                rm -f "$(held "$f")"
             done
         fi
         exit 0

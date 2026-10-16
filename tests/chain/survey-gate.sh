@@ -3,10 +3,9 @@
 #
 #   bash tests/chain/survey-gate.sh <baseline> <series>
 #
-# Reads the verdicts of the judge: the labels of the runs of a series — from
-# blind/key.tsv, the answer — the third field of a line of verdict.tsv; a word
-# of an earlier verdict is first replaced by its English name from the rows of
-# tests/translate/map.tsv with the scope "stand" and the kind "judge". Counts
+# Reads the verdicts of the judge through tally_label of tally.sh: the labels
+# of the runs of a series — from blind/key.tsv, the answer — the third field of
+# a line of verdict.tsv. Counts
 # over all the runs of a series: violations — the "rule" lines with "no";
 # decisions — the "decision" lines with "carried", out of 5 per run; flaws —
 # the "flaw" lines with "named", out of 5 per run. Prints
@@ -16,8 +15,10 @@
 # then "survey gate: passed" — the series is not worse on all three and better
 # on one, code 0; "survey gate: not worse, not better" — code 1; "survey gate:
 # failed — <worse numbers>" — code 1. No key, a series without a key line or a
-# run without a verdict, or the series have a different number of runs — no
-# number lines, only "survey gate: failed — no measurement", code 1.
+# run without a verdict, a malformed verdict (see tally.sh: a non-empty line
+# without four tab-separated fields, or fewer "rule" lines than rules), or the
+# series have a different number of runs — no number lines, only "survey gate:
+# failed — no measurement", code 1.
 # The stands folder — CHAIN_BASE, by default ~/Documents/my/chain-stand.
 export LC_ALL=C.UTF-8
 set -euo pipefail
@@ -31,7 +32,7 @@ series="$2"
 here="$(cd "$(dirname "$0")" && pwd)"
 B="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"
 key="$B/blind/key.tsv"
-map="$here/../translate/map.tsv"
+. "$here/tally.sh"
 
 none() {
     echo "survey gate: failed — no measurement"
@@ -39,33 +40,19 @@ none() {
 }
 
 # The counts of the series $1: "<runs> <violations> <decisions> <flaws>" — into
-# $counts. No key, no key line or no verdict of a run — return 1.
+# $counts. No key, no key line, no verdict of a run or a malformed one —
+# return 1.
 tally() {
-    local label file line a b c r=0 v=0 d=0 f=0
+    local label line a b c r=0 v=0 d=0 f=0
     [ -f "$key" ] || return 1
     while IFS= read -r label; do
-        file="$B/blind/$label/verdict.tsv"
-        [ -s "$file" ] || return 1
+        line=$(tally_label "$B/blind/$label") || return 1
         r=$((r + 1))
-        # The first file is the table: the English names of the judge words.
-        line=$(awk -F'\t' '
-            FILENAME == ARGV[1] {
-                if ($1 == "stand" && $2 == "judge") english[$3] = $4
-                next
-            }
-            {
-                k = ($1 in english) ? english[$1] : $1
-                a = ($3 in english) ? english[$3] : $3
-                if (k == "rule" && a == "no") v++
-                if (k == "decision" && a == "carried") d++
-                if (k == "flaw" && a == "named") f++
-            }
-            END { print v + 0, d + 0, f + 0 }' "$map" "$file")
-        read -r a b c <<< "$line"
+        read -r a b c _ <<< "$line"
         v=$((v + a))
         d=$((d + b))
         f=$((f + c))
-    done < <(awk -F'\t' -v series="$1" '$2 == series { print $1 }' "$key")
+    done < <(awk -F'\t' -v series="$1" '$2 == series { label[$3] = $1 } END { for (r in label) if (r ~ /-survey$/ || !((r "-survey") in label)) print label[r] }' "$key")
     [ $r -gt 0 ] || return 1
     counts="$r $v $d $f"
 }

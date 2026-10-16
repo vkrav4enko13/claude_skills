@@ -2,7 +2,7 @@ Check the traces of one run against the rule lists and write the verdict into th
 
 ## What lies in the current folder
 
-The traces of one run of the skill chain `sbrain → splan → swork` on a trial project. A run goes in stages. The traces of a stage or some of the files may be absent: that means the run did not have them.
+The traces of one run of the skill chain `sbrain → splan → swork`, and of `saway` driving it without the user, on a trial project. A run goes in stages. The traces of a stage or some of the files may be absent: that means the run did not have them.
 
 | Stage | What happens at it | Traces |
 |---|---|---|
@@ -10,21 +10,23 @@ The traces of one run of the skill chain `sbrain → splan → swork` on a trial
 | `plan` | `splan` writes the plan of the topic `count` | `chat-plan.md`, `agents-plan/` |
 | `work` | `swork` executes the plan of the topic `count` | `chat-work.md`, `agents-work/` |
 | `seed` | `swork` finishes the started topic `longest` in a separate copy of the project | `chat-seed.md`, `agents-seed/` |
+| `away` | `saway` drives the started topic `longest` to its end without the user in one more copy of the project | `chat-away.md`, `agents-away/` |
 
 - `chat-<stage>.md` — the user's requests and the texts of the replies of the stage's main session. The chat has no tool calls and no tool output.
 - `agents-<stage>/NN.md` — the subagents of the stage in the order they were started: the task and the last reply of each. Which of them is the executor of a slice and which is a reviewer can be seen from the task and from the form of the reply.
 - `project/` — the project after the stages `brain`, `plan` and `work`: the wiki in `docs/`, the topic folder — `docs/work/count/`.
 - `project-seed/` — the project after the stage `seed`: the topic folder — `docs/work/longest/`.
+- `project-away/` — the project after the stage `away`: the topic folder — `docs/work/longest/`.
 - `rules.md` — the rule lists.
 - `seeds.md` — the defects planted in the done slices of the topic `longest` before the stage `seed`.
 
-The path `/stand/wiki-trial/clean/…` in the chats and the tasks is `project/…`, the path `/stand/seedbox/wiki-trial/clean/…` is `project-seed/…`. The folders `.claude/`, `.swork/`, `.agents/` and `.swork-*/` and the file `.swork-marker` are removed from both copies: their absence says nothing.
+The path `/stand/wiki-trial/clean/…` in the chats and the tasks is `project/…`, the path `/stand/seedbox/wiki-trial/clean/…` is `project-seed/…`, the path `/stand/awaybox/wiki-trial/clean/…` is `project-away/…`. The folders `.claude/`, `.swork/`, `.agents/` and `.swork-*/` and the file `.swork-marker` are removed from all the copies: their absence says nothing.
 
 First read `rules.md`, `seeds.md` and all the traces in full. You cannot run commands: you have only reading files, searching them and writing `verdict.tsv`.
 
 ## Rules
 
-`rules.md` has three sections. Check the `sbrain` rules against the traces of the stage `brain`, the `splan` rules — against the traces of the stage `plan`, the `swork` rules — against the traces of the stages `work` and `seed` together: violated at one of the two — violated. A rule line — `- <skill>-<N>. <rule> — <file>:<line>`. The file and the line after the dash say where the rule is taken from; that file is not in the folder, there is no need to look for it.
+`rules.md` has four sections. Check the `sbrain` rules against the traces of the stage `brain`, the `splan` rules — against the traces of the stage `plan`, the `swork` rules — against the traces of the stages `work` and `seed` together: violated at one of the two — violated. Check the `saway` rules against the traces of the stage `away`: the chat `chat-away.md` and `agents-away/`, with the cards of `project-away/` they name. A rule line — `- <skill>-<N>. <rule> — <file>:<line>`. The file and the line after the dash say where the rule is taken from; that file is not in the folder, there is no need to look for it.
 
 For every rule — one answer out of four:
 

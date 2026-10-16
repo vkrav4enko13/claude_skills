@@ -9,6 +9,11 @@
 # as its text: the only allowed tool is Skill, the limit is 120 seconds. The
 # result file gets a line "<request>⇥<skill>" per request: the skill of the
 # first Skill call in the session records; no call — none.
+# Plugins: every temporary project gets a .claude/settings.json holding only
+# the enabledPlugins object of the profile's settings.json, so the plugin
+# skills compete for the request; with --setting-sources project,local the
+# profile's hooks, status line and installed skills stay out. The sessions
+# run at effort medium, as the chain does.
 # Takes from ten minutes to an hour and longer.
 export LC_ALL=C.UTF-8
 set -euo pipefail
@@ -21,8 +26,11 @@ src="$(cd "$1" && pwd)"
 requests="$2"
 result="$3"
 profile="${CLAUDE_CONFIG_DIR:-$HOME/claude/personal}"
+plugins="$(jq '{enabledPlugins: (.enabledPlugins // {})}' "$profile/settings.json")"
 
-tmp="$(mktemp -d)"
+base="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"
+mkdir -p "$base"
+tmp="$(mktemp -d "$base/trigger.XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
 mkdir -p "$(dirname "$result")"
@@ -35,6 +43,7 @@ while IFS=$'\t' read -r request _; do
     for skill in sbrain splan swork saway; do
         cp -R "$src/$skill" "$project/.claude/skills/$skill"
     done
+    printf '%s\n' "$plugins" > "$project/.claude/settings.json"
 
     # The session is found by an id of its own: a session cut off by the limit
     # leaves no reply. The alarm outlives exec and ends the session after 120
@@ -48,7 +57,7 @@ while IFS=$'\t' read -r request _; do
             --setting-sources project,local --permission-prompts none \
             --permission-mode acceptEdits \
             --allowedTools Skill \
-            --model claude-opus-5-5 --effort xhigh --output-format json \
+            --model claude-opus-5-5 --effort medium --output-format json \
             < /dev/null > /dev/null
     ) || true
 

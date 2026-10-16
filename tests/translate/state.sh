@@ -16,7 +16,9 @@
 #   check   - compares the copy with MANIFEST: "state: saved" and exit code 0.
 #             Otherwise the paths that differ and exit code 1.
 #   restore - returns every saved folder and file from the copy, deletes from
-#             those folders the files the copy does not have, prints "restored".
+#             those folders the files the copy does not have - except tests:
+#             the copy is restored over it and its new files stay - prints
+#             "restored".
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
@@ -78,7 +80,8 @@ restore() {
     for item in "${items[@]}"; do
         mkdir -p "$root/$(dirname "$item")"
         cp -Rp "$copy/$item" "$root/$(dirname "$item")/"
-        # A file the copy does not have goes away.
+        # A file the copy does not have goes away; in tests it stays.
+        [ "$item" != tests ] || continue
         (cd "$root" && find "$item" -type f) | while IFS= read -r f; do
             [ -e "$copy/$f" ] || rm "$root/$f"
         done

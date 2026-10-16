@@ -10,6 +10,7 @@ The shared header of both tasks:
 Project root: <path>. Reply in English. Changed files: <paths>; their state before the work is
 in <the path to base/>. New files: <paths>. The plan: <the path to the topic folder or the text>.
 Look only at the code that appeared in this work. Change nothing — only read.
+Delete no file and no folder outside the project folder, temporary folders included.
 ```
 
 ## Reuse

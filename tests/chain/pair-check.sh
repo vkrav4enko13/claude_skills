@@ -8,14 +8,32 @@
 # topic version; case b: both on topic pair. Each session is judged by its own reply, .result
 # of turns/01.json: the mark ⏸ of a short report, or the choice of the final report — accept
 # or Принять, any case — while the progress cards of its topic hold a stage-7 finished record
-# with no agent mark, or with the mark of that session: "stage 7 [<session id>]: finished",
-# the session id being .session_id of its turns/01.json.
+# with no agent mark, or with the mark of that session: "stage 7 finished [<session id>]" or
+# the older "stage 7 [<session id>]: finished", the session id being .session_id of its
+# turns/01.json.
+#
+#   bash tests/chain/pair-check.sh --record "<line>"
+#
+# Runs the same match on one line: prints "record: <id>" for a stage-7 record with a mark,
+# "record: plain" for one without, "record: none" otherwise; code 0.
 # Prints the lines "<name>: <value>" — the passing value of each
 # is the third argument of its `line` call below; `split` (case b) is printed and not
 # judged — then "pair run: pass" and code 0 when every judged line holds its passing value,
 # otherwise "pair run: fail" and code 1.
 export LC_ALL=C.UTF-8
 set -euo pipefail
+
+# The match of a stage-7 finished record, kept in one place: stage7(<line>) gives nothing
+# when the line is no such record, otherwise [<mark>], the mark undefined when there is none.
+match7='sub stage7 { $_[0] =~ /stage 7(?: \[([^\]]*)\])?:? finished(?: \[([^\]]*)\])?/ or return; return [ $1 // $2 ] }'
+
+if [ $# -eq 2 ] && [ "$1" = --record ]; then
+    perl -e "$match7"'
+        my $m = stage7($ARGV[0]);
+        print "record: ", (!$m ? "none" : defined $m->[0] ? $m->[0] : "plain"), "\n";
+    ' -- "$2"
+    exit 0
+fi
 
 if [ $# -ne 4 ]; then
     echo "usage: bash pair-check.sh <project> <stage folder 1> <stage folder 2> a|b" >&2
@@ -46,9 +64,10 @@ report() {
         result="$(jq -r '.result // ""' "$1/turns/01.json")"
         session="$(jq -r '.session_id // ""' "$1/turns/01.json")"
     fi
-    stage7="$(cat "$work/$2"/progress*.md 2>/dev/null | perl -ne '
+    stage7="$(cat "$work/$2"/progress*.md 2>/dev/null | perl -ne "$match7"'
         BEGIN { $id = shift @ARGV; $ok = "no" }
-        $ok = "yes" if /stage 7(?: \[([^\]]*)\])?:? finished/ && (!defined $1 || $1 eq $id);
+        my $m = stage7($_);
+        $ok = "yes" if $m && (!defined $m->[0] || $m->[0] eq $id);
         END { print "$ok\n" }
     ' "$session" || true)"
     perl -CSDA -e '

@@ -7,20 +7,23 @@
 # sleep with another start epoch (reused pid). Cases: all or nothing; a busy file waits and the
 # wait ends on release; dead and reused owners are taken over; a stale mutex is cleared; paths
 # are normalised; done logs one line and a diff; claim prints the diffs of others, "no changes"
-# or, over 100 lines, "reread"; of two claims at once one wins.
+# or, over 100 lines, "reread"; of two claims at once one wins; a busy and a dead owner's file
+# together give code 3 and the dead claim goes; a wiki above the git root is claimed from the repo.
 # Everything passed — "agents: all ok", code 0. Otherwise — the first failing case and code 1.
 export LC_ALL=C.UTF-8
 set -uo pipefail
 
 S="$(cd "$(dirname "$0")/.." && pwd)/sbrain/scripts/agents.sh"
 TAB=$(printf '\t')
-P=$(mktemp -d)
+base="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"
+mkdir -p "$base"
+P=$(mktemp -d "$base/agents-test.XXXXXX")
 P=$(cd "$P" && pwd -P)
 pids=()
 cleanup() {
     local p
     for p in ${pids[@]+"${pids[@]}"}; do kill "$p" 2>/dev/null; done
-    rm -rf "$P"
+    rm -rf "$P" "$P-wiki"
 }
 trap cleanup EXIT
 
@@ -113,6 +116,15 @@ as "$B" bee release --all
 expect "release all" 0
 [ -s .agents/claims.tsv ] && fail "release --all: claims left"
 
+# A busy and a dead owner's file together: code 3, the dead claim is removed.
+as "$A" ay claim h.txt
+as "$D" dead claim i.txt
+as "$B" bee claim h.txt i.txt
+expect "a busy and a dead owner's file together" 3
+has "a busy and a dead owner's file together" "abandoned: i.txt by dead"
+grep -q "^$D$TAB" .agents/claims.tsv && fail "a busy and a dead owner's file together: the dead claim is left"
+as "$A" ay release --all
+
 # A stale mutex of a dead process is cleared; one with no pid, older than 5 s, too.
 mkdir .agents/lock
 echo "$dead" >.agents/lock/pid
@@ -184,5 +196,15 @@ for round in 1 2 3 4 5; do
     as "$A" ay release --all
     as "$B" bee release --all
 done
+
+# A wiki above the git root: its files are claimed from the repo, with one store.
+W="$P-wiki"
+mkdir -p "$W/docs" "$W/repo"
+printf 'index\n' >"$W/docs/00-index.md"
+git -C "$W/repo" init -q
+cd "$W/repo"
+as "$A" ay claim ../docs/00-index.md
+expect "a wiki above the git root" 0
+[ -d "$W/repo/.agents" ] && [ ! -d "$W/.agents" ] || fail "a wiki above the git root: .agents/ not only in the repo"
 
 echo "agents: all ok"

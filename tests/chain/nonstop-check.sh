@@ -58,11 +58,9 @@ my ($reply) = @ARGV;
 my $accept = $reply =~ /accept|\x{41f}\x{440}\x{438}\x{43d}\x{44f}\x{442}\x{44c}/i;
 print($accept ? "offered\n" : "missing\n");
 
+# Either gender of the Russian heading: "Решил сам" or "Решила сама".
 my $at = -1;
-for my $mark ('Decided myself', "\x{420}\x{435}\x{448}\x{438}\x{43b} \x{441}\x{430}\x{43c}") {
-    my $i = index($reply, $mark);
-    $at = $i if $i >= 0 && ($at < 0 || $i < $at);
-}
+if ($reply =~ /Decided myself|\x{420}\x{435}\x{448}\x{438}\x{43b}(?:\x{430})? \x{441}\x{430}\x{43c}/) { $at = $-[0]; }
 print($at >= 0 ? "present\n" : "missing\n");
 
 my $after = $at >= 0 ? substr($reply, $at) : '';

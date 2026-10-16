@@ -12,7 +12,7 @@ The script is `scripts/agents.sh` of the running skill; it is called as `bash <p
   - the diffs other agents logged since you last held it — take them into account before writing;
   - `reread: <file>` — the changes are too long to print: read the whole file again.
 - **A file read earlier is relied on only** after its claim printed `no changes`, printed the diffs, or after it was reread on `reread:`.
-- **Code 3** — nothing is claimed, the lines `busy: <file> held by <name>` name the holders: go to "Waiting".
+- **Code 3** — nothing is claimed, the lines `busy: <file> held by <name>` name the holders: go to "Waiting". A dead owner's claim is removed all the same and named `abandoned: <file> by <name>`.
 - A path that is not a file, such as `<topic folder>/.stage`, is claimed the same way: whoever gets it is the one to act.
 
 ## Waiting

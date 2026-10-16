@@ -29,7 +29,7 @@ An agent executes its slices **one at a time**; other agents may execute other s
 
 **Progress log** is the `progress.md` card in the topic folder: a line per record, a new one goes to the end. You set it up at the first record: the title, the hook line and the line about it in the topic index — as for any card by `references/wiki-rules.md`. It has filled up to the card limit — continue in `progress-2.md`.
 
-For each slice — claim it by "Picking a slice" before step 1, read its card and its check lines, then go through the steps below; after step 7 — `agents.sh done "S<N>: <outcome>"` with the files of the claim. Every line this agent writes into "Progress log" starts with `S<N> [<name>]:` instead of `S<N>:`, `<name>` — the second field of `agents.sh id`.
+For each slice — claim it by "Picking a slice" before step 1, read its card and its check lines, then go through the steps below; after step 7 — `agents.sh done "S<N>: <outcome>"` with the files of the claim. Every line this agent writes into "Progress log" starts with `S<N> [<name>]:` instead of `S<N>:`, `<name>` — the second field of `agents.sh id`, copied whole, never shortened. Stage records take the mark at the end: "stage 5 finished [<name>]".
 
 1. **Copies.** Take copies of the slice files by `references/snapshot.md` — for any slice, including one with a "Rollback" section. A "change" file does not exist — this is a discrepancy with the plan, not a reason to create the file.
 2. **The check before the edits.** Run the check once and read why it does not pass.

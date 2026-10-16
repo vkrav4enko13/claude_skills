@@ -1,0 +1,27 @@
+# Progress log of topic quality-zero
+
+> The records of `swork`: slices, attempts, own decisions, stages and what was written to the wiki.
+
+- preparation: snapshot `docs/work/quality-zero/.swork/`, project under git, 241 paths dirty at start (`dirty-at-start.txt`), marker of agent 76372:1791902961
+- preparation: exclusions for the unreported-edit search — files for which `git check-ignore` answers 0; the project has no `.gitignore`, so in practice none; always skipped: the snapshot, `docs/`, `.agents/`, `.swork-*`, `.git/`; stand outputs go to `~/Documents/my/chain-stand/`, outside the project
+- preparation: "Checked against code" ee94340 — HEAD is ee94340 and no slice file is changed in the working tree; no discrepancy
+- order: S1, S4, S5, S6, S7 (no or done dependencies), then S3 (S1), S2 (S1, S4, S5, S6), S8 (all)
+- S1 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit check red: line 2 lists five bare mktemp, line 3 loses tests/zz-new.txt, line 4 has no verdict-test.sh; line 1 green already (agents-test.sh removes its folder) · checks/S1-l1-0 … S1-l4-0
+- S1 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — lines 1, 2, 3, 4 green; changed files are exactly the slice files · checks/S1-l1-1 … S1-l4-1
+- S4 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit check red: lines 9, 10, 11 find nothing, line 20 has no --record option · checks/S4-l9-0 … S4-l20-0
+- S4 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — lines 9, 10, 11, 20 green; a doubled "in `state.md` and in the topic's line" in `report.md:41`, from the plan's ready text, removed by the main session; line 11 green after it · checks/S4-l9-1, S4-l10-1, S4-l11-2, S4-l20-1
+- S5 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit line 12 red (no such sentence); line 13 not run before the edits: B16 and B17 do not exist yet, so it cannot be green, and the reader runs at xhigh · checks/S5-l12-0
+- S5 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — lines 12, 13 green (line 13 rerun by the main session into a fresh folder `qz-blind-main`: `17 of 17 ok`); the restated progress-line rule at `saway/SKILL.md:37` removed, the full rule stays at `:21` · checks/S5-l12-1, S5-l13-1
+- S6 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit line 14 red (no `task.md` in slicing.md) · checks/S6-l14-0
+- S6 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — line 14 green; the executor noticed the inserted "without a topic — the user's request" doubled the next clause "for a task without a topic — from the user's words"; the main session removed the inserted part · checks/S6-l14-1
+- S7 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit line 15 red: `agents: all ok` but 0 new cases · checks/S7-l15-0
+- S7 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — line 15 green (`agents: all ok`, 9 matching lines); line 1 of S1 rerun green too (`agents-test.sh` is shared) · checks/S7-l15-1, S1-l1-2
+- S7: noticed outside the slice — `sbrain/scripts/agents.sh` `held()`: a repo file under a top-level folder `_up/` and a wiki file at `../` get the same held copy path (from the plan's `_up/` scheme); `norm` (`:133`) turns globbing off with `set -f` and never back on — harmless inside a command substitution
+- S3 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit line 8 not run: `requests-away.tsv` does not exist yet, so the command fails by construction
+- S3 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — line 8 green: `saway`, `saway`, `compound-engineering:lfg` — the plugin loads through the project settings, and "I am leaving" in both languages starts `saway` · checks/S3-l8-1
+- S2 [274dce1b-f373-4554-9da8-502481a3ffeb]: started — pre-edit line 5 red (0 `saway` rules; the 67 cited lines all exist), line 7 red (no `zero.sh`); line 6 not run before the edits: no `zero.sh`, and the series takes hours · checks/S2-l5-0, S2-l7-0
+- S2 [274dce1b-f373-4554-9da8-502481a3ffeb]: decided myself — line 6 is a multi-hour series; chosen: the executor runs lines 5 and 7 and only a syntax check plus a short dry look at line 6, the main session runs line 6 once after the edits; why: two runs of the same series waste hours and tokens; otherwise: the executor would run it and the main session would run it again
+- S2 [274dce1b-f373-4554-9da8-502481a3ffeb]: lines 5 and 7 green (12 `saway` rules, 79 citations alive; `zero: fail — no measurement`, `rc 1`); every stale citation of `rules.md` moved to its current line; line 6 started by the main session · checks/S2-l5-1, S2-l7-1, S2-l6-1
+- S2: noticed outside the slice — `verdict.sh:65` and `survey-gate.sh:55` take a series' labels from every key line, so a run with `<run>` and `<run>-survey` counts twice there (not used by `zero.sh`); `judge-prompt.md` "Seeds": the away and nonstop projects carry the planted defects too; `collect.sh:7-9`: the nonstop lane drives the seed stage on the `seed-away.sh` plan, whose S4 holds a planted error — the lane may never count as done
+- S2 [274dce1b-f373-4554-9da8-502481a3ffeb]: decided myself — line 6 exits with code 1 because `zero.sh` ends `zero: fail — violations 3`; chosen: green; why: the line proves the lanes and the summary, not the thresholds (S2 step 6), every expected line is there; otherwise: a card edit adding `|| true` to the command
+- S2 [274dce1b-f373-4554-9da8-502481a3ffeb]: done — lines 5, 6, 7 green; smoke `qz-smoke`: stages 10/10, seeds 5/5, decisions 5/5, flaws 5/5, away 1/1, nonstop 1/1, pair 1/1, `judged: saway 10 rules`, violations 3 (sbrain 1, saway 1, sv 1) · checks/S2-l6-1

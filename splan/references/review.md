@@ -31,6 +31,7 @@ An author who checks themselves confirms what they already believe. That is why 
 Review the work plan before it is executed. Reply in English. Topic folder: <path> — the plan and
 the requirements lie in it as cards (no requirements — the task: <text>).
 Project: <root>. Change nothing — only read.
+Delete no file and no folder outside the project folder, temporary folders included.
 
 Assume that the plan has flaws, and find them. Check against the code and against the requirements:
 

@@ -181,3 +181,27 @@ What happens next?
 - a) S5 is executed after all: nothing else is left to do.
 - b) The conformance check, the review and the report run over what is done.
 - c) The work is stopped without the conformance check, the review and the report.
+
+## B16
+
+The plan is confirmed and `swork` executes it; slices S1–S3 of seven are done, S4 is running.
+The user writes a message of their own in the session: "I am back, what is the state?"
+The work is not finished: S4–S7 are not done.
+
+What does `saway` do?
+
+- a) Shows the description for the user with the last line `saway: work finished`.
+- b) Shows the description for the user with the last line `saway: work stopped — waiting for the user`.
+- c) Goes on driving the work without a description: the work is not finished yet.
+
+## B17
+
+The decisions card of the topic holds a line marked "user chose; in force": the cache is kept in memory.
+One slice of the plan cannot be done while that decision holds: it needs the cache on disk.
+The other slices do not touch the decision.
+
+What happens next?
+
+- a) `saway` edits the decision in the card: the old line gets "superseded", the new one is marked `assumption — decided without the user`, and the work goes on.
+- b) The decision is not edited; the slice that diverges from it is bypassed and the work goes on with the rest.
+- c) The decision is not edited; the work is stopped and `saway` writes the description for the user.

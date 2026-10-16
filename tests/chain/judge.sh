@@ -4,26 +4,28 @@
 #   bash tests/chain/judge.sh <series>…
 #
 # The stands folder — CHAIN_BASE, by default ~/Documents/my/chain-stand; the
-# judge — its folder blind/. For every run of the named series — a folder
-# <series>/<number> that is not in the key blind/key.tsv — it sets up a label
-# of eight random hexadecimal characters, the folder blind/<label>/ and the
-# key line "<label>⇥<series>⇥<run>". In the label folder: chat-<stage>.md and
-# agents-<stage>/ from the stage folders; project/ — a copy of
-# wiki-trial/clean, project-seed/ — a copy of seedbox/wiki-trial/clean, both
-# without .claude/, .swork/ and .swork-marker; seeds.md; rules.md — from the
-# series folder of the run; it is not there — from before/rules.md, and while
-# that one does not exist either, from rules.md next to the script. What the
-# run does not have is skipped. The run path in the copied texts is replaced
-# with /stand, its form with hyphens in place of the other characters — with
-# -stand.
-# A run with a stage folder survey or grill is packed otherwise:
+# judge — its folder blind/. A run of the named series — a folder
+# <series>/<number> — gets up to two labels of eight random hexadecimal
+# characters, each with its folder blind/<label>/ and its key line in the key
+# blind/key.tsv: "<label>⇥<series>⇥<run>" when the run has a stage folder
+# brain, plan, work, seed or away, and "<label>⇥<series>⇥<run>-survey" when it
+# has a stage folder survey or grill; a key line that is already there is not
+# made again. The main label folder: chat-<stage>.md and agents-<stage>/ from
+# the stage folders brain, plan, work, seed and away; project/ — a copy of
+# wiki-trial/clean, project-seed/ — a copy of seedbox/wiki-trial/clean,
+# project-away/ — a copy of awaybox/wiki-trial/clean, all without .claude/,
+# .swork/ and .swork-marker; seeds.md; rules.md — from the series folder of
+# the run; it is not there — from before/rules.md, and while that one does not
+# exist either, from rules.md next to the script. The survey label folder:
 # chat-survey.md, chat-grill.md, agents-survey/, agents-grill/;
 # project-survey/ — a copy of surveybox/wiki-trial/clean, project-grill/ — a
 # copy of grillbox/wiki-trial/clean, both without .claude/, .swork/ and
 # .swork-marker; rules-survey.md and seeds-survey.md next to the script. The
-# persona files are not copied.
+# persona files are not copied. What the run does not have is skipped. The
+# run path in the copied texts is replaced with /stand, its form with hyphens
+# in place of the other characters — with -stand.
 # The judge is a claude -p session in the label folder with the text of
-# judge-prompt.md — for a survey run, of judge-survey-prompt.md — the tools Read Glob Grep Write and the flag --restricted:
+# judge-prompt.md — for a survey label, of judge-survey-prompt.md — the tools Read Glob Grep Write and the flag --restricted:
 # it can read nothing outside the label folder; its reply goes to
 # blind/<label>.json.
 # The sessions of the labels of the named series go at the same time; a label
@@ -67,14 +69,15 @@ project() {
         -prune -exec rm -rf {} +
 }
 
-# The label folder $1 with the traces of the run from the folder $2.
+# The label folder $1 with the traces of the run from the folder $2: $3 is
+# main — the stages brain plan work seed away, survey — survey and grill.
 pack() {
     local D="$blind/$1" R="$2" S s f text own
     S=${R//[^A-Za-z0-9]/-}
     own="${R%/*}/rules.md"
     if [ ! -f "$own" ]; then own="$rules"; fi
     mkdir "$D"
-    if [ -d "$R/survey" ] || [ -d "$R/grill" ]; then
+    if [ "$3" = survey ]; then
         for s in survey grill; do
             if [ -f "$R/$s/chat.md" ]; then cp "$R/$s/chat.md" "$D/chat-$s.md"; fi
             if [ -d "$R/$s/agents" ]; then cp -R "$R/$s/agents" "$D/agents-$s"; fi
@@ -84,12 +87,13 @@ pack() {
         cp "$here/rules-survey.md" "$D/rules-survey.md"
         cp "$here/seeds-survey.md" "$D/seeds-survey.md"
     else
-        for s in brain plan work seed; do
+        for s in brain plan work seed away; do
             if [ -f "$R/$s/chat.md" ]; then cp "$R/$s/chat.md" "$D/chat-$s.md"; fi
             if [ -d "$R/$s/agents" ]; then cp -R "$R/$s/agents" "$D/agents-$s"; fi
         done
         project "$R/wiki-trial/clean" "$D/project"
         project "$R/seedbox/wiki-trial/clean" "$D/project-seed"
+        project "$R/awaybox/wiki-trial/clean" "$D/project-away"
         cp "$here/seeds.md" "$D/seeds.md"
         cp "$own" "$D/rules.md"
     fi
@@ -124,18 +128,30 @@ judge() {
     )
 }
 
+# The label of the key run $3 of the series $1 for the run folder $2, packed
+# as $4 when the key does not have it yet; it goes into labels.
 labels=()
+label() {
+    local label
+    label="$(label_of "$1" "$3")"
+    if [ -z "$label" ]; then
+        label="$(od -An -N4 -tx1 /dev/urandom | tr -d ' \n')"
+        pack "$label" "$2" "$4"
+        printf '%s\t%s\t%s\n' "$label" "$1" "$3" >> "$key"
+    fi
+    labels+=("$label")
+}
+
 for series in "$@"; do
     for R in "$B/$series"/[0-9]*; do
         [ -d "$R" ] || continue
         run="${R##*/}"
-        label="$(label_of "$series" "$run")"
-        if [ -z "$label" ]; then
-            label="$(od -An -N4 -tx1 /dev/urandom | tr -d ' \n')"
-            pack "$label" "$R"
-            printf '%s\t%s\t%s\n' "$label" "$series" "$run" >> "$key"
+        for s in brain plan work seed away; do
+            if [ -d "$R/$s" ]; then label "$series" "$R" "$run" main; break; fi
+        done
+        if [ -d "$R/survey" ] || [ -d "$R/grill" ]; then
+            label "$series" "$R" "$run-survey" survey
         fi
-        labels+=("$label")
     done
 done
 if [ ${#labels[@]} -eq 0 ]; then

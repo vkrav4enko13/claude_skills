@@ -25,7 +25,9 @@ $(cat "$1")
 
 $(cat "$2")"
 
-box="$(mktemp -d)"
+base="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"
+mkdir -p "$base"
+box="$(mktemp -d "$base/answer.XXXXXX")"
 trap 'rm -rf "$box"' EXIT
 reply="$(
     cd "$box"

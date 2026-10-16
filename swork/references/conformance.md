@@ -20,6 +20,7 @@ Check what was done against the plan. Reply in English. The plan: <the path to t
 Project root: <path>. "Out of scope" from the requirements: <the text or "none">.
 Changed files: <paths>; their state before the work is in <the path to base/>.
 New files: <paths>. Change nothing — only read.
+Delete no file and no folder outside the project folder, temporary folders included.
 
 In the topic folder the plan lies as cards: `plan.md` — the goal, the shared constraints
 and "Not doing"; `plan-decisions.md` — the technical decisions; `plan-checks.md`

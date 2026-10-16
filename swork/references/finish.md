@@ -9,9 +9,9 @@ After this agent's last slice. **Who runs stages 5–7** — the agent that clai
 - code 3 — `wait` for it by "Waiting" and claim it again;
 - claimed, but "Next step" in `state.md` already says "user's choice after the report" — `release` it, then the short report by `references/report.md`, its first line beginning with `⏸` and naming the agent that gave the final report; then stop: the work has been reported;
 - claimed while `agents.sh busy --topic <topic>` shows another agent's live claim — `agents.sh release --all`, then the short report by `references/report.md`, its first line beginning with `⏸` and naming that agent for the final report; then stop;
-- claimed with no other live claim — stages 5–7 below, then the final report; `.stage` is released after the report.
+- claimed with no other live claim — stages 5–7 below, then the final report; `.stage` is released right before the final report is shown: a late agent is turned away by the bullet on "user's choice after the report".
 
-Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished".
+Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished". Stage 7 ends with the record "stage 7 finished"; where agents are marked, "stage 7 finished [<name>]". Write it in this form, not as free text.
 
 **First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`, not an attempt; otherwise — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — "Decisions and bypass" of `references/slices.md`. A `not checked` slice is treated as one with only a manual check.
 

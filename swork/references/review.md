@@ -15,6 +15,7 @@ Find the errors in the changes. Reply in English. Project root: <path>. Changed 
 their state before the work is in <the path to base/>. New files: <paths>.
 The plan this was written by: <the path to the topic folder or the text>. Change nothing —
 only read.
+Delete no file and no folder outside the project folder, temporary folders included.
 
 Assume that there are errors, and find them. Look for:
 - a wrong result for an input that occurs here: empty, a single value,

@@ -4,21 +4,14 @@
 
 ## In progress
 
-
-
 ## Deferred
 
-- manual check of topic multi-agent: line 12 — until the user says so (install to the Mac profiles)
-- topic `quality-zero`: zero judge violations over the four skills — after `multi-agent`; answers given — [scope](work/multi-agent/scope.md)
-- `quality-zero`: a `swork` reviewer ran `rm -rf` on `$TMPDIR/tmp.*` — [note](notes/stand-nonstop-parallel.md)
-- `quality-zero`: stand sessions skip plain rules — a free-text stage-7 record, a `saway` reply without progress line — [log](work/multi-agent/progress-2.md)
+- manual check of topic quality-zero: lines 17, 18 — until the user says so
+- `multi-agent`: an early finish between a neighbour's `done` and claim, `.agents/` clashing with a repo folder — outside `quality-zero` · [log](work/multi-agent/progress-3.md)
 - публикация скилов другим — когда-нибудь; потребует чистки личных путей
 - пробные задачи из настоящих сбоев цепочки в стенд `tests/` — идея из плейбука Anthropic, вне темы `quality-tokens`
 - хук, запрещающий править тесты во время починки, вместо одного правила в тексте `swork` — идея из плейбука Anthropic, вне темы `quality-tokens`
-- `saway`: исправления последнего чтения не перечитаны, прогона под `/goal` не было, повод спорит с `lfg` из плагина — [заметка](notes/saway-sources.md)
-- `state.sh restore` сотрёт 11 файлов `tests/` вне git, `verdict.sh` не проверяет форму вердикта судьи — нужна правка плана — [находки ревью](work/chain-cleanup/progress-29.md)
-- «откатить всё» в `report.md` не возвращает «Следующий шаг»; без журнала `splan` неоткуда взять цель — нужна правка плана — [отсев ревью](work/chain-cleanup/progress-30.md)
-- `saway`: four review findings left untouched — each needs a plan fix and a new stand run — [findings](work/saway-nonstop/progress-5.md)
+- `saway`: no run under `/goal` — needs the user live; outside `quality-zero`
 - chain-tokens R12: reviewers read skill files — 2.9 % of a run's output, below 3 %
 - chain-tokens R16: the plan shown twice, file and chat — 1.7 % of a run's output, below 3 %
 - chain-tokens R20: the full task for a second review round — 1.6 % of a run's output, below 3 %

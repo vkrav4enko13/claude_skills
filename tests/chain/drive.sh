@@ -158,9 +158,9 @@ answers=0
 if [ "$stage" = survey ] || [ "$stage" = grill ]; then
     cap=12
     if [ "$stage" = grill ]; then cap=8; fi
-    question="$(mktemp)"
+    question="$dir/tmp/question"
     # The survey gets the persona without its grill part: there is no plan in that project.
-    persona="$(mktemp)"
+    persona="$dir/tmp/persona"
     trap 'rm -f "$question" "$persona"' EXIT
     if [ "$stage" = survey ]; then
         awk '/^## Грилль плана/ { exit } { print }' "$here/persona.md" > "$persona"

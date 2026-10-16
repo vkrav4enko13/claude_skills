@@ -10,7 +10,7 @@
 # --restricted: it can read nothing outside the folder. It writes verdict.tsv —
 # "B<N>⇥<letter>⇥<sentence>"; its reply goes to reader.json.
 # Then <out folder>/result.txt is written and printed: a line "B<N> <letter> ok|differs"
-# per scenario and the last line "<k> of 15 ok". Code 0 when the reader answered every
+# per scenario and the last line "<k> of 17 ok". Code 0 when the reader answered every
 # scenario, whatever the answers; fewer answers — "reader gave <k> answers", no result.txt
 # and code 1.
 # With the two extra arguments that scenarios file goes into <out folder> under its own name in
@@ -42,9 +42,9 @@ for skill in saway sbrain splan swork; do
 done
 cp "$scenarios" "$out/"
 
-prompt='The user has left and `saway/SKILL.md` drives the work. For every scenario of `away-scenarios.md` decide by the skill texts alone what happens and write `verdict.tsv`: `B<N>⇥<letter>⇥<the sentence of the text you rely on>`.'
+prompt='The user has left and `saway/SKILL.md` drives the work. For every scenario of `away-scenarios.md` decide by the skill texts alone what happens and write `verdict.tsv`: `B<N>⇥<letter>⇥<the sentence of the text you rely on>`, where `⇥` stands for a real tab character.'
 if [ $# -eq 4 ]; then
-    prompt="For every scenario of \`$(basename "$scenarios")\` decide by the skill texts alone what the main session does and write \`verdict.tsv\`: \`<id>⇥<letter>⇥<the sentence of the text you rely on>\`."
+    prompt="For every scenario of \`$(basename "$scenarios")\` decide by the skill texts alone what the main session does and write \`verdict.tsv\`: \`<id>⇥<letter>⇥<the sentence of the text you rely on>\`, where \`⇥\` stands for a real tab character."
 fi
 
 # A failed session leaves no answers: the count below reports it.

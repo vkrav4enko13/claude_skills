@@ -5,17 +5,18 @@
 #   bash tests/chain/verdict.sh effort <series> <probe series>
 #
 # Counts over all the runs of a series. quality and seeds read the verdicts of
-# the judge: the labels of the runs of a series — from blind/key.tsv, the
-# answer — the whole third field of a line of verdict.tsv. The words of a line
-# are English; a word of an earlier verdict is first replaced by its English
-# name from the rows of tests/translate/map.tsv with the scope "stand" and the
-# kind "judge". quality — the "rule" lines with the answer "no": "after" has
+# the judge through tally_label of tally.sh: the labels of the runs of a
+# series — from blind/key.tsv, the answer — the whole third field of a line of
+# verdict.tsv. quality — the "rule" lines with the answer "no": "after" has
 # not more — code 0. seeds — the "seed" lines with the answer "found": "after"
 # has not less — code 0. speed — the sum of wall_min from metrics.json of the
 # runs of a finished series, to hundredths: "after" has less — code 0.
 # Otherwise code 1.
 # No series, key, verdict or measurement, or the series have a different number
-# of runs — "no measurement: <what is missing>" and code 1.
+# of runs — "no measurement: <what is missing>" and code 1. A malformed verdict
+# of a label (see tally.sh: a non-empty line without four tab-separated
+# fields, or fewer "rule" lines than rules) — "no measurement: verdict
+# <label>" and code 1.
 # effort — the probe of the effort "high" for the executor of a slice marked
 # "ready text": writes the word accepted or rejected into verdict.txt of the
 # probe series and prints "effort high: <word>", code 0 with either word.
@@ -41,38 +42,28 @@ after="$3"
 here="$(cd "$(dirname "$0")" && pwd)"
 B="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"
 key="$B/blind/key.tsv"
-map="$here/../translate/map.tsv"
+. "$here/tally.sh"
 
 none() {
     echo "no measurement: $1"
     exit 1
 }
 
-# The number of lines of the kind $1 with the answer $2 in the verdicts of the
-# runs of the series $3 — into $total, the number of its runs — into $runs.
+# The field $1 of the line of tally_label (1 — the "rule" lines with "no", 4 —
+# the "seed" lines with "found") summed over the runs of the series $2 — into
+# $total, the number of its runs — into $runs.
 tally() {
-    local label file
+    local label line
     total=0
     runs=0
     [ -f "$key" ] || none "no key $key"
     while IFS= read -r label; do
-        file="$B/blind/$label/verdict.tsv"
-        [ -s "$file" ] || none "no verdict $file"
+        [ -s "$B/blind/$label/verdict.tsv" ] || none "no verdict $B/blind/$label/verdict.tsv"
+        line=$(tally_label "$B/blind/$label") || none "verdict $label"
         runs=$((runs + 1))
-        # The first file is the table: the English names of the judge words.
-        total=$((total + $(awk -F'\t' -v kind="$1" -v answer="$2" '
-            FILENAME == ARGV[1] {
-                if ($1 == "stand" && $2 == "judge") english[$3] = $4
-                next
-            }
-            {
-                k = ($1 in english) ? english[$1] : $1
-                a = ($3 in english) ? english[$3] : $3
-                if (k == kind && a == answer) n++
-            }
-            END { print n + 0 }' "$map" "$file")))
-    done < <(awk -F'\t' -v series="$3" '$2 == series { print $1 }' "$key")
-    [ $runs -gt 0 ] || none "the key has no series $3"
+        total=$((total + $(printf '%s\n' "$line" | cut -d ' ' -f "$1")))
+    done < <(awk -F'\t' -v series="$2" '$2 == series && $3 !~ /-survey$/ { print $1 }' "$key")
+    [ $runs -gt 0 ] || none "the key has no series $2"
 }
 
 # What the jq filter $2 counts from metrics.json of the runs of the series $1
@@ -120,7 +111,7 @@ both() {
 
 case "$mode" in
     quality)
-        both tally rule no
+        both tally 1
         if [ "$b" -le "$a" ]; then
             echo "violations: before $a, after $b — not more"
             exit 0
@@ -128,7 +119,7 @@ case "$mode" in
         echo "violations: before $a, after $b — more"
         ;;
     seeds)
-        both tally seed found
+        both tally 4
         if [ "$b" -ge "$a" ]; then
             echo "seeds found: before $a, after $b — not less"
             exit 0
