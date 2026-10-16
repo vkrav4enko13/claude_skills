@@ -4,13 +4,16 @@
 # by the fixed line of the stage.
 #
 #   bash tests/chain/drive.sh <project> <stage> <stage folder> [<level>]
+#   bash tests/chain/drive.sh <project> pair <stage folder> <level> <topic>
 #
 # The level is the effort of the session: low medium high xhigh max, without
-# it — medium. Stages: brain, plan, work, seed, away, survey, grill. The first turn starts the skill. While
+# it — medium. Stages: brain, plan, work, seed, away, pair, survey, grill. The first turn starts the skill. While
 # the topic phase in state.md is not the one the stage is passed with — one more
 # turn with the stage answer into the same session, at most six answers. The
 # stage away is exactly one turn and no answer: saway reads any answer as the
-# user's return. Its project is seeded by seed-away.sh. The stage survey starts
+# user's return. Its project is seeded by seed-away.sh. The stage pair starts
+# swork on the topic of the fifth argument and, like away, has exactly one turn: two
+# of them run at once in one project seeded by seed-pair.sh. The stage survey starts
 # sbrain from a raw idea; every next turn is the answer of answer.sh from
 # persona.md to the reply texts of the last turn. It ends when a topic folder
 # that was not there before the first turn has the phase requirements
@@ -20,16 +23,18 @@
 # as survey does, but ends after eight answers and never on confirmed; the
 # reason — END, error or cap — goes to ended.txt as well. The
 # reply of every turn goes to turns/NN.json of the stage folder, the wall-clock
-# seconds — to wall.txt; at the end it calls collect.sh.
+# seconds — to wall.txt; at the end it calls collect.sh. Every turn gets the temp folder
+# tmp/ of the stage folder as TMPDIR.
 # Takes from ten minutes to an hour and longer.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
 usage() {
     echo "usage: bash drive.sh <project> <stage> <stage folder> [<level>]" >&2
+    echo "       bash drive.sh <project> pair <stage folder> <level> <topic>" >&2
     exit 2
 }
-[ $# -eq 3 ] || [ $# -eq 4 ] || usage
+if [ "${2:-}" = pair ]; then [ $# -eq 5 ] || usage; else [ $# -eq 3 ] || [ $# -eq 4 ] || usage; fi
 effort="${4:-medium}"
 case "$effort" in
     low | medium | high | xhigh | max) ;;
@@ -73,6 +78,11 @@ $(cat "$here/../trial-summary.md")"
         first='/saway longest — я ушёл, доделай без меня: решай сам и не жди моих ответов'
         answer=''
         ;;
+    pair)
+        topic="$5"
+        first="/swork $topic — исполни план"
+        answer=''
+        ;;
     survey)
         topic=''
         phase='requirements confirmed'
@@ -96,7 +106,7 @@ turn() {
     out="$dir/turns/$(printf '%02d' "$n").json"
     (
         cd "$project"
-        CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/claude/personal}" \
+        TMPDIR="$dir/tmp" CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/claude/personal}" \
             "$HOME/.local/bin/claude" -p "$1" "${@:2}" \
             --setting-sources project,local --permission-prompts none \
             --permission-mode acceptEdits \
@@ -138,7 +148,7 @@ replies() {
     done
 }
 
-mkdir -p "$dir/turns"
+mkdir -p "$dir/turns" "$dir/tmp"
 before='|'
 for d in "$project"/docs/work/*/; do before="$before$d|"; done
 SECONDS=0
@@ -177,7 +187,7 @@ if [ "$stage" = survey ] || [ "$stage" = grill ]; then
     echo "$ended" > "$dir/ended.txt"
 elif [ $first_failed -eq 1 ]; then
     exit 1
-elif [ "$stage" != away ]; then
+elif [ "$stage" != away ] && [ "$stage" != pair ]; then
     while ! passed && [ $answers -lt 6 ]; do
         answers=$((answers + 1))
         turn "$answer" --resume "$(jq -r .session_id "$out")"

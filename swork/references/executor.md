@@ -6,7 +6,7 @@ A slice of a plan in the topic folder is executed by a fresh subagent. It has se
 
 ## Packet
 
-Run the script into a file: `bash <skill folder>/scripts/packet.sh <topic folder> <slice number> <project root> [<created.txt>] > <temporary folder>/packet-S<N>.txt`. Do not retype the text of the cards. If the script cannot be run, collect the packet by hand into the same file, in the same order:
+Run the script into a file: `bash <skill folder>/scripts/packet.sh <topic folder> <slice number> <project root> [<created.txt>…] > <temporary folder>/packet-S<N>.txt` — this topic's `created.txt` first, then the `created.txt` of the other topics found under `<wiki>/work/*/.swork/`, and nothing else. Do not retype the text of the cards. If the script cannot be run, collect the packet by hand into the same file, in the same order:
 
 1. **Its own slice** — the slice card in full, with all its parts.
 2. **Its check lines** — the lines from the check cards with the numbers from the "Checks" field of the slice, together with the header row of the table.
@@ -15,7 +15,7 @@ Run the script into a file: `bash <skill folder>/scripts/packet.sh <topic folder
 5. **Out of scope** — the section of the topic's `scope.md` card or of its part `scope-<part>.md`, if the topic has such a card.
 6. **The rule "If the code differs from the plan"** — the section at the end of `plan.md` or of its last part.
 7. **The project root** — the full path.
-8. **What was created earlier** — the contents of the snapshot's `created.txt`: the lines `S<N>: name(signature) — file` — the name, the signature and the file of every function of the earlier slices, without the text of the functions. There is no file — the item is skipped.
+8. **What was created earlier** — the contents of this topic's `created.txt`, then of the other topics' ones, a block each under `=== created earlier: <file> ===`, this topic's marked `(this topic)`: the lines `S<N>: name(signature) — file` — the name, the signature and the file of every function of the earlier slices, without the text of the functions. There is no file — its block is skipped.
 
 The path to the topic folder, the overview `plan-overview.md`, the cards of other slices, the check lines of other slices and the requirements cards are not passed: an executor that sees a neighbouring slice starts doing it along the way. Everything it needs from the neighbours is already written in the "Interfaces" block of its slice.
 
@@ -50,7 +50,7 @@ Rules:
 7. Do not commit. Do not edit the cards of the plan and of the wiki, do not write to the wiki.
 8. Take the ready-made code from the "Reuse" field of the slice and from the list of what was created earlier
    instead of writing it anew. The list does not replace a search in the project: rule 4 applies.
-   A line of the list with the number of your slice is your own code: you may edit it.
+   A line of your own topic's block with your slice number is your own code: you may edit it.
 9. Do not write tests and checks beyond the check lines passed to you.
 10. Do not fix a flaw outside the slice: name it in the NOTICED field.
 

@@ -1,28 +1,30 @@
 #!/bin/bash
 # Prints the executor's packet of one slice, assembled from the topic cards.
 #
-#   bash packet.sh <topic folder> <slice number> <project root> [<created.txt>]
+#   bash packet.sh <topic folder> <slice number> <project root> [<created file>…]
 #
 # The eight items of "Packet" in references/executor.md, in its order, each
 # under its own line: === slice ===, === check lines ===, === shared
 # constraints and not doing ===, === technical decisions ===, === out of
-# scope ===, === discrepancy rule ===, === project root ===, === created
-# earlier ===. "Out of scope" is skipped when the topic has no such section,
-# "created earlier" — when no created.txt is given or the file does not exist.
+# scope ===, === discrepancy rule ===, === project root ===, then a block per
+# created file: the first, this topic's, under === created earlier: <file>
+# (this topic) ===, the others under === created earlier: <file> ===.
+# "Out of scope" is skipped when the topic has no such section, a created
+# file — when it does not exist.
 # No card of that slice — "no slice S<N>" to stderr and code 1.
 # Wrong arguments or no topic folder — a message and code 2.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
 usage() {
-    echo "usage: bash packet.sh <topic folder> <slice number> <project root> [<created.txt>]" >&2
+    echo "usage: bash packet.sh <topic folder> <slice number> <project root> [<created file>…]" >&2
     exit 2
 }
-[ $# -eq 3 ] || [ $# -eq 4 ] || usage
+[ $# -ge 3 ] || usage
 T="${1%/}"
 n="$2"
 root="$3"
-created="${4:-}"
+shift 3
 [[ $n =~ ^[1-9][0-9]*$ ]] || usage
 if [ ! -d "$T" ]; then
     echo "$1: no topic folder" >&2
@@ -112,8 +114,12 @@ echo
 echo "=== project root ==="
 echo "Project root: $root"
 
-if [ -n "$created" ] && [ -f "$created" ]; then
-    echo
-    echo "=== created earlier ==="
-    cat "$created"
-fi
+own=" (this topic)"
+for created in "$@"; do
+    if [ -f "$created" ]; then
+        echo
+        echo "=== created earlier: $created$own ==="
+        cat "$created"
+    fi
+    own=""
+done

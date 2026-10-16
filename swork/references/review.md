@@ -59,7 +59,7 @@ The reviewer makes mistakes too. Check every finding against the code yourself:
 
 What to do with a confirmed one:
 
-- **An error in the code of the slices** — fix it yourself: the checkpoint `stage-7`, the edits in batches, the checks of the slices of the batch. A red one — restore from the checkpoint, the finding goes into the report.
+- **An error in the code of the slices** — fix it yourself: the checkpoint `stage-7`, the edits in batches, the checks of the slices of the batch. A red one while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`; otherwise restore from the checkpoint, the finding goes into the report.
 - **It requires going outside the plan, changing the behaviour or a decision of the plan** — do not touch it, name it in the report with the reason.
 
 Name the declined findings in the report, in the "Fixed after the review" section, one line each: what was proposed and why it was declined.
@@ -70,4 +70,4 @@ Only if a **serious** finding was fixed. Give the same task the list of the find
 
 The second round is read by a new subagent: the previous one has already seen its own findings.
 
-There is no third round. Do not fix a new finding of the second round — there is no one to recheck the fix: it goes into the report, into "Found and left untouched". Keep your first fix if the checks of the slices are green; if the second round showed that it was the fix that introduced the error — restore the files from `stage-7` and name both findings in the report.
+There is no third round. Do not fix a new finding of the second round — there is no one to recheck the fix: it goes into the report, into "Found and left untouched". Keep your first fix if the checks of the slices are green — a red one while another agent holds a live claim is rerun first, as above; if the second round showed that it was the fix that introduced the error — restore the files from `stage-7` and name both findings in the report.

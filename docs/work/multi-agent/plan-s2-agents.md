@@ -1,0 +1,28 @@
+# S2. agents.sh and the claim rule
+
+> One script claims, waits, logs edits with diffs and releases; one rules file says when every skill calls it.
+
+- **Status:** done
+- **Covers:** R1, R2, R4, R5, R6, R7
+- **Depends on:** none
+- **Files:**
+  - create: `sbrain/scripts/agents.sh`, `sbrain/references/agents-rules.md`, `tests/agents-test.sh`
+  - change: `install.sh` (Mac loop lines 192–197, PC loop lines 220–225: copy the two new files into `splan` and `swork` next to `wiki-rules.md` and `check.sh`)
+  - change: `tests/chain/stand.sh` (lines 27–31 and the header lines 7–8: the same two copies, each only if the source file exists — check line 1 builds a stand from older skills)
+- **Interfaces:**
+  - gives: every command takes `--topic <topic>` — the name of the topic folder, default `-` and works on project-relative paths without `./`; `agents.sh claim <file>…` — code 0: all claimed, prints for each file either `no changes`, the diffs other agents logged since this agent last held it, or `reread: <file>` when those diffs exceed 100 lines; code 3: nothing claimed, prints `busy: <file> held by <name>`
+  - gives: `agents.sh wait <file>…` — at most 540 s in the foreground; code 0: every file is free — a dead owner's lines are removed and printed as `abandoned: <file> by <name>`, otherwise `free: <file>`; it claims nothing, the caller then calls `claim`; code 3: still busy, call again; `--for <seconds>` shortens the piece
+  - gives: `agents.sh done "<essence>" <file>…` — logs one line per changed file, keeps the diff, releases; `agents.sh release <file>…` — releases without logging; `agents.sh busy [--topic <topic>]` — code 0 and a line per live claim of another agent (in that topic, if named), code 1 when there is none; `agents.sh release --all` — releases every claim of this agent; `agents.sh others [--since <file>]` — the paths of live claims of other agents and of log lines by other agents newer than the mtime of `<file>` (default: this agent's start), one per line; `agents.sh id` — prints `<pid>:<start epoch>⇥<name>`; the environment variable `AGENTS_ID=<pid>:<epoch>⇥<name>` overrides the id (for tests)
+  - gives: `.agents/claims.tsv` — `id⇥name⇥topic⇥time⇥file`; `.agents/log.tsv` — `n⇥id⇥name⇥topic⇥time⇥file⇥lines⇥essence`; `.agents/diffs/<n>.diff`; `.agents/held/<id>/<file>` — the copy taken at the claim; `.agents/seen/<id>.tsv` — the log number at this agent's start and the last number it saw per file; `.agents/lock/` — the mutex folder holding `pid`
+  - gives: `sbrain/references/agents-rules.md` sections `## When to claim`, `## Waiting`, `## After a write`
+- **Reuse:** the argument check, header comment and exit-code style of `sbrain/scripts/check.sh`; `diff -u` and `mkdir` as the mutex; `ps -o lstart=` for the start time
+- **What to do:**
+  1. Root: `$AGENTS_ROOT` if set; else walk up from the current folder to the first folder holding `.agents/`; else `git rev-parse --show-toplevel`; else the first folder up holding `docs/00-index.md`; else the current folder. Id: `$CLAUDE_PID` if `kill -0` succeeds and its command holds `claude`, else climb `ps -o ppid=,comm=` to the first process whose name holds `claude` or `codex`; start epoch from `ps -o lstart=` under `LC_ALL=C`, parsed by `date -j -f "%a %b %d %T %Y"` (the script sets `LC_ALL=C.UTF-8` as `check.sh` does); name: `$CLAUDE_CODE_SESSION_ID`, else `codex`. No such process found — the id of the shell's parent, with name `shell`.
+  2. Every change of `claims.tsv`, `log.tsv` or `seen/` is made inside the mutex: `mkdir .agents/lock` in a loop with a 0.2 s pause, then write own pid into `lock/pid`; a lock whose `pid` is dead, or with no `pid` and older than 5 s, is moved away by `mv` to a unique name and then removed, and `mkdir` is tried again; removed on exit by `trap`.
+  3. Live owner: `kill -0 <pid>` succeeds and `ps -o lstart= -p <pid>` gives the same start epoch.
+  4. `claim`: inside the mutex, if any file is held by another live id — release nothing, code 3; a file already held by this id is a success; else add a line per file, copy each existing file into `held/<id>/`, then print for each file the diffs logged by other ids after the later of this agent's start and its last view, or `no changes`, or `reread: <file>` over 100 lines; the first call of an id, of any command, records the log length as its start.
+  5. `wait`: recheck every 2 s for the piece; dead owners' lines are removed; nothing is claimed.
+  6. `done`: per file `diff -u held/<id>/<file> <file>` — a file new since the claim against `/dev/null`, a deleted file logged with the lines `deleted`; a path absent both at the claim and now (such as `<topic>/.stage`) and an empty diff log nothing; the line ranges from the `@@` headers; then release and delete the held copies.
+  7. `agents-rules.md` — when every skill claims (before writing a file of the project or of the wiki, all files of the step at once), waits (`wait` in a loop, a `⏳` line in the user's language, never a question, never holding a claim while waiting; in Claude Code the command gets a timeout of 600000 ms, in another environment `--for` shorter than its command timeout), and after the write calls `done` with a one-phrase essence; inside a topic every call passes `--topic <name of the topic folder>`; a file read earlier is relied on only after its claim printed `no changes`, the diffs, or it was reread on `reread:`.
+  8. `tests/agents-test.sh`: a temp project with `git init`; cases of line 3 using fake owners through `AGENTS_ID` — a background `sleep` (live), a dead pid, and the live `sleep` pid with another start epoch (reused); a stale `lock/` of a dead pid; prints `agents: all ok` or the first failing case and code 1.
+- **Checks:** lines 3, 4

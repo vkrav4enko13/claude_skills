@@ -21,7 +21,7 @@ A task for a subagent is a code block in the task file: `references/executor.md`
 
 If the environment has no subagents, carry out every task from `references/` yourself, one after another, and say so at the start of the report: there was no independent check.
 
-Starting `swork` is a choice of all its stages: the slices, the conformance check, the simplification and the review go one after another, and no consent is needed between them. It does not stop before the report: section 4.
+Starting `swork` is a choice of all its stages: the slices, the conformance check, the simplification and the review go one after another, and no consent is needed between them. It does not stop before the report: section 4. The one exception is a wait for files another agent holds — `references/agents-rules.md`, "Waiting": it ends by itself and asks the user nothing.
 
 ## What swork does not do
 
@@ -49,7 +49,7 @@ Where the table tells you not to execute or to offer `splan`, name the phase and
 
 ## 4. Own decisions
 
-`swork` does not stop and does not ask in the middle of the work; it waits only in the menu after the report and at entry by the phase table. Where it once stopped, it decides itself:
+`swork` does not stop and does not ask in the middle of the work; it waits only in the menu after the report, at entry by the phase table and, as the exception of the stages, for files another agent holds. Where it once stopped, it decides itself:
 
 | Former case | Decision |
 |---|---|
@@ -75,7 +75,7 @@ A message from the user during the run — take the correction from the next ste
 - Record the result of every run in the "Result" column of the line: `green YYYY-MM-DD` or `red YYYY-MM-DD`.
 - The command cannot be run because of the environment — the machine is unreachable, the service is not running, there is no login — this is not a red check: attempts are not spent, the executor is not started. Try once to restore the environment and run the check again; it still cannot be run — the slice gets the status `not checked` by section 4, and the work goes on. Into "Result" — `not run: <reason>`.
 
-**Who writes to the plan and to the wiki.** Only the main session: the slice statuses, the "Result" of the check lines, "Progress log", `state.md`, the notes in `notes/`, the fixes of minor discrepancies in the slices and the own edits of a slice card and its check lines by section 4. When you change a slice status, set the same status in the overview `plan-overview.md`, if there is one: in the heading of that slice's section. Edit nothing else in the overview: `splan` rebuilds it. The executor and the reviewers do not write to the wiki. Do not write to the journal in the course of the work: the chain has one line, and its tail changes when "accept the work" is chosen. When you have written to the wiki, run the check script and fix what it names: `references/wiki-rules.md`, the "Check" section. The goal, the shared constraints and "Not doing" are edited by no one.
+**Who writes to the plan and to the wiki.** Only the main session of an agent, under a claim by `references/agents-rules.md`: the slice statuses, the "Result" of the check lines, "Progress log", `state.md`, the notes in `notes/`, the fixes of minor discrepancies in the slices and the own edits of a slice card and its check lines by section 4. When you change a slice status, set the same status in the overview `plan-overview.md`, if there is one: in the heading of that slice's section. Edit nothing else in the overview: `splan` rebuilds it. The executor and the reviewers do not write to the wiki. Do not write to the journal in the course of the work: the chain has one line, and its tail changes when "accept the work" is chosen. When you have written to the wiki, run the check script and fix what it names: `references/wiki-rules.md`, the "Check" section. It names cards of other topics too: fix only the cards of this topic. The goal, the shared constraints and "Not doing" are edited by no one.
 
 **Before the report — first `state.md`.** Before the report and before the end of a session first write "Next step" into `state.md` — one action that the next session will start from.
 
@@ -116,7 +116,7 @@ If the text refers to a section or a step from another file, read that one too.
 | "This check is superfluous too" | Checks at the boundaries of the system are not touched |
 | "The review suggested it — so it must be done" | First check that the problem is real |
 | "I will add a guard just in case" | That will bring back what the simplification removed |
-| "The slices are independent, I will start both at once" | One at a time: without git, simultaneous edits cannot be told apart |
+| "The slices are independent, I will start both at once" | Two agents never edit one slice: the claim decides |
 | "A task without a plan, but I will manage" | Large work goes to `splan` |
 | "It is small — there is nothing to check" | One reviewer is mandatory |
 | "They liked the report — I will commit" | "Good" is not a choice of step |

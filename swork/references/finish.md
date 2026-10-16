@@ -1,18 +1,25 @@
 # Conformance check. Simplification. Review
 
-Read at step 5 — after the last slice, — at step 6, after the edits of the conformance check, and at step 7, after the simplification and before the report.
+Read at step 5 — after this agent's last slice, — at step 6, after the edits of the conformance check, and at step 7, after the simplification and before the report.
 
 ## 5. Conformance check
 
-After the last slice. Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished".
+After this agent's last slice. **Who runs stages 5–7** — the agent that claims `<topic folder>/.stage` by `references/agents-rules.md`, "When to claim":
 
-**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — "Decisions and bypass" of `references/slices.md`. A `not checked` slice is treated as one with only a manual check.
+- code 3 — `wait` for it by "Waiting" and claim it again;
+- claimed, but "Next step" in `state.md` already says "user's choice after the report" — `release` it, then the short report by `references/report.md`, its first line beginning with `⏸` and naming the agent that gave the final report; then stop: the work has been reported;
+- claimed while `agents.sh busy --topic <topic>` shows another agent's live claim — `agents.sh release --all`, then the short report by `references/report.md`, its first line beginning with `⏸` and naming that agent for the final report; then stop;
+- claimed with no other live claim — stages 5–7 below, then the final report; `.stage` is released after the report.
+
+Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished".
+
+**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`, not an attempt; otherwise — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — "Decisions and bypass" of `references/slices.md`. A `not checked` slice is treated as one with only a manual check.
 
 **Bypassed and dependent slices.** Add to the message of every reviewer of stages 5 and 7, next to the values in brackets, one sentence: `Bypassed, not to be reported as missing or wrong: S<N> — <files>` — the bypassed and the dependent slices. Drop a finding about such a slice or about the half-made edits of a bypassed one: start no executor for it, do not fix it, do not restore its files. Name what was dropped in "Deviations from the plan" of the report.
 
 Read `references/conformance.md`. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation: the slices added new code — pass it both tasks from `references/simplify.md` word for word in the same message; there is no new code — only the conformance check task. The reviewers of this stage and of the review are passed the path to the topic folder: they read the plan cards themselves.
 
-First check every finding against the code yourself: the reviewer makes mistakes too, and a slice recognized as done even before the edits is legitimately untouched. Before the edits take the checkpoint `stage-5` by `references/snapshot.md`. The order of the edits matters: a red check caused by something left unfinished would cancel the removal of what is superfluous.
+First check every finding against the code yourself: the reviewer makes mistakes too, and a slice recognized as done even before the edits is legitimately untouched. Before the edits take the checkpoint `stage-5` by `references/snapshot.md`; every edit is written under a claim of its files by `references/agents-rules.md`. The order of the edits matters: a red check caused by something left unfinished would cancel the removal of what is superfluous.
 
 1. **"missing" and "wrong"** — an attempt to fix for the owning slice, as in step 6 of section 3: the executor gets the packet file of the slice; the text of the finding and the list of what has already been tried go into the message itself. After the attempt check the finding against the code yourself. It is not closed in two attempts — it goes into the report as unclosed; the edits of the attempts stay as long as the check of the slice is green. There is no stop here.
 2. **"beyond the plan"** — bring back to the state before the start only what is superfluous: a superfluous file as a whole, a superfluous piece with an edit. Run the checks of the affected slices.
@@ -34,7 +41,7 @@ The tasks of the stage lie in `references/simplify.md`. The stage has no reviewe
 
 If the simplification findings are not in the context — the session was interrupted after stage 5 — give both tasks from `references/simplify.md` to a reviewer anew before you edit. Do not check the READ line of this run against the full list: it reads only the new code.
 
-Before the edits take the checkpoint `stage-6`. You do the editing, not the reviewers, and only by the "What not to touch" section from the same file.
+Before the edits take the checkpoint `stage-6`; a red check of a batch while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`, not a restore. You do the editing, not the reviewers, and only by the "What not to touch" section from the same file.
 
 **Batches.** The findings of slices with shared files are one batch: slices that edit one and the same file are joined, including through a chain. After a batch run the checks of its slices. A red one — restore the files of the batch from `stage-6`, the findings go into the report as untouched. A slice of the batch has only a manual check or is `not checked` — do not apply the edits at all: there is nothing to check them with, the findings go into the report.
 
@@ -42,6 +49,6 @@ A finding that you judged false or that "What not to touch" forbids — skip it 
 
 ## 7. Review
 
-Read `references/review.md`: the task for a subagent that has not seen the conversation, the screening of the findings and the second round. Before the edits take the checkpoint `stage-7`; the edits go in batches, as in section 6.
+Read `references/review.md`: the task for a subagent that has not seen the conversation, the screening of the findings and the second round. Before the edits take the checkpoint `stage-7`; the edits go in batches and a red check is treated as in section 6.
 
 The review is read by a second reviewer — after the edits of the conformance check and the simplification.

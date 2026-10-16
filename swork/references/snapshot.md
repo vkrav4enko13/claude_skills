@@ -6,7 +6,7 @@ Read once per run, at step 2; reread it only if the text of the file is no longe
 
 ## What lies where
 
-**The snapshot folder.** For a plan in the topic folder — `.swork/` in that folder: `<wiki folder>/work/<topic>/.swork/`. The wiki rules and the check script do not see folders with a dot at the start of the name, so the snapshot does not get in their way. For a plan from the chat and a task without a plan — `.swork/` in the project root. The snapshot survives an interrupted session and is deleted when the user has chosen "accept the work".
+**The snapshot folder.** For a plan in the topic folder — `.swork/` in that folder: `<wiki folder>/work/<topic>/.swork/`. The wiki rules and the check script do not see folders with a dot at the start of the name, so the snapshot does not get in their way. For a plan from the chat and a task without a plan — `.swork-<id>/` in the project root, `<id>` — the first field of `agents.sh id`. The snapshot survives an interrupted session and is deleted when the user has chosen "accept the work"; the snapshot of a topic — only when `agents.sh busy --topic <topic>` finds no live claim.
 
 | Path in the snapshot | What it is |
 |---|---|
@@ -20,7 +20,7 @@ Read once per run, at step 2; reread it only if the text of the file is no longe
 | `notes/<name>.md` | A copy of a wiki note that existed before the work and that the work extended; it is not part of "the changes" |
 | `stage-5/`, `stage-6/`, `stage-7/` | The checkpoints: the state before the conformance check, the simplification, the review |
 
-**The time marker** is an empty file `.swork-marker` in the project root, not in the snapshot: its time must be set by the same file system that sets the time of the edits. The project lies on another machine — both the marker and the search are done on that machine. When the work is continued the marker is not moved.
+**The time marker** is an empty file `<snapshot>/agents/<id>/marker`, one per agent: its time must be set by the same file system that sets the time of the edits. A new agent calls `agents.sh id` and creates its marker when it joins. A continuing agent copies the oldest `<snapshot>/agents/*/marker` with `cp -p` as its own, instead of creating one — the oldest, so that no edit since the start of the work is missed; a legacy `.swork-marker` in the project root counts as such a marker. The project lies on another machine — both the marker and the search are done on that machine. When the work is continued no marker is moved.
 
 **The changes** are the comparison of `base/` with the current files plus the list `new-files.txt`. All the reviewers get this set.
 
@@ -40,10 +40,11 @@ An existing checkpoint is not overwritten: when the work is continued it holds t
 
 ## Unreported edits
 
-After every run of the executor find the files newer than the marker and subtract:
+After every run of the executor find the files newer than this agent's marker and subtract:
 
-- the snapshot folder, the marker and the wiki folder as a whole — always: you write the statuses, the check results and the notes into the wiki after the marker is already set;
-- the files from the "Files" blocks of the current slice and of the slices that have already been executed;
+- the snapshot folder, `.agents/` and every `.swork-*/` of the project root and the wiki folder as a whole — always: you write the statuses, the check results and the notes into the wiki after the marker is already set;
+- what other agents hold or logged — the output of `agents.sh others --since <own marker>`;
+- the files from the "Files" blocks of the current slice, of the slices that have already been executed and of the slices `done` or held in this topic;
 - the exclusions;
 - the files from `known.txt`.
 
@@ -62,7 +63,8 @@ Write the list of exclusions into "Progress log" before the first slice. Without
 
 | Case | Action |
 |---|---|
-| Under git, the file is tracked and clean at the start (it is not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, then `git checkout -- <file>` and set the time of the file back to the time of the marker, otherwise it will be found again; a line into the report |
+| `agents.sh busy` finds another live agent | Into `known.txt` and a `⚠` line: never restore it — no agent logged it, and without a log it cannot be told whose it is |
+| Under git, the file is tracked and clean at the start (it is not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, then `git checkout -- <file>` and set the time of the file back to the time of this agent's marker, otherwise it will be found again; a line into the report |
 | Under git, the file is new and untracked, it is not in `dirty-at-start.txt` | Move it into the snapshot's `removed/` — do not delete it; a line into the report |
 | Under git, the file is in `dirty-at-start.txt` | Into `known.txt` and a `⚠` line by section 4 of `SKILL.md`: it holds the user's edits, there is nothing to restore it with |
 | Without git | Into `known.txt` and a `⚠` line: do not try to restore it |
@@ -73,15 +75,17 @@ After the restoring or the move run the checks of the current slice, of all the 
 
 ## Commands: bash
 
-`ROOT` is the project root, `SNAP` — the snapshot folder, `WIKI` — the full path of the wiki folder, `F` — the path of a file from the root, `STAGE` — `stage-5`, `stage-6` or `stage-7`, `CMD` — the check command, `N` — the name of the output file (`S2-1`).
+`ROOT` is the project root, `SNAP` — the snapshot folder, `AGENTS` — the path of `agents.sh`, `M` — this agent's marker, `TOPIC` — the name of the topic folder, `WIKI` — the full path of the wiki folder, `F` — the path of a file from the root, `STAGE` — `stage-5`, `stage-6` or `stage-7`, `CMD` — the check command, `N` — the name of the output file (`S2-1`).
 
 ```bash
 # whether the project is under git; the list at the start
 git -C "$ROOT" rev-parse --is-inside-work-tree 2>/dev/null
 git -C "$ROOT" status --porcelain > "$SNAP/dirty-at-start.txt"
 
-# the marker
-touch "$ROOT/.swork-marker"
+# the marker of this agent; then ONE of the two lines: a new agent creates it, a continuing agent adopts the oldest (a legacy root .swork-marker counts)
+ID=$(bash "$AGENTS" id | cut -f1); M="$SNAP/agents/$ID/marker"; mkdir -p "$SNAP/agents/$ID"
+touch "$M"
+cp -p "$(ls -tr "$SNAP"/agents/*/marker "$ROOT/.swork-marker" 2>/dev/null | head -n 1)" "$M"
 
 # a check: the full output into a file, the exit code of the command itself, the end of the output.
 # A command on another machine through PowerShell: ssh pc '<command>; exit $LASTEXITCODE'
@@ -108,8 +112,9 @@ rm "$ROOT/$F"
 
 # the files newer than the marker; subtract from the output the files of the slices already gone through, the exclusions and known.txt.
 # If the project has no wiki, remove the condition with WIKI: with an empty WIKI it will hide all the files
-find "$ROOT" -type f -newer "$ROOT/.swork-marker" \
-  -not -path "$SNAP/*" -not -path "$WIKI/*" -not -name .swork-marker -not -path '*/.git/*'
+find "$ROOT" -type f -newer "$M" \
+  -not -path "$SNAP/*" -not -path "$WIKI/*" -not -path "$ROOT/.agents/*" -not -path "$ROOT/.swork-*" -not -path '*/.git/*'
+bash "$AGENTS" others --since "$M"   # paths from the root to subtract too
 
 # under git: whether it is ignored (code 0 — yes), whether it is tracked (code 0 — yes)
 git -C "$ROOT" check-ignore -q "$F"
@@ -117,11 +122,12 @@ git -C "$ROOT" ls-files --error-unmatch "$F" >/dev/null 2>&1
 
 # under git: restore a tracked one (keeping the changed one, the time — as the marker's) / remove a new untracked one
 mkdir -p "$SNAP/removed/$(dirname "$F")" && cp -p "$ROOT/$F" "$SNAP/removed/$F" \
-  && git -C "$ROOT" checkout -- "$F" && touch -r "$ROOT/.swork-marker" "$ROOT/$F"
+  && git -C "$ROOT" checkout -- "$F" && touch -r "$M" "$ROOT/$F"
 mkdir -p "$SNAP/removed/$(dirname "$F")" && mv "$ROOT/$F" "$SNAP/removed/$F"
 
-# the work is accepted
-rm -rf "$SNAP" "$ROOT/.swork-marker"
+# the work is accepted: ONE of the two lines — a topic snapshot only when no live claim is left in the topic (busy: code 1) / the .swork-<id>/ of a small change
+bash "$AGENTS" busy --topic "$TOPIC"; [ $? -eq 1 ] && rm -rf "$SNAP" "$ROOT/.swork-marker"
+rm -rf "$SNAP"
 ```
 
 The PowerShell 5.1 commands are in `references/snapshot-powershell.md`: read it only on Windows.

@@ -3,7 +3,7 @@
 #
 #   bash tests/chain/nonstop-run.sh <skills folder>
 #
-# Builds a stand in a new mktemp -d folder with the skills of <skills folder>, seeds the
+# Builds a stand in a new mktemp -d folder under $CHAIN_BASE (default ~/Documents/my/chain-stand) with the skills of <skills folder>, seeds the
 # topic longest with seed-away.sh, drives the stage seed at effort medium and passes on
 # the output and the code of nonstop-check.sh: the last line "nonstop run: pass" with
 # code 0 or "nonstop run: fail" with code 1. The stand folder goes to stderr.
@@ -18,7 +18,7 @@ fi
 here="$(cd "$(dirname "$0")" && pwd)"
 skills="$(cd "$1" && pwd)"
 
-T=$(mktemp -d)
+B="${CHAIN_BASE:-$HOME/Documents/my/chain-stand}"; mkdir -p "$B"; T=$(mktemp -d "$B/nonstop.XXXXXX")
 echo "stand: $T" >&2
 P="$T/wiki-trial/clean"
 "$BASH" "$here/stand.sh" "$T" "$skills" >&2

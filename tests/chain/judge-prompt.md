@@ -18,7 +18,7 @@ The traces of one run of the skill chain `sbrain → splan → swork` on a trial
 - `rules.md` — the rule lists.
 - `seeds.md` — the defects planted in the done slices of the topic `longest` before the stage `seed`.
 
-The path `/stand/wiki-trial/clean/…` in the chats and the tasks is `project/…`, the path `/stand/seedbox/wiki-trial/clean/…` is `project-seed/…`. The folders `.claude/` and `.swork/` and the file `.swork-marker` are removed from both copies: their absence says nothing.
+The path `/stand/wiki-trial/clean/…` in the chats and the tasks is `project/…`, the path `/stand/seedbox/wiki-trial/clean/…` is `project-seed/…`. The folders `.claude/`, `.swork/`, `.agents/` and `.swork-*/` and the file `.swork-marker` are removed from both copies: their absence says nothing.
 
 First read `rules.md`, `seeds.md` and all the traces in full. You cannot run commands: you have only reading files, searching them and writing `verdict.tsv`.
 

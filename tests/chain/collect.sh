@@ -8,7 +8,9 @@
 # stage; for work and seed — also every slice of the topic has the status
 # "done" or "awaiting manual check" and the progress log has the record
 # "stage 7 finished"; for away — only that record: the slice statuses and the
-# phase are not looked at; for survey and grill — only that ended.txt exists: a run that
+# phase are not looked at; for pair — only that .result of turns/01.json holds a
+# report: the choice of the final one (accept or Принять) or the mark ⏸ of the
+# short one; for survey and grill — only that ended.txt exists: a run that
 # ended for any reason is measured; api_ms — duration_api_ms of the last turn: the field is
 # cumulative; wall_s — from wall.txt, no file — 0. The session records are
 # copied from the profile into raw/ together with subagents/; chat.md — the
@@ -33,6 +35,7 @@ case "$stage" in
     work) topic=count; phase='done' ;;
     seed) topic=longest; phase='done' ;;
     away) topic=longest; phase='' ;;
+    pair) topic=''; phase='' ;;
     survey) topic=''; phase='' ;;
     grill) topic=''; phase='' ;;
     *) echo "unknown stage: $stage" >&2; exit 2 ;;
@@ -64,6 +67,15 @@ case "$stage" in
         # The stage has no phase to reach: the report of swork is what counts.
         finished=false
         if grep -qs 'stage 7 finished' "$cards"/progress*.md; then
+            finished=true
+        fi
+        ;;
+    pair)
+        # The topic comes from drive.sh only: the reply of the one turn is what counts.
+        # "Принять" and the mark ⏸ are written as escapes.
+        finished=false
+        if [ -f "$dir/turns/01.json" ] && jq -r '.result // ""' "$dir/turns/01.json" \
+            | perl -CSD -ne '$f = 1 if /accept|\x{41f}\x{440}\x{438}\x{43d}\x{44f}\x{442}\x{44c}|\x{23f8}/i; END { exit($f ? 0 : 1) }'; then
             finished=true
         fi
         ;;

@@ -20,7 +20,7 @@ In the topic folder `work/<topic>/` of the project wiki, next to the requirement
 | `plan-s<N>-<name>.md` | A slice: a card for each |
 | `plan-overview.md` | The overview: the same plan as one file, for a person |
 
-**A card** — the title, the hook line, the line in the index and the splitting of an overgrown card — by `references/wiki-rules.md`, sections "Card and limits" and "Check". The sections inside a card go under `## …` headings. Check lines are split by groups — `plan-checks-<group>.md`, the numbering stays continuous. An overgrown header is split into `plan.md` and `plan-2.md`, a slice card — into `plan-s<N>-<name>.md` and `plan-s<N>-<name>-2.md`: the slice fields stay in the first part, the continuation of "What to do" goes into the second; the title of the part is `# S<N>. <title> — part 2`, it has no "Status" line.
+**A card** — the title, the hook line, the line in the index and the splitting of an overgrown card — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; a card is written under a claim — `references/agents-rules.md`. The sections inside a card go under `## …` headings. Check lines are split by groups — `plan-checks-<group>.md`, the numbering stays continuous. An overgrown header is split into `plan.md` and `plan-2.md`, a slice card — into `plan-s<N>-<name>.md` and `plan-s<N>-<name>-2.md`: the slice fields stay in the first part, the continuation of "What to do" goes into the second; the title of the part is `# S<N>. <title> — part 2`, it has no "Status" line.
 
 Do not write an empty section, except "Check focus": there emptiness means "checked and found nothing" and is written down just so.
 

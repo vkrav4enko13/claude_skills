@@ -1,6 +1,6 @@
 # Conformance check
 
-Read at step 5 — after the last slice and before the edits.
+Read at step 5 — after the agent has claimed `<topic folder>/.stage` and before the edits.
 
 The conformance check answers one question: whether what is in the plan was done, and only that. Errors in the code are looked for by the review, what is superfluous inside the plan — by the simplification.
 

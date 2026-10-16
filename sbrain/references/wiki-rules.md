@@ -84,6 +84,7 @@ Read the other cards by a link from an index or by search, one at a time.
 
 ## Writing
 
+- **Claim before a write.** Before writing a wiki file — the root index, the journal, `rules.md`, a folder index, a note or a topic card — claim it, and after the write call `done`, by `references/agents-rules.md`.
 - **Only the main session writes.** A subagent does not write to the wiki; a stage subagent of `saway` stands in for the main session of its stage and writes as it does. Write wiki cards in English, both the format and the content. Words of the user are recorded in English translation. Cards written earlier in another language are read as they are and are not translated.
 - **The session only answered questions or read** — do not write to the wiki and do not set up a wiki.
 - **A task that changed something is finished** — add exactly one line to the journal. If there is no file for the current month, set it up.
@@ -105,7 +106,7 @@ Read the other cards by a link from an index or by search, one at a time.
 
 ## Check
 
-After every write to the wiki run the check script and fix everything it names. The script lies in the skill folder, next to `references/`:
+After every write to the wiki, once `done` is called, run the check script and fix everything it names. The script lies in the skill folder, next to `references/`:
 
 ```bash
 bash <skill folder>/scripts/check.sh <wiki folder>

@@ -58,12 +58,12 @@ label_of() {
     awk -F'\t' -v series="$1" -v run="$2" '$2 == series && $3 == run { print $1 }' "$key"
 }
 
-# A copy of the project $1 in the folder $2 — without the skills, the snapshot
-# and the timestamp marker. No project — no copy.
+# A copy of the project $1 in the folder $2 — without the skills, the snapshot,
+# the timestamp marker, the claims of the agents and their small-change snapshots. No project — no copy.
 project() {
     [ -d "$1" ] || return 0
     cp -R "$1" "$2"
-    find "$2" \( -name .claude -o -name .swork -o -name .swork-marker \) \
+    find "$2" \( -name .claude -o -name .swork -o -name .swork-marker -o -name .agents -o -name '.swork-*' \) \
         -prune -exec rm -rf {} +
 }
 

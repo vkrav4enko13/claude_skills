@@ -8,6 +8,10 @@
 
 ## Deferred
 
+- manual check of topic multi-agent: line 12 — until the user says so (install to the Mac profiles)
+- topic `quality-zero`: zero judge violations over the four skills — after `multi-agent`; answers given — [scope](work/multi-agent/scope.md)
+- `quality-zero`: a `swork` reviewer ran `rm -rf` on `$TMPDIR/tmp.*` — [note](notes/stand-nonstop-parallel.md)
+- `quality-zero`: stand sessions skip plain rules — a free-text stage-7 record, a `saway` reply without progress line — [log](work/multi-agent/progress-2.md)
 - публикация скилов другим — когда-нибудь; потребует чистки личных путей
 - пробные задачи из настоящих сбоев цепочки в стенд `tests/` — идея из плейбука Anthropic, вне темы `quality-tokens`
 - хук, запрещающий править тесты во время починки, вместо одного правила в тексте `swork` — идея из плейбука Anthropic, вне темы `quality-tokens`
