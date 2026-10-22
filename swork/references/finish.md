@@ -2,6 +2,8 @@
 
 Read at step 5 — after this agent's last slice, — at step 6, after the edits of the conformance check, and at step 7, after the simplification and before the report.
 
+In the worktree mode by `references/worktree.md`, "Stages and the end": the final checks and the checkpoints of stages 5–7 run in `WT` after a `sync`, and the stage edits merge like a step.
+
 ## 5. Conformance check
 
 After this agent's last slice. **Who runs stages 5–7** — the agent that claims `<topic folder>/.stage` by `references/agents-rules.md`, "When to claim":

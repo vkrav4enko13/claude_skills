@@ -1,9 +1,9 @@
-# Состояние темы splan
+# State of topic splan
 
-> Фаза темы и шаг, с которого начнёт следующая сессия.
+> Topic phase and the step the next session starts from.
 
-- **Фаза:** готово — 2026-10-06
-- **Путь:** большая
-- **Журнал:** нет
-- **Проверено:** нет
-- **Следующий шаг:** нет — работа принята
+- **Phase:** done — 2026-10-06
+- **Path:** large
+- **Journal:** none
+- **Verified:** none
+- **Next step:** none — work accepted

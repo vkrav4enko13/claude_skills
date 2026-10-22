@@ -1,0 +1,2 @@
+bash: tests/chain/compare-test.sh: No such file or directory
+bash: tests/chain/compare-test.sh: No such file or directory

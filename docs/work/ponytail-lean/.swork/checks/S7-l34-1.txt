@@ -1,0 +1,2 @@
+session: yes
+subagent: the subagent said yes

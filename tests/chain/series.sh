@@ -11,9 +11,10 @@
 # skills/ and without that file was run at xhigh. Its file stages holds every
 # stage it was ever run with, for zero.sh. A series asked at another
 # level than its own — "series <name> was run at <level>" and code 2.
-# The four skills and tests/chain/rules.md, if it exists, are copied into it
-# once — into skills/ and rules.md, while there is no skills/ folder: the
-# stands take the skills from the copy. The runs — the folders 1, 2, 3 — go at
+# The four skills, hooks/ of the skills folder, if it exists, and rules.md —
+# from tests/chain/ of the skills folder, else of this folder, if it exists —
+# are copied into it once — into skills/ and rules.md, while there is no
+# skills/ folder: the stands take the skills from the copy. The runs — the folders 1, 2, 3 — go at
 # the same time, the lanes of a run — one after another: count — the stages
 # brain plan work on the project wiki-trial/clean, then longest — the stage
 # seed on the project seedbox/wiki-trial/clean after seed.sh, then survey —
@@ -27,10 +28,18 @@
 # seed-pair.sh on pairbox/wiki-trial/clean with case a in run 1 and b in the
 # others, two drive.sh with the stage pair at the same time into the folders
 # pair1 and pair2 (case a: the topics usage and version, case b: pair and
-# pair), its check pair-check.sh into pair-check.txt. The stages away,
-# nonstop and pair are named only on request. A check that fails does not fail
+# pair), its check pair-check.sh into pair-check.txt; then a lane per trap
+# trap-<name> — reuse, shared-bug, rename, traversal, native: seed-trap.sh on
+# trapbox-<name>/wiki-trial/clean, a copy of the seeded project without docs/,
+# .claude/, .git/, .agents/ and .swork* into trapbox-<name>/seeded/, drive.sh
+# with the stage trap-plan into trap-<name>-plan and then trap-work into
+# trap-<name>-work, then trap-measure.sh into trap-<name>.json — a failed drive
+# still measures; the stage traps names all five. The stages away, nonstop,
+# pair and the traps are named only on request; the traps are not written into
+# the file stages. A check that fails does not fail
 # its lane: the check file holds the verdict. A lane whose named stages are
-# all passed (done in stage.json; pair — in both pair1 and pair2) is not
+# all passed (done in stage.json; pair — in both pair1 and pair2; a trap — in
+# both its plan and work folders) is not
 # touched; otherwise its project and the folders of its stages are erased and
 # it goes anew. A lane that is not passed does not end the run: the next lanes
 # go all the same. Then measure.sh. Per run — a line "run <N>: done" or a line
@@ -66,9 +75,17 @@ case "$effort" in
     low | medium | high | xhigh | max) ;;
     *) usage ;;
 esac
+traps='trap-reuse trap-shared-bug trap-rename trap-traversal trap-native'
+named=""
+for s in $stages; do
+    if [ "$s" = traps ]; then s="$traps"; fi
+    named="$named $s"
+done
+stages="${named# }"
 for s in $stages; do
     case "$s" in
         brain | plan | work | seed | survey | grill | away | nonstop | pair) ;;
+        trap-reuse | trap-shared-bug | trap-rename | trap-traversal | trap-native) ;;
         *) echo "unknown stage: $s" >&2; exit 2 ;;
     esac
 done
@@ -92,7 +109,12 @@ if [ ! -d "$S/skills" ]; then
     for skill in sbrain splan swork saway; do
         cp -R "$src/$skill" "$S/skills/$skill"
     done
-    if [ -f "$here/rules.md" ]; then cp "$here/rules.md" "$S/rules.md"; fi
+    if [ -d "$src/hooks" ]; then cp -R "$src/hooks" "$S/skills/hooks"; fi
+    if [ -f "$src/tests/chain/rules.md" ]; then
+        cp "$src/tests/chain/rules.md" "$S/rules.md"
+    elif [ -f "$here/rules.md" ]; then
+        cp "$here/rules.md" "$S/rules.md"
+    fi
 fi
 echo "$effort" > "$S/effort"
 # The stages the series was run with, for zero.sh: the earlier ones and these.
@@ -108,14 +130,18 @@ stage_done() {
     jq -e '.done == true' "$1/stage.json" > /dev/null 2>&1
 }
 
-# The stage folders of the stage $1: pair has two.
+# The stage folders of the stage $1: pair and a trap have two.
 folders() {
-    if [ "$1" = pair ]; then echo 'pair1 pair2'; else echo "$1"; fi
+    case "$1" in
+        pair) echo 'pair1 pair2' ;;
+        trap-*) echo "$1-plan $1-work" ;;
+        *) echo "$1" ;;
+    esac
 }
 
 # The lane $2 of the run in the folder $1. Code 1 — the lane is not passed.
 lane() {
-    local R="$1" all box project s f mine="" todo=0 pcase first second
+    local R="$1" all box project s f mine="" todo=0 pcase first second name
     case "$2" in
         count) all='brain plan work'; box="$R" ;;
         longest) all=seed; box="$R/seedbox" ;;
@@ -124,6 +150,7 @@ lane() {
         away) all=away; box="$R/awaybox" ;;
         nonstop) all=nonstop; box="$R/nonstopbox" ;;
         pair) all=pair; box="$R/pairbox" ;;
+        trap-*) all="$2"; box="$R/trapbox-${2#trap-}" ;;
     esac
     project="$box/wiki-trial/clean"
     # The named stages of the lane — in its order.
@@ -154,6 +181,17 @@ lane() {
             if [ "${R##*/}" = 1 ]; then pcase=a; fi
             "$BASH" "$here/seed-pair.sh" "$project" "$pcase" || return 1
             ;;
+        trap-*)
+            "$BASH" "$here/seed-trap.sh" "$project" "${2#trap-}" || return 1
+            # The seeded project without the cards, the stand files and git: what the result is compared with.
+            rm -rf "$box/seeded"
+            mkdir -p "$box/seeded"
+            for f in "$project"/* "$project"/.[!.]*; do
+                [ -e "$f" ] || continue
+                case "${f##*/}" in docs | .claude | .git | .agents | .swork*) continue ;; esac
+                cp -R "$f" "$box/seeded/"
+            done
+            ;;
     esac
     # A failed drive of the new lanes still leaves the check to tell what the
     # stage reached.
@@ -179,6 +217,13 @@ lane() {
             "$BASH" "$here/pair-check.sh" "$project" "$R/pair1" "$R/pair2" "$pcase" > "$R/pair-check.txt" 2>&1 || true
             stage_done "$R/pair1" && stage_done "$R/pair2" || return 1
             ;;
+        trap-*)
+            name="${2#trap-}"
+            "$BASH" "$here/drive.sh" "$project" trap-plan "$R/$2-plan" "$effort" "$name" || true
+            "$BASH" "$here/drive.sh" "$project" trap-work "$R/$2-work" "$effort" "$name" || true
+            "$BASH" "$here/trap-measure.sh" "$R" "$name" || true
+            stage_done "$R/$2-plan" && stage_done "$R/$2-work" || return 1
+            ;;
         *)
             for s in $mine; do
                 "$BASH" "$here/drive.sh" "$project" "$s" "$R/$s" "$effort" || return 1
@@ -192,7 +237,7 @@ lane() {
 run() {
     local R="$S/$1" name failed=0
     mkdir -p "$R"
-    for name in count longest survey grill away nonstop pair; do
+    for name in count longest survey grill away nonstop pair $traps; do
         if ! lane "$R" "$name"; then
             echo "run $1: lane $name not passed"
             failed=1

@@ -1,0 +1,2 @@
+run 1: done
+lines hidden risky_test tokens_out wall_s cost_usd gz_bytes

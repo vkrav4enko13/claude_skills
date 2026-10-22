@@ -1,0 +1,3 @@
+case report: ok
+case map: ok
+compare test: all ok

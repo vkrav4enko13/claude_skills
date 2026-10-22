@@ -1,0 +1,6 @@
+trap reuse: ok
+trap shared-bug: ok
+trap rename: ok
+trap traversal: ok
+trap native: ok
+traps: all ok

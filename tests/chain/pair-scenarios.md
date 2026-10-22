@@ -1,6 +1,6 @@
 # Scenarios of several agents in one project
 
-In every scenario several agents work in one project folder at once: sessions of `sbrain`, `splan` and `swork`. The user is busy and does not answer. Each scenario ends with one question and three answers; exactly one answer is what the agent does.
+In every scenario several agents work in one project folder at once: sessions of `sbrain`, `splan` and `swork`. The user is busy and does not answer. `.agents/mode` holds `shared` in every scenario. Each scenario ends with one question and three answers; exactly one answer is what the agent does.
 
 ## M1
 

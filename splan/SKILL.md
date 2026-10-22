@@ -53,6 +53,8 @@ Where the table tells you to stop or to ask, name the phase and wait for an answ
 
 ## Rules for all stages
 
+**Several agents.** The user asks to work with several agents — switch the mode on by `references/agents-rules.md`, "Switch", before the first write.
+
 **Before a stop — first `state.md`.** If the topic folder already exists, before any stop (you are waiting for the user's answer, you have hit a blocker, the session is ending) first write the phase and the next step into its `state.md`: one action that the next session will start from.
 
 ## Stages

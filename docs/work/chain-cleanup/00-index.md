@@ -2,12 +2,12 @@
 
 > Четыре скила без конфликтов и дублей, с подробным показом плана и целиком на английском — при условии, что качество и точность не стали хуже.
 
-**Требования подтверждены:** 2026-10-13 — цель: «четыре скила без конфликтов и дублей, с подробным показом плана и целиком на английском, при качестве не хуже»
+**Requirements confirmed:** 2026-10-13 — goal: «четыре скила без конфликтов и дублей, с подробным показом плана и целиком на английском, при качестве не хуже»
 
-## Карточки
+## Cards
 
-- [Состояние](state.md) — фаза темы и следующий шаг
-- [Задача](task.md) — что строим, для кого и как поймём, что получилось
+- [Состояние](state.md) — topic phase and next step
+- [Задача](task.md) — what we build, for whom, and how we will know it worked
 - Требования R1–R63: [показ плана](requirements-plan-view.md) · [передача плана](requirements-handoff-plan.md) · [остановки](requirements-handoff-run.md) · [внутри скила](requirements-inner.md)
 - Требования R1–R63: [чтения `splan`](requirements-readings.md) · [дубли и порядок работ](requirements-lean.md) · [замер и скорость](requirements-quality.md)
 - Дизайн, разделы 1–3: [план для человека](design-plan-view.md) · [конфликты, дубли, лишнее](design-conflicts.md) · [скорость и замер](design-speed.md)
@@ -15,7 +15,7 @@
 - Перевод, язык и текст: [R64–R73](requirements-en.md) · [R74–R83](requirements-en-text.md) · [R84–R90](requirements-en-pass2.md) · [раздел 4](design-language.md) · [раздел 5](design-translation.md)
 - Перевод, замер и переключение: [R91–R99](requirements-en-measure.md) · [R100–R104](requirements-en-cutover.md) · [раздел 6](design-translation-measure.md) · [раздел 7](design-cutover.md)
 - Перевод, решения и границы: [решения](decisions-translation.md) · [о замере](decisions-translation-measure.md) · [английская вики](decision-english-wiki.md) · [границы](scope-translation.md)
-- [План](plan.md) — цель, общие ограничения, что не делаем и правило расхождений
+- [План](plan.md) — goal, shared constraints, what we do not do, and the discrepancy rule
 - Решения плана: [технические](plan-decisions.md) · [перевод](plan-decisions-en.md) · [фокус проверки](plan-decisions-focus.md) · [порядок переключения](cutover.md)
 - Строки проверки 1–20: [стенд](plan-checks-stand.md) · [замер](plan-checks-measure.md) · [серия «до»](plan-checks-before.md) · [показ плана](plan-checks-view.md)
 - Строки проверки 21–38: [передача](plan-checks-handoff.md) · [части](plan-checks-parts.md) · [остановки](plan-checks-run.md) · [стыки](plan-checks-joints.md)

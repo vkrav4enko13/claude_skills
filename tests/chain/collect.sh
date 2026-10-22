@@ -1,11 +1,12 @@
 #!/bin/bash
 # Collects the result of a chain stage into the stage folder.
 #
-#   bash tests/chain/collect.sh <project> <stage> <stage folder>
+#   bash tests/chain/collect.sh <project> <stage> <stage folder> [<topic>]
 #
+# The topic is given for the stages trap-plan and trap-work only and is their topic.
 # stage.json: stage, turns, session_id; denials — the permission denials of all
 # the turns; done — the stage phase is reached: a denial does not fail the
-# stage; for work and seed — also every slice of the topic has the status
+# stage; for work, seed and trap-work — also every slice of the topic has the status
 # "done" or "awaiting manual check" and the progress log has the record
 # "stage 7 finished"; for away — only that record: the slice statuses and the
 # phase are not looked at; for pair — only that .result of turns/01.json holds a
@@ -20,8 +21,8 @@
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
-if [ $# -ne 3 ]; then
-    echo "usage: bash collect.sh <project> <stage> <stage folder>" >&2
+if [ $# -ne 3 ] && [ $# -ne 4 ]; then
+    echo "usage: bash collect.sh <project> <stage> <stage folder> [<topic>]" >&2
     exit 2
 fi
 project="${1%/}"
@@ -38,6 +39,8 @@ case "$stage" in
     pair) topic=''; phase='' ;;
     survey) topic=''; phase='' ;;
     grill) topic=''; phase='' ;;
+    trap-plan) topic="${4:?the stage trap-plan needs a topic}"; phase='plan confirmed' ;;
+    trap-work) topic="${4:?the stage trap-work needs a topic}"; phase='done' ;;
     *) echo "unknown stage: $stage" >&2; exit 2 ;;
 esac
 
@@ -46,11 +49,11 @@ finished=false
 if grep -q "Phase:\*\* $phase" "$cards/state.md" 2>/dev/null; then
     finished=true
 fi
-# For work and seed the phase is not enough: the slices are finished and the
+# For work, seed and trap-work the phase is not enough: the slices are finished and the
 # review — stage 7 — is over.
 # A card plan-s*.md without a status line — a part of a slice — does not count.
 case "$stage" in
-    work | seed)
+    work | seed | trap-work)
         for card in "$cards"/plan-s*.md; do
             [ -f "$card" ] || continue
             status="$(grep -m1 '^- \*\*Status:\*\*' "$card" || true)"

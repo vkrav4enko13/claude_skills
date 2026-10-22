@@ -2,19 +2,19 @@
 
 > На стенде появляется тема `longest` в фазе «исполнение идёт»: два среза готовы и несут пять дефектов, третий не начат.
 
-- **Статус:** готов
-- **Закрывает:** R58
-- **Зависит от:** нет
-- **Файлы:**
-  - создать: `tests/chain/seed.sh`, `tests/chain/seeds.md`
-- **Интерфейсы:**
-  - берёт: проект `clean` от `tests/make-wiki.sh` — `app.txt` из трёх слов, вики в `docs/`
-  - отдаёт: `seed.sh <проект>` — в проекте тема `docs/work/longest/`, скрипт `longest.sh`, файл `README.md`; `seeds.md` — строки `- seed-<N>. <вид>: <дефект>`
-- **Готовое:** формы карточек темы — `sbrain/references/topic-cards.md`, плана — `splan/references/plan-format.md`; состав снимка — `swork/references/snapshot.md`; запись карточек heredoc-ами — как в `tests/make-wiki.sh`. Функций для вызова нет — искал: `tests/`
-- **Что сделать:**
+- **Status:** done
+- **Covers:** R58
+- **Depends on:** none
+- **Files:**
+  - create: `tests/chain/seed.sh`, `tests/chain/seeds.md`
+- **Interfaces:**
+  - takes: проект `clean` от `tests/make-wiki.sh` — `app.txt` из трёх слов, вики в `docs/`
+  - gives: `seed.sh <проект>` — в проекте тема `docs/work/longest/`, скрипт `longest.sh`, файл `README.md`; `seeds.md` — строки `- seed-<N>. <вид>: <дефект>`
+- **Reuse:** формы карточек темы — `sbrain/references/topic-cards.md`, плана — `splan/references/plan-format.md`; состав снимка — `swork/references/snapshot.md`; запись карточек heredoc-ами — как в `tests/make-wiki.sh`. Функций для вызова нет — искал: `tests/`
+- **What to do:**
   1. `seed.sh` пишет тему `longest` по формам `plan-format.md`: `00-index.md`, `state.md` (фаза `исполнение идёт`, шаг — срез S3), `task.md`, `requirements.md` (R1–R3), `decisions.md`, `scope.md` с разделом «Не входит», `plan.md`, `plan-decisions.md`, `plan-checks.md`, три карточки срезов, `progress.md`; строки темы — в `docs/work/00-index.md`, в «В работе» корневого индекса и в журнале. `sbrain/scripts/check.sh` на `docs` стенда печатает `вики в порядке`.
   2. План темы. S1 «готов»: `longest.sh` печатает самое длинное слово `app.txt`; на пустом файле — пустую строку; файла нет — ⟦нет файла app.txt⟧ в stderr и код 2. S2 «готов», зависит от S1: ключ `-n` печатает слово и номер его строки через пробел; в «Файлах» S2 — изменить `longest.sh` и `README.md` (раздел «Запуск»: строка о ключе `-n`). S3 «не начат», без зависимостей, с пометкой `готовый текст`: создать `USAGE.md` из трёх дословных строк, которые даёт его карточка.
   3. Строки проверки темы, все с командой: 1 — `bash longest.sh` печатает `карточка`; 2 — на пустом `app.txt` выходит пустая строка; 3 — `bash longest.sh -n` печатает `карточка 1`; 4 — `cat USAGE.md` печатает три строки. У строк 1–3 результат `зелёная` с датой, у строки 4 — `не запускалась`; строки о случае «файла нет» нет.
   4. Дефекты, они же строки `seeds.md`: `seed-1`, сверх плана: ключ `-a` печатает все самые длинные слова; `seed-2`, неверно: без `app.txt` скрипт печатает `ошибка` в stderr и выходит с кодом 1; `seed-3`, недостаёт: `README.md` о ключе `-n` молчит; `seed-4`, ошибка: длина считается в байтах — из `abcdefghi` и `карточка` выбирается `карточка`; `seed-5`, ошибка: последняя строка без перевода строки в конце не читается.
   5. Снимок `docs/work/longest/.swork/`: `new-files.txt` с `longest.sh`, `base/README.md` — копия, `created.txt`, `checks/`. `README.md` с разделом «Запуск» создаёт сам `seed.sh`: для плана темы это готовый файл проекта. Порядок записи: `README.md`, метка `.swork-marker` в корне проекта, пауза в секунду, `longest.sh`. В `progress.md` — исключения поиска, «S1: начат», итог S1, «S2: начат», итог S2.
-- **Проверки:** строка 4
+- **Checks:** строка 4

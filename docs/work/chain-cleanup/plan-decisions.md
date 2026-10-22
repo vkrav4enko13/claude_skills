@@ -1,8 +1,8 @@
-# Технические решения темы chain-cleanup
+# Technical decisions of topic chain-cleanup
 
 > Что выбрал план, вместо чего и почему.
 
-## Технические решения
+## Technical decisions
 
 - **Стенд без человека — `claude -p` со скилами уровня проекта,** вместо Agent SDK и ручного замера: `--setting-sources project,local` прячет личные скилы и общий `CLAUDE.md`, `--permission-prompts none` убирает меню — скил спрашивает списком, ответ уходит повторным запуском с `--resume`.
 - **Вызов сессии стенда** — из папки проекта: `CLAUDE_CONFIG_DIR="${CLAUDE_CONFIG_DIR:-$HOME/claude/personal}" claude -p "<текст>" [--resume <id>] --setting-sources project,local --permission-prompts none --permission-mode acceptEdits --allowedTools <инструменты> --model claude-opus-5-5 --effort xhigh --output-format json`.

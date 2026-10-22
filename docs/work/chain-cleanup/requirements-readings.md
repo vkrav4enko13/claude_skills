@@ -1,4 +1,4 @@
-# Требования темы chain-cleanup: чтения `splan`
+# Requirements of topic chain-cleanup: чтения `splan`
 
 > R35–R43: девять мест `splan`, у которых было два чтения, и чтение, которое остаётся.
 

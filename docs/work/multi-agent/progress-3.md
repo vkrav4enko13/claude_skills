@@ -10,3 +10,4 @@
 - left untouched: an agent with no free slice goes to stages; between a neighbour's `done` of one slice and its claim of the next, it may finish the topic early — a timing guess of the second round
 - left untouched: `.agents/` may clash with a repo that keeps its own `.agents/` folder (the Codex skills convention) — renaming it changes R1
 - declined: the `.stage` claim left after the final report fails "claims: none" — the pair runs ended with no claim left; the PC cannot run `agents.sh` and the id holds `:` — every agent runs on this Mac by the plan
+- S6: line 12 done after the user accepted — `install.sh --mac`, `grep -l agents-rules` printed the three profiles; commit ee94340

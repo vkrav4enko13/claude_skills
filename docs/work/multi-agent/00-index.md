@@ -7,12 +7,29 @@
 - [State](state.md) — topic phase and next step
 - [Task](task.md) — what we build, for whom, and how we will know it worked
 - [Requirements](requirements.md) — R1–R15
+- [Requirements, part 2](requirements-2.md) — R16–R30: worktree per agent, merge, duplicate check, wiki, fallback
+- [Requirements, part 3](requirements-3.md) — R31–R36: shared mode, choice of the mode, submodules, only on request
 - [Design](design.md) — the four approved sections
+- [Design, part 2](design-2.md) — sections 5–7: what the user gets, the worktree of an agent, the merge
+- [Design, part 3](design-3.md) — sections 8–11: duplicate check, wiki and fallback, errors, check
+- [Design, part 4](design-4.md) — sections 12–15: the switch, the choice of the mode, the shared mode, submodules
+- [Acceptance examples](examples.md) — cases of the merge, conflicts, duplicates, a dead agent, no git
 - [Decisions](decisions.md) — what was chosen, instead of what, and whose decision
+- [Decisions, part 2](decisions-2.md) — the continuation of 2026-10-21
+- [Decisions, part 3](decisions-3.md) — the additions after the user returned: shared mode, only on request
+- [Worktree and merge](decision-worktree-merge.md) — own copy merged after a green step, instead of whole files in turn
+- [Decided without the user](away.md) — the sbrain stage of the continuation, decided by saway on 2026-10-21
+- [Decided without the user, part 2](away-2.md) — the splan stage of the continuation, decided by saway on 2026-10-21
+- [Decided without the user, part 3](away-3.md) — the splan stage extending the plan with R31–R36, decided by saway on 2026-10-21
+- [Decided without the user, part 4](away-4.md) — the swork stage executing the plan of part 2, decided by saway on 2026-10-21
 - [Scope](scope.md) — out of scope, assumptions, answers already given for `quality-zero`
 - [Progress log](progress.md) — the slice records of the execution
 - [Progress log, part 2](progress-2.md) — S6, its fixes and stages 5–6
 - [Progress log, part 3](progress-3.md) — stage 7, its fixes and what was left
+- [Progress log, part 4](progress-4.md) — the execution of part 2: preparation and slices S12, S7, S8, S9, S13, S10
+- [Progress log, part 5](progress-5.md) — S11 and its attempts, S14
+- [Progress log, part 6](progress-6.md) — stages 5–6: the rerun, the conformance check, the simplification
+- [Progress log, part 7](progress-7.md) — stage 7: the review, its two rounds, the final rerun and what was left
 - [Plan overview](plan-overview.md) — the plan as one file; the source is the slice cards
 - [Plan](plan.md) — goal, shared constraints, what we do not do, assumptions and the discrepancy rule
 - [Technical decisions](plan-decisions.md) — what was chosen, instead of what, and the check focus
@@ -24,3 +41,24 @@
 - [S4. swork: own slices next to others](plan-s4-slices.md) — free slice pick, own marker, no neighbour work as foreign
 - [S5. swork: stages, reports, rollback](plan-s5-finish.md) — one agent runs stages 5–7, short reports, own-diff rollback
 - [S6. Acceptance of two agents at once](plan-s6-accept.md) — live pair runs, blind scenarios, earlier checks
+- [Plan, part 2](plan-2.md) — the continuation R16–R36: goal, shared constraints, what we do not do, assumptions; the current plan
+- [Technical decisions, part 2](plan-decisions-2.md) — what the continuation chose, instead of what, and the check focus
+- [Technical decisions, part 3](plan-decisions-3.md) — the switch, the shared mode, submodules: what was chosen and the check focus
+- [Check lines: merge](plan-checks-merge.md) — lines 13–22: worktree, sync, merge, fallback to the shared mode, dead agent, wait log
+- [Check lines: duplicates](plan-checks-dups.md) — lines 23–25: the duplicate script
+- [Check lines: swork texts](plan-checks-swork.md) — lines 26–27: the worktree mode read blind and found in the texts
+- [Check lines: modes](plan-checks-modes.md) — lines 33–38: the switch, the mode file, submodules, the shared mode in the texts
+- [Check lines: live stand](plan-checks-stand.md) — lines 28–32, 39–41: two live agents with git, without git, with a submodule, across the switch; earlier checks; install
+- [S7. agents.sh: worktree, sync and merge](plan-s7-worktree.md) — own worktree from a snapshot, submodules cloned read-only, sync before a step, merge after a green step, code 5 to the shared mode
+- [S7, part 2](plan-s7-worktree-2.md) — what to do in S7, items 1–7
+- [S7, part 3](plan-s7-worktree-3.md) — what to do in S7, items 8–10
+- [S8. Dead agent's worktree and the wait log](plan-s8-orphans.md) — an unmerged edit saved, the worktree removed; every wait logged
+- [S9. The duplicate script](plan-s9-dups.md) — candidate duplicates after a merge: names, similar code, data keys, resources
+- [S10. swork: the worktree mode](plan-s10-swork.md) — swork works in its worktree, merges, rechecks, acts on duplicates, a submodule slice in the shared mode; wiki onto the current version
+- [S10, part 2](plan-s10-swork-2.md) — what to do in S10
+- [S11. Live stand of two agents in git](plan-s11-stand.md) — different lines merge in seconds, same lines resolve, duplicates listed, without git the shared mode
+- [S12. agents.sh: the switch](plan-s12-switch.md) — without `.agents/mode` nothing is written; `on`, `off`, `mode`; the last agent switches it off
+- [S13. Skills: the switch and the shared mode](plan-s13-shared.md) — on by request, the mode before each slice, a claim per write, duplicates after a step, the mode in the report
+- [S13, part 2](plan-s13-shared-2.md) — what to do in S13, items 1–8
+- [S13, part 3](plan-s13-shared-3.md) — what to do in S13, items 9–11
+- [S14. Live stand: a submodule and the switch](plan-s14-stand.md) — a submodule slice in the shared mode, a session joins when the mode is switched on, the last removes it; earlier checks green

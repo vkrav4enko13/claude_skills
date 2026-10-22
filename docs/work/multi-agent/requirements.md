@@ -21,6 +21,7 @@
 - R9. Before a slice, `swork` claims the slice's "Files" and its card; a slice held by another agent is skipped for a free slice without unmet dependencies; with none free, it waits.
 - R10. `swork` keeps its time marker per agent in the snapshot, and its search for edits outside the plan leaves out the files claimed or logged by other agents.
 - R11. Several agents on one topic share its snapshot `.swork/` and write statuses, "Progress log" and `state.md` under a claim; stages 5–7 and the report are made by the agent that finds no slice left to do and no live claim of another agent in the topic; an agent that finishes its slices earlier ends with a short report of its own slices and names who makes the final one.
+- The claim of a slice's "Files" in R9 and the search of R10 give way to R18 of [part 2](requirements-2.md) and R31 of [part 3](requirements-3.md); R1–R13 hold only while the multi-agent mode is on — R35.
 - R12. The report of `swork` names how long and for what it waited and which claims it took over.
 
 ## Other skills, check, rollout

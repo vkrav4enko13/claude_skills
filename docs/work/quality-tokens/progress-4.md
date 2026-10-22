@@ -1,4 +1,4 @@
-# Ход исполнения темы quality-tokens: ревью и отчёт
+# Progress log темы quality-tokens: ревью и отчёт
 
 > Окончание записей `swork`: этап 7 и отчёт; начало — в `progress.md`, `progress-2.md` и `progress-3.md`.
 

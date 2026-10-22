@@ -1,0 +1,27 @@
+# Progress log of topic ponytail-lean, part 2
+
+> The records of `swork` continued from [part 1](progress.md): slices, attempts, own decisions, stages.
+
+- S4 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 18–21 green · checks/S4-l18-1 … S4-l21-1
+- S5 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no risky-logic test bullet, no map, audit or rung in the recon · checks/S5-l22-0 … S5-l25-0
+- S5 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 22–25 green · checks/S5-l22-1 … S5-l25-1
+- S7 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no `hooks/` folder, no `tests/hooks-test.sh`; line 34 (a live `claude -p` call) not run before the edits, its script is absent · checks/S7-l28-0 … S7-l33-0
+- S7 [40cde817-9efe-4435-83a7-aad9b183ba52]: attempt 1 of 2 — lines 28–33 green, line 34 red: `subagent: the subagent said yes` instead of `subagent: yes` (the main session relayed the answer in its own words); the executor is asked to make the relayed answer reduce to yes/no · checks/S7-l34-1
+- S7 [40cde817-9efe-4435-83a7-aad9b183ba52]: done after attempt 1 — lines 28–34 green (line 34 `session: yes`, `subagent: yes`; `ask()` now reduces a reply holding one distinct yes or no to that word) · checks/S7-l28-2 … S7-l34-2
+- S3 [40cde817-9efe-4435-83a7-aad9b183ba52]: line 14 rerun after S7 created `hooks/` — code 0, only `swork/references/executor.md` · checks/S3-l14-2
+- S7 [40cde817-9efe-4435-83a7-aad9b183ba52]: noticed outside the slice — `install.sh` `merge_hooks` keeps an empty `"hooks": {}` key after `--uninstall` from a profile whose `settings.json` the install created; the slice names only empty event lists
+- S11 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no `swork-27`…`swork-37` or `splan-28` · checks/S11-l41-0, S11-l42-0
+- S11 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 41, 42 green (`11`, `1`; `91 ok`), each new citation read at its line by the main session · checks/S11-l41-1, S11-l42-1
+- S11 [40cde817-9efe-4435-83a7-aad9b183ba52]: noticed outside the slice — the executor task this run passes to its executors is the running skill's copy, older than this work: it has no rules 11–16 and no `LADDER:`/`GAPS:` fields, so the replies of this run carry them only by chance; `swork-19` still says "serious" while `review.md` now says "TIER 1" (the plan does not name rewording it)
+- preparation [40cde817-9efe-4435-83a7-aad9b183ba52]: own slip fixed — a zsh call without word splitting made empty folders with spaces in their names under the snapshot's `base/`; removed, no copy was affected
+- S9 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: a box built from these skills gets no hook settings, `series.sh` does not take `rules.md` from the skills source; line 36 (a live one-run series) not run before the edits: `series.sh` rejects the stage `trap-reuse` · checks/S9-l37-0
+- S9 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 36, 37 green (the live one-run series `pl-smoke`: `run 1: done`, trap-reuse lines 15, hidden pass, risky_test false, tokens_out 49550, wall_s 484, cost_usd 3.36, gz_bytes 361; the main session's rerun found the lane passed and kept it) · checks/S9-l36-1, S9-l37-1
+- S9 [40cde817-9efe-4435-83a7-aad9b183ba52]: noticed outside the slice — a series folder that already has `skills/` is not copied again, so `hooks/` reach boxes only in series made after S9; a traps-only series writes an empty line into `<series>/stages`; `gz_bytes` is about 20 for no added lines (gzip header)
+- S10 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no `overeng-test.sh`, no `mutate-test.sh`, `trap-reuse.json` has seven keys · checks/S10-l38-0 … S10-l40-0
+- S10 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 38–40 green (calibration at `medium`: over 2 > good 0 on both traps; mutate good 3/3, bad 0/0 no tests; the smoke run has the four new keys) · checks/S10-l38-1 … S10-l40-1
+- S10 [40cde817-9efe-4435-83a7-aad9b183ba52]: noticed outside the slice — `tests/chain/mutate.sh` does not check that the delivered tests pass before mutation (an already failing test counts every mutant as caught) and gives the tests no time limit (a mutant that hangs a loop hangs the measure)
+- S12 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no `compare-test.sh` · checks/S12-l43-0 … S12-l46-0
+- S12 [40cde817-9efe-4435-83a7-aad9b183ba52]: done — lines 43–46 green: 13 cases ok, `compare test: all ok` · checks/S12-l43-1 … S12-l46-1
+- S12 [40cde817-9efe-4435-83a7-aad9b183ba52]: noticed outside the slice — the scenario of line 43 says "equal" series pass, but acceptance step 3 asks trap lines strictly lower, so two equal series fail on `lines` (a series against itself gives `accept: fail — lines`); `trap runs: … /15` is fixed at 15 whatever the number of runs
+- S13 [40cde817-9efe-4435-83a7-aad9b183ba52]: started — pre-edit check red: no `base-src`, no series `pl-base`, `pl-cand`, `pl-nomap` · checks/S13-l47-0 … S13-l50-0
+- S13 [40cde817-9efe-4435-83a7-aad9b183ba52]: clean room (step 9), run 1 — copied runs found: `swork/references/executor.md:65` "error handling that prevents data loss, security, accessibility" and `:69` "take the one that is correct on edge cases" (ponytail `AGENTS.md:30`, `:26`), `tests/chain/rules.md:53` "logic — a branch, a loop, a parser, money" (`AGENTS.md:27`); the hooks JSON skeleton and the extension list of `codemap.sh` left out as code; reword after the series, then run 2

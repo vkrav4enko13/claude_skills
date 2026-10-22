@@ -2,12 +2,12 @@
 
 > Правки `sbrain`, `splan` и `swork` по исследованию 2026-10-11: перечень готового кода, два проверяющих, короткий основной текст скила, понятные остановки.
 
-**Требования подтверждены:** 2026-10-11 — цель: «цепочка не пишет лишнего кода, переиспользует готовое и тратит меньше токенов»
+**Requirements confirmed:** 2026-10-11 — goal: «цепочка не пишет лишнего кода, переиспользует готовое и тратит меньше токенов»
 
-## Карточки
+## Cards
 
-- [Состояние](state.md) — фаза темы и следующий шаг
-- [Задача](task.md) — что строим, для кого и как поймём, что получилось
+- [Состояние](state.md) — topic phase and next step
+- [Задача](task.md) — what we build, for whom, and how we will know it worked
 - [Требования: готовый код](requirements-reuse.md) — R1–R7
 - [Требования: исполнитель и проверяющие](requirements-checkers.md) — R8–R15
 - [Требования: проверка плана](requirements-plan-review.md) — R16, R17
@@ -15,12 +15,12 @@
 - [Требования: остановки](requirements-stops.md) — R23–R29
 - [Примеры приёмки](examples.md) — двенадцать случаев со ссылкой на требование
 - [Дизайн](design.md) — пять одобренных разделов: план, исполнение, тексты скилов, остановки и сбои
-- [Решения: качество и остановки](decisions-quality.md) — что выбрано, вместо чего и чьё решение
-- [Решения: токены и объём работы](decisions-tokens.md) — что выбрано, вместо чего и чьё решение
+- [Решения: качество и остановки](decisions-quality.md) — what was chosen, instead of what, and whose decision
+- [Решения: токены и объём работы](decisions-tokens.md) — what was chosen, instead of what, and whose decision
 - [Границы: не входит](scope-out.md) — отложенное и то, что сознательно не делаем
 - [Границы: допущения и открытые вопросы](scope-assumptions.md) — неподтверждённое и вопросы, отложенные до плана
-- [План](plan.md) — цель, общие ограничения, что не делаем и правило расхождений
-- [Технические решения](plan-decisions.md) — что выбрано, вместо чего, и фокус проверки
+- [План](plan.md) — goal, shared constraints, what we do not do, and the discrepancy rule
+- [Технические решения](plan-decisions.md) — what was chosen, instead of what, and the check focus
 - [Строки проверки: S1](plan-checks-s1.md) — строки 1–5: перенос в `sbrain`
 - [Строки проверки: S2](plan-checks-s2.md) — строки 6–10: перенос в `splan`
 - [Строки проверки: S3](plan-checks-s3.md) — строки 11–15: перенос в `swork`

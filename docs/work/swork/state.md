@@ -1,9 +1,9 @@
-# Состояние темы swork
+# State of topic swork
 
-> Фаза темы и шаг, с которого начнёт следующая сессия.
+> Topic phase and the step the next session starts from.
 
-- **Фаза:** готово — 2026-10-06
-- **Путь:** большая
-- **Журнал:** journal/2026-10.md, строка от 2026-10-06
-- **Проверено:** S6 и S7 — вручную, 2026-10-11
-- **Следующий шаг:** нет — работа принята; ручная проверка S6 и S7 закрыта — заметка `notes/swork-manual-checks.md`
+- **Phase:** done — 2026-10-06
+- **Path:** large
+- **Journal:** journal/2026-10.md, строка от 2026-10-06
+- **Verified:** S6 и S7 — вручную, 2026-10-11
+- **Next step:** none — work accepted; ручная проверка S6 и S7 закрыта — заметка `notes/swork-manual-checks.md`

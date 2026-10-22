@@ -4,8 +4,12 @@
 
 ## In progress
 
+- [chain-speed](work/chain-speed/00-index.md) — plan confirmed — next: execute the plan through swork
+
 ## Deferred
 
+- manual check of topic multi-agent: line 41 — until the user says so
+- ponytail-lean: lite, ultra, terse untested, the guilty rule group not found — stopped by the user 2026-10-18 · [log](work/ponytail-lean/progress-4.md)
 - manual check of topic quality-zero: lines 17, 18 — until the user says so
 - `multi-agent`: an early finish between a neighbour's `done` and claim, `.agents/` clashing with a repo folder — outside `quality-zero` · [log](work/multi-agent/progress-3.md)
 - публикация скилов другим — когда-нибудь; потребует чистки личных путей

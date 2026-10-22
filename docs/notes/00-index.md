@@ -30,3 +30,4 @@
 - [Where the chain spends tokens at `xhigh`](chain-token-map-xhigh.md) — thinking 59–66 % of output, checkers 46 %, ordered writing about 11 %; scripts kept next to the stand data
 - [Effort on Opus 5.5](opus55-effort.md) — the default and the advice are `medium`; the stand and the measured sessions ran at `xhigh`
 - [A reviewer wiped the shared temp folder](stand-nonstop-parallel.md) — a review subagent of a tested `swork` ran `rm -rf` on `$TMPDIR/tmp.*`; not a parallel collision
+- [Live pair stand: replies and long checks](stand-pair-replies.md) — `.result` is the last message only, Russian replies, `sleep 40` blocked under `claude -p`, the session limit

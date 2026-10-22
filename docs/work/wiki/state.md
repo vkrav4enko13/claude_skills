@@ -1,9 +1,9 @@
-# Состояние темы wiki
+# State of topic wiki
 
-> Фаза темы и шаг, с которого начнёт следующая сессия.
+> Topic phase and the step the next session starts from.
 
-- **Фаза:** готово — 2026-10-11
-- **Путь:** большая
-- **Журнал:** journal/2026-10.md, строка от 2026-10-10
-- **Проверено:** S1–S9
-- **Следующий шаг:** нет — работа принята
+- **Phase:** done — 2026-10-11
+- **Path:** large
+- **Journal:** journal/2026-10.md, строка от 2026-10-10
+- **Verified:** S1–S9
+- **Next step:** none — work accepted

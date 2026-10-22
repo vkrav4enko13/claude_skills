@@ -6,7 +6,8 @@
 # <folder>/wiki-trial is erased and built anew; the project is <folder>/wiki-trial/clean.
 # The four skills from the skills folder are put into its .claude/skills/; splan and swork
 # get copies of the wiki rules and of the check script from sbrain — as in install.sh — and of
-# the claim rules and agents.sh when the skills folder has them.
+# the claim rules and agents.sh when the skills folder has them. A skills folder with hooks/
+# gives the project the chain hooks: .claude/chain-hooks/ and three entries in .claude/settings.json.
 export LC_ALL=C.UTF-8
 set -euo pipefail
 
@@ -37,3 +38,24 @@ for skill in splan swork; do
         cp "$src/sbrain/scripts/agents.sh" "$target/$skill/scripts/"
     fi
 done
+# The code map script of swork — into splan too, only in skills that have it.
+if [ -f "$src/swork/scripts/codemap.sh" ]; then
+    cp "$src/swork/scripts/codemap.sh" "$target/splan/scripts/"
+fi
+# The chain hooks — only from skills that have hooks/: the folder goes to the project's
+# .claude/chain-hooks/ and the three entries of install.sh into its .claude/settings.json,
+# merged into the file when it is there. The stand sessions read only project settings.
+if [ -d "$src/hooks" ]; then
+    project="$dir/wiki-trial/clean"
+    hooks="$(cd "$project" && pwd)/.claude/chain-hooks"
+    rm -rf "$hooks"
+    cp -R "$src/hooks" "$hooks"
+    settings="$project/.claude/settings.json"
+    [ -f "$settings" ] || printf '{}\n' > "$settings"
+    jq --arg inj "bash \"$hooks/inject.sh\"" --arg lang "bash \"$hooks/lang.sh\"" '
+        .hooks.SessionStart += [{matcher: "startup|resume|clear|compact", hooks: [{type: "command", command: $inj, timeout: 5}]}]
+        | .hooks.SubagentStart += [{hooks: [{type: "command", command: $inj, timeout: 5}]}]
+        | .hooks.UserPromptSubmit += [{hooks: [{type: "command", command: $lang, timeout: 5}]}]
+    ' "$settings" > "$settings.tmp"
+    mv "$settings.tmp" "$settings"
+fi

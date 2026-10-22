@@ -1,4 +1,4 @@
-# Ход исполнения темы quality-tokens: S7–S9
+# Progress log темы quality-tokens: S7–S9
 
 > Продолжение записей `swork`: срезы S7–S9; начало — в `progress.md` и `progress-2.md`.
 

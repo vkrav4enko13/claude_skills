@@ -1,0 +1,4 @@
+bash: hooks/inject.sh: No such file or directory
+rc 127
+cp: hooks/inject.sh: No such file or directory
+rc 1

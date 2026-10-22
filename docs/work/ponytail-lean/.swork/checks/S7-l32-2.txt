@@ -1,0 +1,6 @@
+install: ok
+rerun: ok
+kept: ok
+codex: ok
+uninstall: ok
+hooks: all ok

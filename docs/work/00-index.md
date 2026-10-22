@@ -13,5 +13,7 @@
 - [saway-nonstop](saway-nonstop/00-index.md) — `saway` edits approved plans and requirements itself, goes around prohibitions, shows progress, writes in Russian
 - [sbrain-quality](sbrain-quality/00-index.md) — the survey and the grill of `sbrain` measured on the stand and fixed by the numbers
 - [swork-nonstop](swork-nonstop/00-index.md) — `swork` decides every question itself and explains in the report; wiki limits read by a link doubled
-- [multi-agent](multi-agent/00-index.md) — several agents in one folder: claims, waiting instead of a question, notices, an edit log with diffs
+- [multi-agent](multi-agent/00-index.md) — several agents in one folder: claims, waiting instead of a question, notices, an edit log with diffs; continuation: a worktree per agent merged into the shared folder
 - [quality-zero](quality-zero/00-index.md) — the four skills pass one whole stand series with zero judge violations; stand holes and deferred findings closed first
+- [ponytail-lean](ponytail-lean/00-index.md) — the chain writes less superfluous code from the start, ponytail ideas through a clean room, quality not worse
+- [chain-speed](chain-speed/00-index.md) — the LGS speed and token levers carried into sbrain, splan, swork, saway; the stand lighter; one final series proves quality not worse

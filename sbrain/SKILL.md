@@ -47,6 +47,8 @@ On the "Large" path, start a task list if the environment can do that: what alre
 
 `sbrain` writes to the wiki only after a confirmed summary. While there is no topic folder, there is nothing from it in the wiki — not a card, not a line: the survey answers stay in the chat.
 
+**Several agents.** The user asks to work with several agents — switch the mode on by `references/agents-rules.md`, "Switch", before the first write.
+
 **Before a stop — first `state.md`.** The rule applies only when the topic folder already exists: before any stop (you are waiting for the user's answer, you have hit a blocker, the session is ending) first write the phase and the next step into its `state.md`: one action that the next session will start from.
 
 ## Stages

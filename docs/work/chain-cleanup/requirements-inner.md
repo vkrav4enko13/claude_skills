@@ -1,4 +1,4 @@
-# Требования темы chain-cleanup: внутри скила
+# Requirements of topic chain-cleanup: внутри скила
 
 > R25–R34: места, где `swork` и `sbrain` спорят сами с собой.
 

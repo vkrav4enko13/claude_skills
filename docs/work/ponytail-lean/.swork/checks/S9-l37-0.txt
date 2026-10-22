@@ -1,0 +1,2 @@
+jq: error: Could not open file /Users/vkravchenko/Documents/my/chain-stand/hb.RKtWF3/wiki-trial/clean/.claude/settings.json: No such file or directory
+0

@@ -1,0 +1,19 @@
+S1: list_files() — swork/scripts/codemap.sh
+S1: result(<case> <condition text> <ok 0|1>) — tests/codemap-test.sh
+S1: run(<folder>) — tests/codemap-test.sh
+S8: fail(<why>) — tests/chain/traps/{reuse,shared-bug,rename,traversal,native}/check.sh
+S8: state(<file> <topic> <phase> <journal> <verified> <next>) — tests/chain/seed-trap.sh
+S8: topic_index(<file> <topic> <essence> <date and goal>) — tests/chain/seed-trap.sh
+S8: usage() — tests/chain/seed-trap.sh
+S8: copy(<trap> <overlay>) — tests/chain/trap-test.sh
+S8: trim(<string>), lower(<string>) — tests/chain/traps/reuse/project/lib/text.sh
+S8: cents_to_str(<cents>) — tests/chain/traps/shared-bug/project/lib/money.sh
+S8: user_name(<users file> <n>) — tests/chain/traps/rename/project/lib/users.sh
+S7: merge_hooks(<profile> <add 0|1>) — install.sh
+S7: check(<case> <command…>), ours(<settings file>), notify_kept(), run(<install args…>) — tests/hooks-test.sh
+S7: installed(), kept(), missing(), codex(), uninstalled() — tests/hooks-test.sh
+S7: ask(<prompt>) — tests/hooks-live.sh
+S10: score(<trap> <overlay>) — tests/chain/overeng-test.sh
+S10: first(<file> <ERE>), mutant(<source> <out> <1|2|3>) — tests/chain/mutate.sh
+S12: usage(), named(<stage>), any(<stage>…), holds(<a> <b> <awk op>), folders(<stage>), trap_rows(<series> <side>), trap_runs(<series>), trap_table(), tokens_of(<stage folder>), totals(<series>), rule_ids(<series>), noes(<series>), zero_of(<name> <zero.sh output>), count(<n/all>), fail(<measure>), trap_lines(), among(<series> <ids>), zero_line(<name> <0|1>) — tests/chain/compare.sh
+S12: fresh(), stage(…), trapj(…), make(<series> [name=value…]), run(<compare args…>), check(<case> <command…>), has(<line>), passes(), fails(<fail text>), against(…), new_rules(), report(), map(), only(), zero_ratio() — tests/chain/compare-test.sh

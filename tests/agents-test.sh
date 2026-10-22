@@ -65,6 +65,7 @@ live
 A="${pids[0]}:$(start_of "${pids[0]}")"
 live
 B="${pids[1]}:$(start_of "${pids[1]}")"
+as "$A" ay on
 (:) &
 dead=$!
 wait $dead
@@ -203,6 +204,7 @@ mkdir -p "$W/docs" "$W/repo"
 printf 'index\n' >"$W/docs/00-index.md"
 git -C "$W/repo" init -q
 cd "$W/repo"
+as "$A" ay on
 as "$A" ay claim ../docs/00-index.md
 expect "a wiki above the git root" 0
 [ -d "$W/repo/.agents" ] && [ ! -d "$W/.agents" ] || fail "a wiki above the git root: .agents/ not only in the repo"

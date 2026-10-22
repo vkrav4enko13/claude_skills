@@ -4,8 +4,13 @@
 
 ## Out of scope
 
-- Agents on several machines; separate git branches or worktrees per agent.
-- Merging edits of two agents in one file at the same moment: they take the file in turn.
+- Agents on several machines.
+- Separate git branches or worktrees per agent — lifted 2026-10-21 by [requirements, part 2](requirements-2.md), R16.
+- Merging edits of two agents in one file at the same moment: they take the file in turn — lifted 2026-10-21: the worktree mode merges (R19–R21), the shared mode claims a file only for a write (R31).
+- An early `git merge-tree` warning against the neighbours' worktrees before a step — deferred, an addition nobody asked for.
+- Installing `mergiraf`, `ast-grep`, `jscpd` — waits for the user; R25 works without them.
+- Live sync of files between agents and line-range locks — an agent needs a stable tree.
+- Merging edits made inside a submodule from a worktree — a slice writing there runs in the shared mode (R33).
 - Fixing stand violations of the four skills — the topic `quality-zero`.
 - A commit by a skill: still only at the user's request.
 
@@ -13,6 +18,9 @@
 
 - Every agent runs on this Mac, so the process number of a claim can be checked locally.
 - Claude Code lists the local sessions and sends them messages; Codex has no such tool.
+- Every agent's project lies on APFS, so `cp -cR` clones the gitignored files cheaply; elsewhere it is a plain copy.
+- Cloning a large `node_modules` into a worktree takes seconds, not minutes — the plan measures it on the game project.
+- The executor uses absolute paths from the worktree root it is given; nothing sets its working directory today.
 - A diff of one write is small enough to keep in `.agents/`; the plan sets how long the log is kept.
 
 ## Answers already given for quality-zero

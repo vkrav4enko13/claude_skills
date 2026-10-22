@@ -77,6 +77,8 @@ A message from the user during the run — take the correction from the next ste
 
 **Who writes to the plan and to the wiki.** Only the main session of an agent, under a claim by `references/agents-rules.md`: the slice statuses, the "Result" of the check lines, "Progress log", `state.md`, the notes in `notes/`, the fixes of minor discrepancies in the slices and the own edits of a slice card and its check lines by section 4. When you change a slice status, set the same status in the overview `plan-overview.md`, if there is one: in the heading of that slice's section. Edit nothing else in the overview: `splan` rebuilds it. The executor and the reviewers do not write to the wiki. Do not write to the journal in the course of the work: the chain has one line, and its tail changes when "accept the work" is chosen. When you have written to the wiki, run the check script and fix what it names: `references/wiki-rules.md`, the "Check" section. It names cards of other topics too: fix only the cards of this topic. The goal, the shared constraints and "Not doing" are edited by no one.
 
+**Several agents.** The user asks to work with several agents — switch the mode on by `references/agents-rules.md`, "Switch", before the first write.
+
 **Before the report — first `state.md`.** Before the report and before the end of a session first write "Next step" into `state.md` — one action that the next session will start from.
 
 ## Stages
@@ -91,6 +93,8 @@ A message from the user during the run — take the correction from the next ste
 | 7. Review | `references/finish.md` |
 | 8. Report and the next step | `references/report.md` |
 | Small change | `references/small.md` |
+| While `agents.sh mode` is not `off`: the mode of the work | `references/modes.md` |
+| The worktree mode, as `references/modes.md` picks it: its rules replace those of the stages | `references/worktree.md` |
 
 Read the stage file in full when you reach the stage — not in advance and not from memory.
 

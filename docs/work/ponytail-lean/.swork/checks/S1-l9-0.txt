@@ -1,0 +1,4 @@
+ls: /Users/vkravchenko/Documents/my/chain-stand/cm.ASLOqk/wiki-trial/clean/.claude/skills/splan/scripts/codemap.sh: No such file or directory
+ls: /Users/vkravchenko/Documents/my/chain-stand/cm.ASLOqk/wiki-trial/clean/.claude/skills/swork/scripts/codemap.sh: No such file or directory
+0
+0

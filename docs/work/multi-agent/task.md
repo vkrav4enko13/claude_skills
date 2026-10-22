@@ -19,3 +19,10 @@ Several agents work in one project folder at the same time — on different topi
 - Blind scenarios — an abandoned claim, a mutual block, a write to a shared wiki file, a reread after another agent's edit, a function another agent already created — each read as required — R2–R5, R8, R11.
 - The earlier stand checks stay green: `nonstop-run.sh`, `away-check.sh`, `run-check.sh` — R14.
 - The skills are installed to every Mac profile — R15.
+
+## Continuation of 2026-10-21
+
+- **In brief:** under git each `swork` agent edits its own worktree and merges it into the shared folder after a green step; a neighbour waits for a merge, not for a slice; after every merge a script names duplicate candidates — R16–R30.
+- **Task:** the user's words: "maybe split the parts into different files so they can work in parallel and not get in each other's way … or combine at the end"; "here they wait for the classes to be freed"; "run checks that the code is not duplicated, or that there is no other version with differences". In the game project seven topics write the same hub files (`GameView.js`, `resources.json`, locale files); a claim takes a whole file for a whole slice run — a 43-minute wait was seen, while the edits rarely overlap.
+- **Success criteria:** two `swork` agents on different lines of one file — the second waits seconds and both edits land; on the same lines no edit is lost; a planted duplicate is listed; the earlier stand checks stay green; wait lengths are logged — R29, R30.
+- **Added after the user returned:** a shared mode without a worktree that claims a file only for a write; the mode picked by itself with a manual choice; submodules read-only in a worktree; the whole multi-agent mode only on the user's request — R31–R36 in [part 3](requirements-3.md).

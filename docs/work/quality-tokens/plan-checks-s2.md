@@ -1,11 +1,11 @@
-# Строки проверки темы quality-tokens: S2
+# Check lines of topic quality-tokens: S2
 
 > Строки 6–10: перенос в `splan` — объём, порядок, названность файлов этапов, сохранность строк и правила чтения файлов.
 
-| № | Требование | Сценарий | Команда | Ожидаемое | Срез | Результат |
+| No. | Requirement | Scenario | Command | Expected | Slice | Result |
 |---|---|---|---|---|---|---|
-| 6 | R18 | основной текст `splan` после переноса и дописок → не больше 19 000 байт | `cd "$HOME/Documents/my/claude_skills" && [ "$(wc -c < splan/SKILL.md)" -le 19000 ] && echo "объём в пределе"` | `объём в пределе` | S2 | зелёная 2026-10-11 |
-| 7 | R19 | запрет на реализацию, правило о переходах и правило об остановке → стоят выше раздела «Этапы» | `cd "$HOME/Documents/my/claude_skills" && . docs/work/quality-tokens/phrases.sh && awk "$p7_1" splan/SKILL.md && echo "правила выше этапов"` | `правила выше этапов` | S2 | не запускалась |
-| 8 | R20 | три файла этапов → каждый существует и назван в основном тексте | `cd "$HOME/Documents/my/claude_skills" && for f in recon slicing approval; do [ -f splan/references/$f.md ] && grep -q "references/$f.md" splan/SKILL.md && continue; exit 1; done && echo "файлы этапов названы"` | `файлы этапов названы` | S2 | зелёная 2026-10-11 |
-| 9 | R21 | строка прежнего `SKILL.md` из коммита `f3c9f1b` → есть в основном тексте или в файле `references/` | `cd "$HOME/Documents/my/claude_skills" && [ -z "$(LC_ALL=C comm -23 <(LC_ALL=C sort -u <(git show f3c9f1b:splan/SKILL.md)) <(LC_ALL=C sort -u splan/SKILL.md splan/references/*.md))" ] && echo "строки на месте"` | `строки на месте` | S2 | зелёная 2026-10-11 |
-| 10 | R22 | текста файла этапа нет в контексте либо текст ссылается на другой файл → основной текст велит прочитать файл | `cd "$HOME/Documents/my/claude_skills" && . docs/work/quality-tokens/phrases.sh && grep -q "$p10_1" splan/SKILL.md && grep -q "$p10_2" splan/SKILL.md && echo "правила чтения есть"` | `правила чтения есть` | S2 | не запускалась |
+| 6 | R18 | основной текст `splan` после переноса и дописок → не больше 19 000 байт | `cd "$HOME/Documents/my/claude_skills" && [ "$(wc -c < splan/SKILL.md)" -le 19000 ] && echo "объём в пределе"` | `объём в пределе` | S2 | green 2026-10-11 |
+| 7 | R19 | запрет на реализацию, правило о переходах и правило об остановке → стоят выше раздела «Этапы» | `cd "$HOME/Documents/my/claude_skills" && . docs/work/quality-tokens/phrases.sh && awk "$p7_1" splan/SKILL.md && echo "правила выше этапов"` | `правила выше этапов` | S2 | not run |
+| 8 | R20 | три файла этапов → каждый существует и назван в основном тексте | `cd "$HOME/Documents/my/claude_skills" && for f in recon slicing approval; do [ -f splan/references/$f.md ] && grep -q "references/$f.md" splan/SKILL.md && continue; exit 1; done && echo "файлы этапов названы"` | `файлы этапов названы` | S2 | green 2026-10-11 |
+| 9 | R21 | строка прежнего `SKILL.md` из коммита `f3c9f1b` → есть в основном тексте или в файле `references/` | `cd "$HOME/Documents/my/claude_skills" && [ -z "$(LC_ALL=C comm -23 <(LC_ALL=C sort -u <(git show f3c9f1b:splan/SKILL.md)) <(LC_ALL=C sort -u splan/SKILL.md splan/references/*.md))" ] && echo "строки на месте"` | `строки на месте` | S2 | green 2026-10-11 |
+| 10 | R22 | текста файла этапа нет в контексте либо текст ссылается на другой файл → основной текст велит прочитать файл | `cd "$HOME/Documents/my/claude_skills" && . docs/work/quality-tokens/phrases.sh && grep -q "$p10_1" splan/SKILL.md && grep -q "$p10_2" splan/SKILL.md && echo "правила чтения есть"` | `правила чтения есть` | S2 | not run |

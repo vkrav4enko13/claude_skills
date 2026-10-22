@@ -53,6 +53,13 @@ Rules:
    A line of your own topic's block with your slice number is your own code: you may edit it.
 9. Do not write tests and checks beyond the check lines passed to you.
 10. Do not fix a flaw outside the slice: name it in the NOTICED field.
+11. If the message gives AGENTS=<path> TOPIC=<topic> SLICE=<slice>: right before writing a file run
+   `bash <path> claim <file> --topic <topic>`, write it, then right away
+   `bash <path> done "<slice>: <essence>" <file> --topic <topic>`. Code 3 — run
+   `bash <path> wait <file> --topic <topic>` with a timeout of 600000 ms until code 0, then claim again;
+   never ask about it. After `abandoned:` read the file before writing. Write onto the text the claim shows:
+   its diffs or, on `reread:`, the whole file read anew.
+12. Run every command from the project root given in the packet; edit only under it.
 
 Return exactly in this form:
 

@@ -4,7 +4,7 @@
 
 - Two topics: `multi-agent` first, `quality-zero` after it, instead of one topic or quality first — quality would have to be measured again after this edit; agreed; in force
 - Agents work both on different topics and on slices of one topic, instead of only one of the two; user chose; in force
-- An agent claims the files of its current step, instead of the whole folder for a run — others wait only on an overlap; agreed; in force
+- An agent claims the files of its current step, instead of the whole folder for a run — others wait only on an overlap; agreed; superseded under git by [worktree and merge](decision-worktree-merge.md), in force without git
 - The claims file is the truth and a message is added in Claude Code, instead of messages alone — works in Codex too, a lost message cannot hang a waiter; agreed; superseded by the shell watch below
 - Wait while the owner lives, instead of a timeout or waiting forever; agreed; in force
 - Any agent writes a topic card under a claim, instead of one leading agent — the fall of one does not stop the rest; agreed; in force

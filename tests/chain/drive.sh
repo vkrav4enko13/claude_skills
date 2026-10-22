@@ -4,16 +4,21 @@
 # by the fixed line of the stage.
 #
 #   bash tests/chain/drive.sh <project> <stage> <stage folder> [<level>]
-#   bash tests/chain/drive.sh <project> pair <stage folder> <level> <topic>
+#   bash tests/chain/drive.sh <project> pair|pair-multi <stage folder> <level> <topic>
+#   bash tests/chain/drive.sh <project> trap-plan|trap-work <stage folder> <level> <topic>
 #
 # The level is the effort of the session: low medium high xhigh max, without
-# it — medium. Stages: brain, plan, work, seed, away, pair, survey, grill. The first turn starts the skill. While
+# it — medium. Stages: brain, plan, work, seed, away, pair, pair-multi, survey, grill, trap-plan, trap-work. The first turn starts the skill. While
 # the topic phase in state.md is not the one the stage is passed with — one more
 # turn with the stage answer into the same session, at most six answers. The
 # stage away is exactly one turn and no answer: saway reads any answer as the
 # user's return. Its project is seeded by seed-away.sh. The stage pair starts
 # swork on the topic of the fifth argument and, like away, has exactly one turn: two
-# of them run at once in one project seeded by seed-pair.sh. The stage survey starts
+# of them run at once in one project seeded by seed-pair.sh. The stage pair-multi is the
+# same, but its first message also asks to work as several agents, and collect.sh
+# counts it as pair. The stages trap-plan and
+# trap-work run splan and swork on the topic of the fifth argument, a trap seeded by
+# seed-trap.sh, and pass that topic to collect.sh. The stage survey starts
 # sbrain from a raw idea; every next turn is the answer of answer.sh from
 # persona.md to the reply texts of the last turn. It ends when a topic folder
 # that was not there before the first turn has the phase requirements
@@ -31,10 +36,14 @@ set -euo pipefail
 
 usage() {
     echo "usage: bash drive.sh <project> <stage> <stage folder> [<level>]" >&2
-    echo "       bash drive.sh <project> pair <stage folder> <level> <topic>" >&2
+    echo "       bash drive.sh <project> pair|pair-multi <stage folder> <level> <topic>" >&2
+    echo "       bash drive.sh <project> trap-plan|trap-work <stage folder> <level> <topic>" >&2
     exit 2
 }
-if [ "${2:-}" = pair ]; then [ $# -eq 5 ] || usage; else [ $# -eq 3 ] || [ $# -eq 4 ] || usage; fi
+case "${2:-}" in
+    pair | pair-multi | trap-plan | trap-work) [ $# -eq 5 ] || usage ;;
+    *) [ $# -eq 3 ] || [ $# -eq 4 ] || usage ;;
+esac
 effort="${4:-medium}"
 case "$effort" in
     low | medium | high | xhigh | max) ;;
@@ -82,6 +91,23 @@ $(cat "$here/../trial-summary.md")"
         topic="$5"
         first="/swork $topic — исполни план"
         answer=''
+        ;;
+    pair-multi)
+        topic="$5"
+        first="/swork $topic — исполни план; работаем несколькими агентами"
+        answer=''
+        ;;
+    trap-plan)
+        topic="$5"
+        phase='plan confirmed'
+        first="/splan $topic — спланируй тему"
+        answer='Да, одобряю показанное как есть. После показа плана: да, исполнять.'
+        ;;
+    trap-work)
+        topic="$5"
+        phase='done'
+        first="/swork $topic — исполни план"
+        answer='Принять работу; коммит не нужен.'
         ;;
     survey)
         topic=''
@@ -187,7 +213,7 @@ if [ "$stage" = survey ] || [ "$stage" = grill ]; then
     echo "$ended" > "$dir/ended.txt"
 elif [ $first_failed -eq 1 ]; then
     exit 1
-elif [ "$stage" != away ] && [ "$stage" != pair ]; then
+elif [ "$stage" != away ] && [ "$stage" != pair ] && [ "$stage" != pair-multi ]; then
     while ! passed && [ $answers -lt 6 ]; do
         answers=$((answers + 1))
         turn "$answer" --resume "$(jq -r .session_id "$out")"
@@ -195,4 +221,8 @@ elif [ "$stage" != away ] && [ "$stage" != pair ]; then
 fi
 echo "$SECONDS" > "$dir/wall.txt"
 
-"$BASH" "$here/collect.sh" "$project" "$stage" "$dir"
+case "$stage" in
+    trap-plan | trap-work) "$BASH" "$here/collect.sh" "$project" "$stage" "$dir" "$topic" ;;
+    pair-multi) "$BASH" "$here/collect.sh" "$project" pair "$dir" ;;
+    *) "$BASH" "$here/collect.sh" "$project" "$stage" "$dir" ;;
+esac

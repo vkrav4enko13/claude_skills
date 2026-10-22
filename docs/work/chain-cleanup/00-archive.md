@@ -2,7 +2,7 @@
 
 > Строки законченных частей темы: срезы S1–S19 и S22 и ход исполнения до правки плана 2026-10-12.
 
-## Карточки
+## Cards
 
 - Срезы замера «до»: [S1 стенд](plan-s1-stand.md) · [S2 посев](plan-s2-seed.md) · [S3 замер](plan-s3-measure.md) · [S4 судья](plan-s4-judge.md) · [S5 серия «до»](plan-s5-before.md)
 - Срезы показа и передачи плана: [S6 обзор](plan-s6-overview.md) · [S7 обзор в swork](plan-s7-overview-swork.md) · [S8 передача](plan-s8-handoff.md) · [S9 части](plan-s9-parts.md)
