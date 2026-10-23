@@ -1,16 +1,12 @@
 # Small change
 
-Read when there is a plan from the chat or a task without a plan.
-
 ## Small change
 
-- The main session executes, an executor subagent is not needed.
-- Several agents: `references/modes.md`; a small change in the shared mode claims each file only for its write. In the worktree mode it works in `WT` by `references/worktree.md`, its whole change one step.
-- The snapshot is the folder `.swork-<id>/` in the project root, `<id>` — the first field of `agents.sh id`; the marker lies in it by `references/snapshot.md`. There is no topic folder and none is set up, so name the statuses, the check results, the progress and the search exclusions in the chat.
-- The check before the edits, the two attempts and the decisions from section 4 apply in the same way; a decision edits the text of the plan in the chat — there is no card and no "Progress log" card.
-- The conformance check and the review are done by **one** fresh subagent that has not seen the conversation. Pass it two tasks in one message — the conformance check from `references/conformance.md` and the review from `references/review.md`, each separate from the other, — and the "plan": the text of the plan from the chat or your two sentences about the task. If the edit added new code — a function, a class, a script, a new file with code — add both tasks from `references/simplify.md`; texts, settings and separate lines of existing code are not checked by the simplification. Add for the reviewer: the prohibitions and rules of each task apply only inside it; return the findings as a separate list for each task; read the changes and what they refer to directly, do not explore the project more widely — except for the task about duplicates and the task about what is redundant: they search across the whole project, not only in the changes.
-- What to do with the findings — by sections 5–7, the rules are the same. The reviewer read the code before your edits made on the conformance check and the simplification: check a review finding about a place that has changed since then against the present code.
-- After the work — one journal line and the other records by `references/wiki-rules.md`, section "Writing"; then the wiki check script. In the report, in "Written to the wiki", name what was written, with the same marks "new" and "extended" and the same copy into the snapshot as in step 8 of section 3.
-- The report — by section 8. There is no topic, so `state.md` is not written before the report, and of the "Accept the work" order only the last item applies: the snapshot `.swork-<id>/` with its marker.
-- Before the edit name in the chat the ready-made code that you take — the name and the file — or where you searched and did not find any.
-- Before the first edit name in the chat the files that you will edit and create. This list replaces the "Files" block of a slice: by it the copies are taken, `new-files.txt` is written and the files are subtracted in the search for unreported edits. Another file is needed — first name it and take a copy. Make the snapshot, the marker and the copies by `references/snapshot.md`.
+- The main session executes, no executor subagent.
+- Several agents: `references/modes.md`; shared mode — claim each file only for its write; worktree mode — the whole change is one step in `WT`.
+- Snapshot `.swork-<id>/` in the project root (`<id>` — first field of `agents.sh id`), with the marker by `references/snapshot.md`. No topic folder and none set up: statuses, check results, progress and search exclusions go in the chat.
+- The check before the edits (step 2 of section 3 of `references/slices.md`), two attempts and the decisions of section 4 apply; a decision edits the plan text in the chat — no cards, no "Progress log".
+- Code changed — one stage 5–7 pass by `references/finish.md`, section 5, description `Conformance, simplify and review of <the task in a few words>`; "the plan" is the chat plan or your two sentences on the task; findings by sections 5–7. No code changed — as section 5 says.
+- After the work — a journal line and other records by `references/wiki-rules.md`, section "Writing", then the wiki check script. The report's "Written to the wiki" names them, marked "new" or "extended", with the snapshot copy of step 8 of section 3.
+- The report — by section 8. No topic, no `state.md`; of the "Accept the work" order only the last item: the snapshot `.swork-<id>/` with its marker.
+- Before the first edit name in the chat the ready-made code you take (name, file) or where you searched in vain, and the files to edit and create. This list is the slice's "Files" for the copies, `new-files.txt` and the unreported-edits search. Another file needed — name it, copy it first.

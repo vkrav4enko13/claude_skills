@@ -196,6 +196,7 @@ if [ $mac -eq 1 ]; then
                 cp "$SRC/sbrain/scripts/check.sh" "$target/$skill/scripts/"
                 cp "$SRC/sbrain/references/agents-rules.md" "$target/$skill/references/"
                 cp "$SRC/sbrain/scripts/agents.sh" "$target/$skill/scripts/"
+                cp "$SRC/sbrain/scripts/codemap.sh" "$target/$skill/scripts/"
             done
             write_block "${MAC_FILES[$i]}" "$target/sbrain/references/wiki-rules.md" \
                 "bash \"$target/sbrain/scripts/check.sh\"" ""
@@ -226,6 +227,7 @@ for i in "${!PC_TARGETS[@]}"; do
             scp -q "$SRC/sbrain/scripts/check.sh" "pc:$target/$skill/scripts/"
             scp -q "$SRC/sbrain/references/agents-rules.md" "pc:$target/$skill/references/"
             scp -q "$SRC/sbrain/scripts/agents.sh" "pc:$target/$skill/scripts/"
+            scp -q "$SRC/sbrain/scripts/codemap.sh" "pc:$target/$skill/scripts/"
         done
         # In the block the paths are written the way Windows writes them.
         win="$pc_home\\${target//\//\\}"

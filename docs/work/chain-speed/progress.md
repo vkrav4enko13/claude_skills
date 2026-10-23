@@ -1,0 +1,25 @@
+# Progress log of topic chain-speed
+
+> One line per record of the swork run: slice starts, attempts, outcomes, checks and what was noticed.
+
+- preparation [3be4b49f-ed7d-4634-98c8-2669e189b19c]: under git (HEAD `d1d8943`, `main`); snapshot `.swork/` set up, `dirty-at-start.txt` written, marker `agents/95141:1792661395/marker`; exclusions — what `git check-ignore` answers 0 for (no `.gitignore`), the snapshot, `.agents/`, every `.swork-*/`, the wiki folder `docs/`, the stand series under `~/Documents/my/chain-stand/` (outside the project)
+- preparation [3be4b49f-ed7d-4634-98c8-2669e189b19c]: "Checked against code" — `cda6856` plus the `multi-agent` edits, now committed as `d1d8943`; the slice line numbers are re-verified in S1 (R1)
+- S1 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: lines 10 (`Phase:** done`) and 18 (traps in `series.sh`, every named file present) green 2026-10-22 (`.swork/checks/S1-L10.txt`, `S1-L18.txt`); check before the edits red — no `cs-stages.txt`, `unknown stage: small` (`S1-L1-pre.txt`, `S1-L2-pre.txt`); started
+- S1 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: decided myself — line 2 is a paid live run; chosen: the executor validates the lane without a model, the main session runs line 2 once; why: the executor's run and the main session's run would cost the run twice; otherwise: about $5 more
+- S1 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: executor done; line 1 green 2026-10-22 (`.swork/checks/S1-L1.txt`); line 2 (live, small lane) running; no unreported edits
+- S1: noticed outside the slice — `drive.sh:222` (past the card's `:58-121`) also names `small` in the single-turn exclusion, else `set -u` aborts on `$phase`; the line ranges of the card drifted a little (`drive.sh:58-125`, seed case `series.sh:172-195`)
+- S1 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: done — lines 1, 2, 10, 18 green 2026-10-22 (`.swork/checks/S1-L1.txt`, `S1-L2.txt`: `"done": true`, 537 s, `S1-L10.txt`, `S1-L18.txt`)
+- S2 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: check before the edits red — no `count-check.sh`, `pair-judge.sh`, `levers-check.sh`; started
+- S2 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: done — lines 3 (`count ok`), 4 (`count wrong: 3 lines of 6 words → 6, want 3`, exit 1), 5 (`pair: 1 better, 3 equal, 1 worse`, judge cached from the executor's run, $1.25), 6 green 2026-10-22 (`.swork/checks/S2-L3.txt` … `S2-L6.txt`); `compare-test.sh` all ok; no unreported edits
+- S2: baseline seen — `levers-check cs-small`: `1/small: executor=1 pass=3 round2=0 reviewer=0 stage-agent=2`
+- S2: noticed outside the slice — `compare.sh` trap denominator fixed at `/15`, `trap_rows` reads every `trap-*.json`; `trace.sh` `role_of` counts "Independent review of … plan" as `review`
+- S6: decided myself — `role_of` takes the splan reviewer's free description for a review pass; chosen: S6 gives the reviewer the description `Plan review of <topic>` (card edit of S6, item added); why: line 16 must see `reviewer=0` on the small lane; otherwise: the small-lane count stays wrong
+- S6: card edit — was: no fixed reviewer description; became: `Plan review of <topic>` word for word; why: the line above
+- S3 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: check before the edits red — no `tests/skills-check.sh` (`S3-L7-pre.txt`); started
+- S3: card edit — was: line 9 command `sed -i '' 's/stage 7 finished/stage seven done/'`; became: the same with `/g`; why: `finish.md:16` holds the literal twice, the command replaced only the first; Expected unchanged
+- S3 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: done — lines 7 (`skills ok`), 8 (four `heading:` lines naming `Decisions and bypass`, exit 1), 9 (`literal: stage 7 finished`, exit 1) green 2026-10-22 (`.swork/checks/S3-L7.txt` … `S3-L9.txt`); `rules.md` — only the numbers of 19 citations moved (swork-2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 16, 17, 23, 24, 25; saway-6, 7, 11, 12), rule text unchanged (diff without numbers empty); no unreported edits
+- S3: noticed outside the slice — `splan/references/{review,plan-format,recon}.md` and `saway/SKILL.md:19` cite `references/wiki-rules.md` / `agents-rules.md`, which exist only under `sbrain/` (`install.sh` copies them); the script skips them; it also takes a bold run-in `**<Heading>.**` as a heading (`slices.md` "Picking a slice")
+- S4: decided myself — the slice is stand commands and a wiki card; chosen: the main session runs it, no executor; why: only the main session writes to the wiki, an executor would only relay the commands; otherwise: one more subagent
+- S4 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: started — copy `cs-snap/before` made; sizes in `.swork/checks/S4-sizes.txt`
+- S4 [3be4b49f-ed7d-4634-98c8-2669e189b19c]: done — line 11 green 2026-10-22: `cs-before` runs `1`, `2`, every stage `done=true`; per run wall 3538 s, output tokens 329316, cost $20.25; violations 9; `count ok` ×2; numbers in `numbers.md` (`.swork/checks/S4-*.txt`)
+- S4: noticed — `away` failed in both runs on `progress line: missing` (current skills, known flaky since `multi-agent`); `zero.sh` exit 1 is expected on the reduced stand

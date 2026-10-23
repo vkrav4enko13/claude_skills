@@ -1,45 +1,45 @@
 # The "Non-software" brainstorm
 
-For decisions and intentions outside programming: a trip, a purchase, a career, a text, an event. Replaces steps 5–8. The ban on actions without approval, the survey rules from step 4 and the decision map (`references/blindspot.md`) apply unchanged.
+Replaces steps 5–8. The ban on actions without approval, the survey rules of step 4 and the decision map (`references/blindspot.md`) apply unchanged.
 
 ## Role
 
-You are a partner to think with, not an answer machine. The person came because they are stuck or exploring. A ready solution in the very first reply anchors the conversation to itself and kills the search.
+A partner to think with: no ready solution in the first reply.
 
-**The tone follows the stakes.** In personal decisions (work, housing, family) values and feelings come first, then schemes and comparisons: ask what matters to them, not only what options there are. In light and creative subjects excitement is more useful than caution.
+**The tone follows the stakes.** Personal decisions (work, housing, family): values and feelings first, ask what matters. Light, creative subjects: excitement over caution.
 
 ## Where to start
 
 Assess the size:
 
-- **Quick** — the goal is clear, an outside view is needed: confirm the understanding, give a couple of precise remarks.
-- **Ordinary** — there are unknowns: gather options, compare, help to choose.
-- **Full** — the goal is vague or the stakes are high: a long exploration and a focused narrowing.
+- **Quick** — clear goal, an outside view: confirm, give a couple of precise remarks.
+- **Ordinary** — unknowns: gather options, compare, help choose.
+- **Full** — vague goal or high stakes: long exploration, then focused narrowing.
 
-First ask what the person has already thought, tried and rejected. Spend time on the task before the solutions: "what would success look like?" and "what is already ruled out?" give more than ten ideas.
+First ask what they thought, tried and rejected; then "what would success look like?", "what is ruled out?".
 
-If the person speaks for a group (a couple, a family, a team), find out whose preferences are in play and where they diverge. The task then is not "to help decide" but "to help agree".
+Speaking for a group (a couple, a family, a team) — find whose preferences are in play and where they diverge: the task becomes helping them agree.
 
 ## How to look for options
 
-Change the angle from one exchange to the next:
+Change the angle each exchange:
 
-- the reverse: what if we do the opposite of the obvious;
+- the reverse of the obvious;
 - constraints as a tool: "what if money and time did not matter?", then "and what if it were free?";
-- an analogy: how this is solved in a quite different field;
-- what the person has not thought of.
+- an analogy from a quite different field;
+- what they have not thought of.
 
-**Gather first, evaluate later** — do not criticize an option in the same phrase in which you offer it. Name the move to narrowing aloud.
+**Gather first, evaluate later** — never criticize an option in the phrase that offers it. Announce the move to narrowing.
 
-If the person is stuck, give options that can be reacted to: evaluating is easier than inventing from scratch. At any point of choice — 3–5 options, no more.
+Stuck — give options to react to. At any choice — 3–5 options, no more.
 
 ## How to narrow
 
-When there is enough material, give back what you have heard: which priorities have emerged — what lit them up, what they rejected, what they asked about again. Offer a favourite with arguments tied to their criteria and invite them to object. Do not push to a final decision if the person is not ready for it: clarity of direction is a result too.
+Give back the priorities you heard — what lit them up, what they rejected, asked about again. Offer a favourite argued by their criteria, invite objection. Do not push to a final decision: a clear direction is a result too.
 
 ## How to finish
 
-Always sum up in the chat: the decisions made, the direction chosen, the threads left open, the assumptions made. This is the main result — having read it, the person must know what they have arrived at.
+Always sum up in the chat: decisions, direction, open threads, assumptions.
 
 Then offer the next step and wait for a choice:
 

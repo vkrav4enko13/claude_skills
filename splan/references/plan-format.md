@@ -1,30 +1,28 @@
 # Plan format
 
-Read at step 7 — after the agreed slicing and before the plan is written — and at step 9, when the user has approved the plan.
+Read at steps 7 and 9.
 
-The plan is read by an executor that has seen neither the conversation nor the recon. It can write code in the project's language and will itself make a reasonable choice wherever the plan left the choice to it. What it cannot know is what you decided: which files, which names and signatures, which exact values from the requirements, how each slice is checked. Write exactly that down.
+The executor has not seen the conversation or recon. Write what it cannot know: files, names and signatures, exact values, how each slice is checked; leave it the rest.
 
 ## Where the plan lies
 
-In the topic folder `work/<topic>/` of the project wiki, next to the requirements cards. The plan is cards; there is no separate plan file. Where the wiki is, the limits of a card and of an index, the check script — in `references/wiki-rules.md`; here is only what the plan adds. Paths inside the plan are relative to the project root.
+Cards in the topic folder `work/<topic>/` of the project wiki; no separate plan file. Wiki location, limits, check script — `references/wiki-rules.md`. Paths are relative to the project root.
 
-**There is no topic folder** — a task without a topic, the size "Cards". Set it up yourself: `00-index.md` and `state.md` by the templates from `references/topic-cards.md` of the `sbrain` skill; `<topic>` is in Latin letters, hyphenated. The topic index holds lines only for the cards that exist. Do not touch someone else's folder with the same name: add `-2` to the name of yours.
+**There is no topic folder** — set up `00-index.md` and `state.md` by `references/topic-cards.md` of the `sbrain` skill; `<topic>` Latin, hyphenated; the index lists only existing cards. Never touch someone else's folder of that name: add `-2` to yours.
 
 ## Plan cards
 
 | Card | What it carries |
 |---|---|
-| `plan.md` | The header: the goal, "Checked against code", "Shared constraints", "Not doing", "Assumptions", "Deferred questions", the discrepancy rule |
+| `plan.md` | Header: goal, "Checked against code", "Shared constraints", "Not doing", "Assumptions", "Deferred questions", discrepancy rule |
 | `plan-decisions.md` | "Technical decisions" and "Check focus" |
-| `plan-checks.md` | The check lines — as a table |
-| `plan-s<N>-<name>.md` | A slice: a card for each |
-| `plan-overview.md` | The overview: the same plan as one file, for a person |
+| `plan-checks.md` | Check lines as a table |
+| `plan-s<N>-<name>.md` | One card per slice |
+| `plan-overview.md` | The whole plan as one file, for a person |
 
-**A card** — the title, the hook line, the line in the index and the splitting of an overgrown card — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; a card is written under a claim — `references/agents-rules.md`. The sections inside a card go under `## …` headings. Check lines are split by groups — `plan-checks-<group>.md`, the numbering stays continuous. An overgrown header is split into `plan.md` and `plan-2.md`, a slice card — into `plan-s<N>-<name>.md` and `plan-s<N>-<name>-2.md`: the slice fields stay in the first part, the continuation of "What to do" goes into the second; the title of the part is `# S<N>. <title> — part 2`, it has no "Status" line.
+**A card** — title, hook, index line, splitting — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; written under a claim (`references/agents-rules.md`); inner sections under `## …`. Splits: check lines by group into `plan-checks-<group>.md`, numbering continuous; `plan.md` into `plan-2.md`; `plan-s<N>-<name>.md` into `plan-s<N>-<name>-2.md` — the continuation of "What to do", titled `# S<N>. <title> — part 2`, no "Status" line.
 
-Do not write an empty section, except "Check focus": there emptiness means "checked and found nothing" and is written down just so.
-
-In the templates replace the words in angle brackets, carry the rest over as it is.
+No empty sections except "Check focus", where empty means "checked and found nothing", written so. In templates replace the angle-bracket words, copy the rest.
 
 ### Header — `plan.md`
 
@@ -61,11 +59,11 @@ Stop and report: **expected** — what the plan says; **found** — what is in t
 Report a minor discrepancy too (a file moved, a name changed, the meaning is the same): the slice card is fixed by `swork`, not by you.
 ```
 
-- **Shared constraints** — the requirements that apply to all slices: versions, the platform, prohibitions, naming rules. A line for each, the exact values copied from the requirements verbatim. Every slice implies them.
-- **Not doing** — what the executor will think "I will fix it while I am at it" about: neighbouring flaws, generalizations, a rebuild that nobody asked for. Do not copy "Out of scope" from the topic's `scope.md` or from its part `scope-<part>.md` here — refer to that card.
-- **Assumptions** — everything the plan assumed without the user's confirmation, including the blocking questions that the user lifted. A line for each: what is assumed and which slices depend on it.
-- **Deferred questions** — only questions whose answer does not change the slices, the approach or the check. A line for each: the question, who will answer and when, what is assumed until the answer. A question that the slicing depends on cannot stay in the plan — ask it.
-- **The discrepancy rule** — the section "If the code differs from the plan" — is written into every plan verbatim.
+- **Shared constraints** — requirements for all slices (versions, platform, prohibitions, naming), a line each, values verbatim.
+- **Not doing** — what the executor would "fix while at it": neighbouring flaws, generalizations, unasked rebuilds. Refer to "Out of scope" in `scope.md` or `scope-<part>.md`, do not copy it.
+- **Assumptions** — all assumed without the user's confirmation, lifted blocking questions included, with the dependent slices.
+- **Deferred questions** — only those whose answer changes neither slices, approach nor check; one the slicing depends on — ask it.
+- **The discrepancy rule** — "If the code differs from the plan" — goes into every plan verbatim.
 
 ### Technical decisions and check focus — `plan-decisions.md`
 
@@ -83,8 +81,8 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 - <condition> → <the behaviour a reasonable person expects> — S<N>, line <No.>
 ```
 
-- **Technical decisions** — what was chosen, instead of what and why, two or three sentences each. Only the decisions that `splan` made: do not repeat what is decided in the requirements. Write a value from the requirements that the executor needs in words in "Shared constraints" or in the slice.
-- **Check focus** — up to five failures or kinds of input that the requirements imply but no check line catches yet — in order of likelihood. A line for each: the condition and the behaviour a reasonable person expects. The requirements' silence about an input does not permit the program to break on it. Assign to every line the slice that owns this code, and set up a check line for that line. These lines were set up back at step 4, before the stop before writing: here they are only written down.
+- **Technical decisions** — two or three sentences each, only `splan`'s own; a requirements value the executor needs goes in words into "Shared constraints" or the slice.
+- **Check focus** — the step 4 lines, most likely first. Silence of the requirements never permits breaking on an input.
 
 ### Check lines — `plan-checks.md`
 
@@ -99,17 +97,17 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 | 2 | R5 | <condition → what should come out> | checked manually: <steps> | <what to see> | S2 | not run |
 ```
 
-- **No.** — the continuous number of the line. The slices and the executor refer to it.
-- **Requirement** — the number of the requirement that the line checks. A line from "Check focus" names the requirement that implies its input. For a topic without requirements cards the column holds the word "task". For an end-to-end line that checks the goal of the plan as a whole — the word "goal".
-- **Scenario** — "condition → what should come out", with the exact values from the requirements. Not "an error on wrong input" but "an empty name → a refusal with the text 'Enter a name'": write the value in words, not as a reference to the requirement number — the executor does not get the requirements cards.
-- **Command** — a command that prints the result of the scenario; do not write a comparison with the expected result into it: `swork` makes the comparison by the "Expected" column. If the scenario cannot be checked with a command — the words `checked manually: <steps>`.
-- **Expected** — the command output that means success, verbatim or a part of it; for a manual line — what to see.
-- **Slice** — the slice the line belongs to: exactly one.
-- **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`, `not checked: <reason>`. `splan` always writes `not run`.
+- **No.** — continuous; slices refer to it.
+- **Requirement** — its number(s); a "Check focus" line names the requirement implying its input; no requirements cards — "task"; an end-to-end line checking the plan's goal as a whole — the word "goal".
+- **Scenario** — exact values in words, not requirement numbers: not "an error on wrong input" but "an empty name → a refusal with the text 'Enter a name'".
+- **Command** — prints the result, no comparison inside (`swork` compares by "Expected"); else `checked manually: <steps>`.
+- **Expected** — success output, verbatim or a part; manual — what to see.
+- **Slice** — exactly one.
+- **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`. `splan` always writes `not run`.
 
 ### Slice — `plan-s<N>-<name>.md`
 
-`<N>` is the slice number; `<name>` is short, in Latin letters, hyphenated: `plan-s1-login.md`.
+`<N>` — slice number; `<name>` — short, Latin, hyphenated: `plan-s1-login.md`.
 
 ```markdown
 # S<N>. <Slice title>
@@ -134,19 +132,19 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 
 Slice rules:
 
-- **Status is written by `swork`.** The values: `not started`, `done`, `awaiting manual check`, `not checked`, `bypassed`. `splan` always writes `not started`.
-- **The numbers are permanent.** A slice is removed — its number is not reused; one is added — it gets the next number. Other slices and the executor refer to the numbers.
-- **Interfaces — exact.** The executor of a slice can see only its own slice; from this block it learns the names and the types of the neighbours. A function named one way in `S3` and another way in `S7` is a plan error. This holds also when the slices edit one file — one script or one text: the name of a function, a variable, a key or a section that a neighbouring slice takes is named in "gives" of the slice that introduces it.
-- **Files — verified.** The path to an existing file is checked against the code. A new file does not exist yet — it is marked just so: "create". A file is created by an earlier slice — write "change: `path` (created in S<N>)": a file has "create" in only one slice.
-- **"What to do" — decisions, not a retelling.** From every line the executor must write exactly one reasonable thing. "Add the needed check", "handle the edge cases", "write tests for this" are lines that decide nothing.
-- **Every slice has check lines.** The slice card has no scenarios and no commands: they lie as lines in `plan-checks.md`, and "Checks" names the numbers of the lines that have this slice in the "Slice" column. A slice that there is nothing to check with is not a slice: merge it with the one where checkable behaviour appears.
-- **The irreversible — with a rollback.** A slice that moves or deletes data, changes permissions or the schema names what to save before the start and which command brings the earlier state back. The saving is the first step of that same slice, not a separate slice. The saving and the restore command are runnable as written: `swork` runs them without asking.
-- **Reuse — verified.** Every name named is in the code at the named path. The field is never empty: either a list or "nothing to reuse — searched: …".
-- **Marks — only where they apply.** `no behavior change` — for a rebuild slice: its checks are green even before the edits. No mark — no line. `ready text` — for a slice whose "What to do" gives the text of every edit verbatim.
+- **Status is written by `swork`.** Values: `not started`, `done`, `awaiting manual check`, `not checked`, `bypassed`; `splan` writes `not started`.
+- **The numbers are permanent.** Never reuse a removed number; a new slice takes the next.
+- **Interfaces — exact.** The executor sees only its slice: neighbours' names and types come from here; a name differing between `S3` and `S7` is a plan error. In a shared file too, what a neighbour takes is in "gives" of the slice introducing it.
+- **Files — verified.** Existing paths checked; new ones "create"; created earlier — "change: `path` (created in S<N>)": "create" in one slice only.
+- **"What to do" — decisions, not a retelling.** "Add the needed check", "handle the edge cases", "write tests for this" decide nothing.
+- **Every slice has check lines.** The card holds no scenarios or commands: "Checks" names the `plan-checks.md` lines with this slice in "Slice".
+- **The irreversible — with a rollback.** Moving or deleting data, changing permissions or the schema: what to save and the restore command; saving is this slice's first step; both run as written — `swork` runs them without asking.
+- **Reuse — verified.** Names exist at the paths; never empty: a list or "nothing to reuse — searched: …".
+- **Marks — only where they apply.** `no behavior change` — a rebuild slice, green before the edits; `ready text` — "What to do" gives every edit verbatim. No mark — no line.
 
 ### Overview — `plan-overview.md`
 
-The same plan as one file, for a person. It is written after the cards and is rewritten in full after every edit of the plan cards. The source is the slice cards: where they differ, the card is right. The overview is not passed to the executor. Write the prose of the overview in the language of the user; slice numbers, statuses, field names, paths and commands stay exactly as in the slice cards.
+For a person, never the executor: written after the cards, rewritten in full after every card edit. Prose in the user's language; numbers, statuses, field names, paths, commands as in the cards.
 
 ````markdown
 # Plan overview of topic <topic>
@@ -175,13 +173,13 @@ The same plan as one file, for a person. It is written after the cards and is re
 ## Not agreed
 ````
 
-The overview has no limit on the number of lines or on the total size; a line is at most 400 characters: wrap a long item onto the next line with an indent, a long command — onto new lines of the block at `&&`.
+No size limit; lines at most 400 characters: wrap items onto an indented line, commands at `&&`.
 
 ## Order of writing
 
-1. **The topic folder.** If there is none — set it up by the section "Where the plan lies".
+1. **The topic folder.** None — set it up by "Where the plan lies".
 2. **The plan cards** — by the templates above.
-3. **The overview** — `plan-overview.md` by the section "Overview"; the line in the topic index: `- [Plan overview](plan-overview.md) — the plan as one file; the source is the slice cards`.
+3. **The overview** — `plan-overview.md` by "Overview"; its topic index line: `- [Plan overview](plan-overview.md) — the plan as one file; the source is the slice cards`.
 4. **Lines in the topic index** — a line for every new card:
 
    ```markdown
@@ -191,38 +189,39 @@ The overview has no limit on the number of lines or on the total size; a line is
    - [S<N>. <slice title>](plan-s<N>-<name>.md) — <what will start working>
    ```
 
-5. **`state.md`** — the phase `plan written` and the next step; what `splan` writes into each line is below.
-6. **The topic's line in "In progress" of the root index** — with the phase `plan written`; the forms of the index lines are in `references/wiki-rules.md`, section "Composition". The phase and the next step in it are the same as in `state.md` and change together with them.
-7. **You set up the topic** — two more lines. In `work/00-index.md` — the topic's line: a link `[<topic>]` to `<topic>/00-index.md` and the essence of the topic. In the journal of the current month — the chain's line: `- YYYY-MM-DD · [<topic>](../work/<topic>/00-index.md): <the goal in one phrase> — plan written`. A topic from `sbrain` already has the chain's line: it is one for the whole chain `sbrain → splan → swork`, do not touch it.
+5. **`state.md`** — the lines below.
+6. **The topic's line in "In progress" of the root index** — phase `plan written`, forms in `references/wiki-rules.md`, section "Composition"; phase and next step always as in `state.md`.
+7. **You set up the topic** — in `work/00-index.md` a link `[<topic>]` to `<topic>/00-index.md` with its essence; in the current month's journal the chain's line `- YYYY-MM-DD · [<topic>](../work/<topic>/00-index.md): <the goal in one phrase> — plan written`. A topic from `sbrain` has it already (one line for `sbrain → splan → swork`): do not touch it.
 8. **The wiki check script** — run it and fix what it names: `references/wiki-rules.md`, section "Check".
 
-If the wiki or a part of it does not exist yet — set it up by `references/wiki-rules.md`.
+The wiki or a part of it is missing — set it up by `references/wiki-rules.md`.
 
 **The lines of `state.md` that `splan` writes:**
 
-- **Phase** — `plan written` when the plan cards are written; `plan confirmed` — after the user's "yes" to the plan. With the date of the record.
-- **Journal** — for a topic from `sbrain` do not touch it; if you set up the topic — the file and the date of the chain's line that you opened.
-- **Next step** — after the cards are written: independent plan review; after it: the user reads the plan and answers whether we approve or edit. After their "yes": execute the plan through `swork`. If you stopped before you wrote the plan — do not change the phase, write only the step: what you are waiting for from the user.
+- **Phase** — `plan written` after the cards; `plan confirmed` after the user's "yes" to the plan; dated.
+- **Journal** — from `sbrain`: untouched; you set up the topic: file and date of the chain's line.
+- **Next step** — plan review (step 8); then the user reads the plan and answers whether we approve or edit; after "yes": execute the plan through `swork`. Stopped before writing — phase unchanged, only the step: what you wait for.
 
 ## Code in the plan
 
-The plan is not a program. Code is allowed where it is more exact than words:
+Code only where more exact than words:
 
 - **signatures and types** — always;
-- **checks with exact values** — in a project that has tests: the name of the test and its assertions;
-- **an algorithm** — only when the result of the scenarios depends on its choice: two reasonable algorithms would give different output on them; otherwise the executor chooses it;
+- **checks with exact values** — with tests: test name and assertions;
+- **an algorithm** — only if two reasonable ones give different scenario output;
 - **text that the requirements fix verbatim** — messages, names, queries.
 
-A function body that follows unambiguously from the signature and the scenarios does not go into the plan: the executor will write it.
+No function body that follows from signature and scenarios.
 
 ## Level of detail
 
-The plan has no size limit: a big piece of work gets a big plan. A card has a limit: an overgrown one is split. There is one measure — usefulness to the executor. Two signs that the measure is broken:
+No plan size limit. Measure: usefulness to the executor —
 
-- **too little** — the executor will have to invent a behaviour, a name or a boundary;
-- **too much** — code blocks take up most of the plan, that is, the program is already written in it.
+- **too little** — it must invent a behaviour, a name or a boundary;
+- **too much** — code blocks take most of the plan.
 
 ## Working on the plan after it is written
 
-- A later decision cancelled an earlier one — fix it in place, do not add a layer on top.
-- The slice status, the result of a check line and "Progress log" are written by `swork`, not by the executor of the slice; nobody edits the goal, the constraints or "Not doing".
+- A later decision cancels an earlier one — fix in place, no layer on top.
+- Slice status, check line results and "Progress log" are written by `swork`, never by the slice's executor.
+- Nobody edits the goal, the constraints or "Not doing".

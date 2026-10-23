@@ -1,58 +1,58 @@
 # Report and the next step
 
-Read at step 8 — after the review, before the report.
+Read at step 8.
 
 ## 8. Report and the next step
 
-Before showing the report add to "Progress log" a line for every declined finding — "declined: <what was proposed> — <why>" — and for everything found but left untouched — "left untouched: <what> — <reason>".
+Add to the batch, before `stage 7 finished`: "declined: <what was proposed> — <why>" per declined finding, "left untouched: <what> — <reason>" per thing found but left, and the `state.md` "Next step" "user's choice after the report". Write the batch, then report.
 
-Before the report write "Next step" into `state.md` — "user's choice after the report".
+Sections; omit empty ones, except "Deviations from the plan":
 
-Show it in sections; do not show an empty section, except "Deviations from the plan":
-
-- **Slices** — for each: the status, the commands of its check lines — each word for word, in backticks, not a description of it, the end of the output of each — quoted, not described: not "as in the card", not "as expected" — and the file with the full output. There is no output obtained in this work — there is no word "done". For a line with a manual check, instead of the output — "the check is manual".
-- **Decided myself** — every `decided myself` line of "Progress log" (for a small change — every `⚠ Decided myself` line of the chat), one per item: problem — choice — why — otherwise.
-- **Bypassed** — every `bypassed` slice: the reason and the dependent slices that were not executed.
-- **Not checked** — every `not checked` slice and the reason the check could not be run.
-- **On unchecked ground** — the slices from the `on unchecked ground` lines of "Progress log" and the manual check each one rests on.
-- **Left as found** — the paths of the snapshot's `known.txt`: the reviewers did not read them, and a rollback will not restore them.
-- **Rollback slices** — the slices with a "Rollback" section executed without asking: what was saved and the command that brings the earlier state back.
-- **Deviations from the plan** — what you decided without the user that is not in the sections above: the minor discrepancies fixed in the plan, the files added to a slice, the findings dropped about bypassed slices. There was not a single one — say so: "the plan was executed as written".
-- **Removed as beyond the plan** — what was removed and by which line of the plan.
-- **Simplified** — what was replaced with ready-made code and what was deleted as redundant; how many findings were skipped.
-- **Fixed after the review** — what was broken and how it was fixed; the declined findings — a line each, with the reason.
-- **Found and left untouched** — every finding, and on the same line its reason: it requires going outside the plan, the check failed after the edit, it was not closed in two attempts, the check is only manual, it was found by the second round of the review, it could not be established.
-- **Noticed by the executors** — the flaws outside the slices from the "noticed outside the slice" lines of "Progress log": the place and the essence of each; they were not fixed.
-- **Not checked by the conformance check** — what the reviewer could not check by the changes.
-- **Not read by the reviewers** — the changed and new files that are not in the READ line, and who did not read them: the checking did not cover them.
+- **Slices** — per slice: the status; each check command word for word in backticks; the end of its output quoted (not "as in the card" or "as expected"); the full output file. No output from this work — no word "done". A manual line — "the check is manual". Stages 5–7 skipped — `stages 5–7 skipped: no code` right after.
+- **Decided myself** — each `decided myself` line of "Progress log" (small change: each `⚠ Decided myself` chat line): problem — choice — why — otherwise.
+- **Bypassed** — each `bypassed` slice: reason, dependents not executed.
+- **Not checked** — each `not checked` slice and why.
+- **On unchecked ground** — the slices of those lines and the manual check each rests on.
+- **Left as found** — the `known.txt` paths: unread by the reviewers, not restored by a rollback.
+- **Rollback slices** — those executed: what was saved, the restore command.
+- **Deviations from the plan** — other decisions without the user: minor plan fixes, files added to a slice, findings dropped about bypassed slices. None — "the plan was executed as written".
+- **Removed as beyond the plan** — what, by which plan line.
+- **Simplified** — replaced with ready-made code, deleted as redundant; how many skipped.
+- **Fixed after the review** — what was broken and the fix; a line per declined finding with the reason.
+- **Found and left untouched** — each finding with its reason: outside the plan, check failed after the edit, not closed in two attempts, manual check only, found by review round 2, could not be established.
+- **Noticed by the executors** — the "noticed outside the slice" lines; not fixed.
+- **Not checked by the conformance check** — what the reviewer could not check.
+- **Not read by the reviewers** — changed and new files missing from a READ line, and who skipped them.
 - **Awaiting a manual check** — the slice and the steps.
-- **Mode** — by `references/modes.md`: the mode and its reason from the `mode:` records of "Progress log", and the outcome of `agents.sh off --if-last` run before the report — `mode: off`, or `mode: kept — <reason>`: the mode file stays.
-- **Waited** — every wait of this work by `references/agents-rules.md`, "Waiting": the agent, the files, the holder and the seconds from the lines of this agent in `.agents/waits.tsv`, and which claims were taken over (`abandoned:`).
-- **Written to the wiki** — the cards from the "Written to the wiki:" lines of "Progress log": the path and the essence of each.
+- **Mode** — mode and reason from the `mode:` records, and the outcome of `agents.sh off --if-last` — `mode: off` or `mode: kept — <reason>` (the mode file stays).
+- **Waited** — each wait (`references/agents-rules.md`, "Waiting"): agent, files, holder, seconds from this agent's `.agents/waits.tsv` lines, claims taken over (`abandoned:`).
+- **Written to the wiki** — the cards of those lines: path and essence.
 - **What next** — the options below.
 
 ## Short report
 
-An agent that finished its slices while another agent of the topic holds a live claim, or after the final report was already given — `references/finish.md`, section 5 — shows the short report instead and stops without a menu. Its first line begins with `⏸` and names the agent that will give or gave the final report. Then its own slices, each with its status and the commands of its check lines as in "Slices", the "Mode" line — `agents.sh off --if-last` is run before the short report too — and the sections above that hold its own records, "Waited" among them, from the lines of this agent in `.agents/waits.tsv`. "Next step" in `state.md` is not changed.
+Instead of the full one when `references/finish.md`, section 5, says so; then stop, no menu. First line: `⏸` and the agent that gives the final report. Then its own slices as in "Slices", the "Mode" line and the sections of its own records, "Waited" among them. "Next step" in `state.md` unchanged; the batch is written first.
 
-Then offer and wait for a choice:
+After the full report offer and wait for a choice:
 
-- **accept the work** — the topic is closed in the wiki, the snapshot and the marker are deleted: the order is below; its files are written under a claim by `references/agents-rules.md`; the statuses in the plan stay as they are;
-- **fix** — ask what exactly. The fix is within the plan — make it, run the checks of the affected slices and show the report anew; the fix changes the plan — do not make it, offer `splan`;
-- **roll back everything** — its files are written under a claim by `references/agents-rules.md`. A file that `.agents/log.tsv` shows edited by another topic after this topic's first edit of it — reverse this topic's own logged diffs of that file, newest first: `patch -R <file> .agents/diffs/<n>.diff` on a copy, the copy put in place only when every reverse succeeded; a reverse that fails leaves the file as it is — name it in the report. The other files — by `references/snapshot.md`: the copies are put back in place, the new files are deleted. In addition — the records of this work in the wiki, by the marks in the "Written to the wiki:" lines: delete a "new" note together with its line in the `notes/` index, restore an "extended" note from the copy in the snapshot's `notes/`; remove the journal line written by this work. In the plan cards give the slices back the status `not started` — the `bypassed` and `not checked` ones too, — the check lines — the result `not run`; in `state.md` and in the topic's line in "In progress" bring back the phase `plan confirmed` and the "Next step" "execute the plan through `swork`". Name the slices with a "Rollback" section that were executed separately, with their restore command: `swork` does not roll them back itself, do not touch their status and results;
-- **do nothing** — everything stays as it is, together with the snapshot.
+- **accept the work** — in the order below; plan statuses stay;
+- **fix** — ask what. Within the plan — make it, rerun the affected checks, report anew; changes the plan — do not make it, offer `splan`;
+- **roll back everything** — a file `.agents/log.tsv` shows edited by another topic after this topic's first edit — reverse this topic's logged diffs of it, newest first: `patch -R <file> .agents/diffs/<n>.diff` on a copy, put in place only if all succeeded; else leave it, name it in the report. Other files by `references/snapshot.md`: copies back, new files deleted. Wiki records by the "Written to the wiki:" marks: delete a "new" note with its `notes/` index line, restore an "extended" one from the snapshot's `notes/`; remove this work's journal line. Plan cards: slices back to `not started` (`bypassed`, `not checked` too), check lines to `not run`; `state.md` and the "In progress" line — phase `plan confirmed`, "Next step" "execute the plan through `swork`". Name the executed "Rollback"-section slices with their restore command: never rolled back, status and results untouched;
+- **do nothing** — everything stays, the snapshot too.
 
-After "roll back everything" delete the snapshot folder `.swork/` and the marker — by `references/snapshot.md`, only when `agents.sh busy --topic <topic>` finds no live claim — and the "Progress log" cards of this work together with their lines in the topic index: a repeated start will begin as the first one. A slice with a "Rollback" section was carried out — keep the snapshot and "Progress log" and say so: the rollback of that slice is up to the user. In the worktree mode the rollback ends with `agents.sh drop` by `references/worktree.md`, "Stages and the end".
+After "roll back everything" delete the snapshot as in step 6 below and this work's "Progress log" cards with their topic index lines. A "Rollback"-section slice was carried out — keep the snapshot and "Progress log", say so: its rollback is up to the user.
 
-"Good", "thanks", "great" are not a choice of step: do nothing and name the options once more.
+"Accept the work" and "roll back everything" write files under a claim by `references/agents-rules.md`.
+
+"Good", "thanks" are not a choice: do nothing, name the options again.
 
 **Accept the work** — in order:
 
-1. **The topic's records.** Reread the notes from the "Written to the wiki:" lines and merge the repeats: two say one and the same thing — one stays, the second is deleted together with its line in the `notes/` index. A note about something that a late slice redid — fix it in place, do not set up a new one.
-2. **Phase.** In `state.md` — the phase `done`, the next step — "none — work accepted".
-3. **Journal.** In the chain's journal line — its file and date are named by the "Journal" line in `state.md` — replace the tail with `done: <the outcome in one phrase>`. Change nothing else in it and do not set up a second line: there is one line for the whole chain `sbrain → splan → swork`.
-4. **Root index.** Remove the topic's line from "In progress". Name the check lines with the result `awaiting manual check` in a line in "Deferred": `- manual check of topic <topic>: lines <No.> — until the user says so`.
-5. **The wiki check script** — run it and fix what it names: `references/wiki-rules.md`, the "Check" section.
-6. **Snapshot.** Delete the topic's `.swork/` folder and the marker — by `references/snapshot.md`, only when `agents.sh busy --topic <topic>` finds no live claim. In the worktree mode then `agents.sh drop` by `references/worktree.md`, "Stages and the end".
+1. **The topic's records.** Reread the notes of the "Written to the wiki:" lines; of two saying the same, delete one with its `notes/` index line; fix in place a note on what a late slice redid, no new one.
+2. **Phase.** In `state.md` — phase `done`, next step "none — work accepted".
+3. **Journal.** In the chain's journal line (named by the "Journal" line in `state.md`) replace the tail with `done: <the outcome in one phrase>`; change nothing else in it, no second line.
+4. **Root index.** Remove the topic's line from "In progress". Name the `awaiting manual check` lines in a "Deferred" line: `- manual check of topic <topic>: lines <No.> — until the user says so`.
+5. **The wiki check script** — run it, fix what it names (`references/wiki-rules.md`, "Check").
+6. **Snapshot.** Delete the topic's `.swork/` and the marker by `references/snapshot.md` (only with no live claim in the topic). Worktree mode: then `agents.sh drop` by `references/worktree.md`, "Stages and the end".
 
-The project is under git — offer a commit as a separate menu after the work is accepted: only the changes named by the user; the list of files, the commit title and the branch; the consent applies to this one commit; the snapshot and the marker do not go into the commit, nor `.agents/`, `.swork-*/` and a file whose last line in `.agents/log.tsv` is by another topic. The list of changed and new files — remember it before step 6: after it the snapshot and its lists are gone.
+Under git — after acceptance offer a commit in a separate menu: only the changes the user names; file list, title, branch; consent covers this one commit; never the snapshot, the marker, `.agents/`, `.swork-*/` or a file whose last `.agents/log.tsv` line is another topic's. Keep the changed and new file list from before step 6.

@@ -3,10 +3,11 @@
 #
 #   bash packet.sh <topic folder> <slice number> <project root> [<created file>…]
 #
-# The eight items of "Packet" in references/executor.md, in its order, each
+# The nine items of "Packet" in references/executor.md, in its order, each
 # under its own line: === slice ===, === check lines ===, === shared
 # constraints and not doing ===, === technical decisions ===, === out of
-# scope ===, === discrepancy rule ===, === project root ===, then a block per
+# scope ===, === discrepancy rule ===, === project root ===, === code map ===
+# (codemap.sh; skipped when it fails or is empty), then a block per
 # created file: the first, this topic's, under === created earlier: <file>
 # (this topic) ===, the others under === created earlier: <file> ===.
 # "Out of scope" is skipped when the topic has no such section, a created
@@ -113,6 +114,15 @@ if [ -n "$plan" ]; then section "If the code differs from the plan" $plan; fi
 echo
 echo "=== project root ==="
 echo "Project root: $root"
+
+here=$(dirname "$0")
+codemap="$here/codemap.sh"
+[ -f "$codemap" ] || codemap="$here/../../sbrain/scripts/codemap.sh"
+if map=$(bash "$codemap" "$root" 2>/dev/null) && [ -n "$map" ]; then
+    echo
+    echo "=== code map ==="
+    printf '%s\n' "$map"
+fi
 
 own=" (this topic)"
 for created in "$@"; do

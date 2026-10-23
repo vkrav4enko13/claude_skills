@@ -1,67 +1,67 @@
 # Survey along the decision tree
 
-Read at step 4 — after the understanding is written down, before the first round of the survey.
+Read at step 4 — after the understanding is written down, before the first round.
 
 ## 4. Survey along the decision tree
 
-Picture the task as a tree: each decision opens the decisions that depend on it. **The front** is the decisions whose prerequisites are all already closed; they can be asked now, without guessing someone else's answers. Go from the broad (the problem, for whom, the benefit) to the narrow (constraints, exceptions, edge cases).
+**The front** is the decisions whose prerequisites are all closed. Go from broad (problem, for whom, benefit) to narrow (constraints, exceptions, edge cases).
 
-**The path sets the result, not the depth.** The survey goes on until the front is empty on any path: "Large", "Small", "Grill" of a plan, "Non-software". On the "Probe" path the tree is the check itself: what we count as an answer and what can be sacrificed. "Until the front is empty" does not mean "for a long time": on a clearly stated task the front may be empty at once, and then there are no questions. One thing is not allowed: closing a branch with a silent assumption instead of a question.
+**The path sets the result, not the depth.** Survey until the front is empty on every path (on "Probe" the tree is the check: what counts as an answer, what can be sacrificed); it may be empty at once. Never close a branch with a silent assumption.
 
-**A tree from a ready plan** (the "Grill" path). The nodes are the decisions of the plan: both the named ones and those it is silent about but does not work without. Start with the load-bearing ones — those on which most of the rest depends: if such a one falls, the questions below it lose their meaning. Check the plan's statements about the project against the code before the questions; name a discrepancy at once instead of asking about it.
+**A tree from a ready plan** (the "Grill" path). Nodes are the plan's decisions, named and silently needed. Start with the load-bearing ones. Check the plan's statements about the project against the code before the questions; name a discrepancy at once, do not ask.
 
-**Round.** Ask the front as a batch of up to four questions through the blocking question tool (in Claude Code — `AskUserQuestion`). Open questions count toward the four, and so does every item put to the user for confirmation — an assumption, a decision taken on "decide yourself"; a round with a menu holds no open question. In one round — only questions that are independent of each other; a question that depends on one still open waits for the next round. If there is no such tool, ask with a numbered list in the chat:
+**Round.** Ask the front as a batch of up to four questions through the blocking question tool (in Claude Code — `AskUserQuestion`). Open questions and items put for confirmation (an assumption, a decision taken on "decide yourself") count toward the four; a round with a menu holds no open question. Only mutually independent questions in one round. No such tool — a numbered list in the chat:
 
 ```
 ❓ Q1 — <title>: <question and options>
 ➡️ I recommend: <answer and why>
 ```
 
-If the front is larger than four, the rest goes in the next round. If the user asks for one question at a time, ask one at a time. You choose the front by eye, and it can let you down: if an answer has changed a neighbouring question of the same round, open that branch again in the next one.
+The rest waits for the next round. Asked for one at a time — one at a time. An answer changed a neighbour in the round — reopen it next round.
 
-**Tree counter.** From the second round on, before the questions — one line: how many decisions are closed, how many you are asking now, how many are waiting for their prerequisites, and in the same line — the updated confidence percentage from step 3. Say that this is an estimate as of now: the tree grows from the answers. In the first round there is no counter — the survey may well end with that round. Every later round has the counter too, a round asked while the design or the summary is being shown included.
+**Tree counter.** From the second round on, before the questions, one line: decisions closed, asked now, waiting, and the updated confidence percentage from step 3, called an estimate as of now. Not in the first round; in every later one, also while the design or the summary is shown.
 
-**A recommendation for every question.** Every question has one, an open question included; a second question added inside an item gets its own recommendation or waits for the next round. Put the recommended option first and mark it. The recommendation answers the question in the form in which it is asked: if your advice is "do not do this at all", rephrase the question so that agreeing with you does not mean "no" to the question itself. The options are 2–4 really different ones; if you cannot gather them without a stretch, the question is open. A "one of" choice is single-select; multi-select is only for a compatible set (goals, constraints), and if priority matters, ask next what the main thing is.
+**A recommendation for every question.** An open question included; a second question inside an item gets its own or waits. Recommended option first, marked, answering the question as asked (advice "do not do this at all" — rephrase so agreeing is not "no"). 2–4 really different options, else the question is open. "One of" is single-select; multi-select only for a compatible set (goals, constraints), then ask the main one if priority matters.
 
-**The argument before the menu.** In a menu the argument shrinks to a line. If the choice is not obvious or is expensive to undo, write 1–2 lines on such a question before the menu: what depends on it and why the advice is exactly this. For an obvious question a line in the menu itself is enough — do not write an argument for the sake of uniformity.
+**The argument before the menu.** A non-obvious or costly-to-undo choice gets 1–2 lines before the menu: what depends on it, why this advice. Otherwise the menu line suffices.
 
-**What to recommend.** What the goal cannot be reached without, and nothing beyond that. An addition that will be expensive to attach later (stored data, a shared interface, money, security) — bring it out as a separate explicit choice, with a recommendation on the merits and a named price. Everything else of the "could also" kind goes as a non-default option or into the deferred items. A recommendation never narrows what the user asked for.
+**What to recommend.** What the goal needs, nothing more. An addition costly to attach later (stored data, a shared interface, money, security) — a separate explicit choice, recommended on the merits, priced. Other "could also" — non-default or deferred. Never narrow what the user asked for.
 
-**Open questions go in the chat, without a menu; one at a time — except the batch of the gap check.** A menu suggests the answer. An open question must name what counts as an answer: "What do you do now when this happens?", not "What do you think?". It has a recommendation too: the question ends with the words "my guess: …, because …".
+**Open questions go in the chat, without a menu; one at a time — except the batch of the gap check.** Name what counts as an answer ("What do you do now when this happens?", not "What do you think?"); end with "my guess: …, because …".
 
-**Gap check.** Read the original request and note to yourself which of these supports are missing. Ask only the missing ones — in one batch, in one message: as a numbered list, each question with its own guess; the question about attachment to the form does not go into the batch. The supports:
+**Gap check.** Ask only the supports the original request lacks — one message, a numbered list, each with its guess; attachment to the form is not in the batch:
 
-- *Evidence* — what has already been done because of this problem: time spent, a workaround, money.
-- *Specifics* — for whom exactly and what will change for them.
-- *What happens now* — how people get by today and what will happen if nothing is done.
-- *Attachment to the form* — what the smallest version is that still gives a benefit. Ask this question last before the approaches.
-- For the "Large" path also: is this a patch or a step toward where the system should go anyway; under what conditions the undertaking will fail; what neighbouring thing we may accidentally build instead of the needed one.
-- For a new product also: on what present state of affairs the benefit rests and what will happen to the idea when that state predictably changes. Do not accept an answer that any competitor could give.
+- *Evidence* — what was already spent on the problem: time, a workaround, money.
+- *Specifics* — for whom exactly, what changes for them.
+- *What happens now* — how people get by, what if nothing is done.
+- *Attachment to the form* — the smallest version still of benefit. Ask last before the approaches.
+- "Large" also: a patch or a step where the system should go anyway; when it fails; what neighbouring thing we may build instead.
+- New product also: what present state the benefit rests on, what happens when it changes. Reject an answer any competitor could give.
 
-On a clearly stated task there may turn out to be no gaps — then do not ask. If the answer is an honest "I don't know", record it as an assumption instead of skipping it.
+No gaps — do not ask. An honest "I don't know" is recorded as an assumption.
 
-**Clarifying an answer.** Restate an answer given in the user's own words as the decisions that follow from it, and count it as accepted only after a "yes". A chosen ready-made option needs no restating. Turn a vague word in an answer — "faster", "as usual" — into a condition that can be checked: "is 'faster' a response in no more than a second on a thousand rows?" — and get a "yes" to it.
+**Clarifying an answer.** Restate a free-worded answer as decisions; accepted after a "yes". A chosen ready option needs none. Turn a vague word ("faster") into a checkable condition ("within a second on a thousand rows?") and get a "yes".
 
-**Decided or only said.** A decision made with an alternative or a risk in plain view is decided: do not ask about it again and carry it forward as it is. An instruction that nobody has examined ("we do it on X") is not a decision yet: challenge it exactly once and accept the answer. Do not count as decided a proposal of your own that the user did not react to. Always name a real defect or an impossibility found in what is decided. A decision with the status "in force" from the project wiki is decided too. If what the user asks for, or the work itself, contradicts it — name the card of this decision to the user and wait for an explicit "yes": only that changes the decision. Write up the replacement when recording the result — by the "Replacement and archive" section of `references/wiki-rules.md`.
+**Decided or only said.** Made with an alternative or risk in plain view — decided: do not ask again. An unexamined instruction ("we do it on X") — challenge exactly once, accept the answer. Your proposal left unanswered is not decided. Always name a real defect or impossibility found in a decision. A wiki decision "in force" is decided; contradicted by the request or the work — name its card and wait for an explicit "yes"; write up the replacement with the result by the "Replacement and archive" section of `references/wiki-rules.md`.
 
-**The "decided" list.** After every third round show in the chat what is already decided: a line per decision, with a mark of whose it is — the user chose it or agreed with your proposal. This way the decisions of the early rounds will survive context compaction, and the user will see the whole before the summary. If the user has corrected an item, the branch is open again together with everything that depended on it. The list does not replace the summary of step 7: it is raw material for it.
+**The "decided" list.** After every third round show a line per decision, marked "user chose" or "agreed". A corrected item reopens its branch and dependants. It feeds the summary of step 7.
 
-**Terms and scenarios.** Clarify a vague or overloaded word at once: "is an 'account' a customer or a user? These are different things". If a word differs from the project glossary or from the code, or the user describes how the system works differently from how it is built in the code you have checked — say so before building further on it. Check the links between concepts with concrete made-up cases at the boundaries: "the order is partly cancelled and the payment has already gone through — what does the customer see?".
+**Terms and scenarios.** Clarify a vague or overloaded word at once ("an 'account' — customer or user?"). A word or a described behaviour differs from the glossary or the checked code — say so before building on it. Test concept links with made-up boundary cases ("partly cancelled, already paid — what does the customer see?").
 
-**Do not only ask.** Offer alternatives, argue with assumptions, say "what if it is the other way round".
+**Do not only ask.** Offer alternatives, argue with assumptions, ask "what if it is the other way round".
 
-**Nodding along.** If all your recommendations have been accepted two rounds in a row, say so once: so far the decisions are yours, not the user's. After that do not remind again: an expert agreeing with good recommendations is a normal outcome.
+**Nodding along.** All recommendations accepted two rounds in a row — say once that so far the decisions are yours. Not again.
 
-**The survey does not converge.** If over four or five rounds the front is not narrowing but growing, the task is too large for one brainstorm. Stop, show a breakdown into parts and agree on which one we discuss now. On the "Small" path the threshold is lower: if the front has not emptied in three rounds, the task is not "Small" — move to a heavier path.
+**The survey does not converge.** The front grows over four or five rounds — stop, show a breakdown, agree which part we discuss. "Small" with the front not empty in three rounds — move to a heavier path.
 
-**Show, not describe** — on any path. When the next question is about arrangement, a mock-up or a diagram and it cannot be settled in words — offer to show before the question itself: in a separate message, once per such question, not in advance. If the user agreed, read `references/visual.md` and make a sketch by it. If the user refused, describe in text and do not offer again for this question. A question about meaning, even one about the interface, stays as text. A text mock-up in the answer options does not replace the offer.
+**Show, not describe** — on any path. Arrangement, a mock-up or a diagram that words cannot settle — offer to show before the question, in a separate message, once, not in advance; agreed — sketch by `references/visual.md`; refused — text, no second offer. Meaning stays text; a text mock-up in options is not the offer.
 
-**The user cannot judge the question.** If they said at once that they do not know the area, or answered "I don't know", "whatever is best", "decide yourself" twice in a row to questions that require knowledge of the subject — read `references/blindspot.md` and offer a decision map. Do not confuse this with "has not decided yet": someone who understands the options needs an ordinary survey. Silently moving on to explanations or silently deciding for them is not allowed.
+**The user cannot judge the question.** They said they do not know the area, or twice in a row answered "I don't know", "whatever is best", "decide yourself" where subject knowledge is needed — read `references/blindspot.md` and offer a decision map. Not "has not decided yet": someone who understands the options gets an ordinary survey. Never silently switch to explanations or decide for them.
 
-**A decision is expensive to redo, and conversation and a sketch cannot close it** — how it feels in the hands, how it moves, how it reads. Offer a throwaway prototype once — by `references/prototype.md`. For a decision that is cheap to change, do not offer one.
+**A decision is expensive to redo, and conversation and a sketch cannot close it** — how it feels, moves, reads. Offer a throwaway prototype once by `references/prototype.md`; cheap to change — do not offer one.
 
-**Before leaving — a check of combinations.** Put the answers together and find the non-obvious consequences: "if the pause is stored in the rule and we do not warn on deletion, then deletion silently loses the pause". Each such consequence is a separate question now, not a footnote later.
+**Before leaving — a check of combinations.** Combine the answers, find non-obvious consequences; each is a question now.
 
-**The survey is finished** when the front is empty or the user asks to move on — then everything unclosed is recorded as assumptions and goes into the summary. The following must be known or explicitly recorded as an assumption: who the user is, what result is needed, what is in scope and what is not, how we will know it worked. Nothing may be silently assumed. Before closing, name to yourself three questions you would ask next and predict the user's answers; if you cannot predict them, ask them instead of closing the survey.
+**The survey is finished** when the front is empty or the user asks to move on; the unclosed become assumptions for the summary. Known or an assumption, nothing silently assumed: who the user is, the result, in and out of scope, how we know it worked. Before closing, name to yourself three next questions and predict the answers; cannot — ask them.
 
-Choose the technical details (schemas, libraries, file layout) yourself by the project and leave them to the plan — unless the brainstorm is about the architecture itself.
+Technical details (schemas, libraries, file layout) — choose by the project and leave to the plan, unless the brainstorm is about the architecture.

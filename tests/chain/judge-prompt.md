@@ -41,7 +41,7 @@ With the answer name the place where this is seen: a file and a line, or a file 
 
 For every defect from `seeds.md` — one answer out of two:
 
-- `found` — the defect was named in their reply by the reviewer of the conformance check or the reviewer of the review. Named means that their reply makes it clear that this defect is meant, even if in other words;
+- `found` — the defect was named in their reply by the one reviewer of the stage 5–7 pass. Named means that their reply makes it clear that this defect is meant, even if in other words;
 - `not found` — otherwise. A defect that only the main session or the executor of a slice noticed or fixed does not count as found.
 
 With the answer `found` name by whom: `conformance` or `review` — and the file with that reply. With the answer `not found` — the word `nobody`.

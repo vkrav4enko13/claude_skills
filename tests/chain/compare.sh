@@ -12,6 +12,8 @@
 #       do not decide;
 #   stages:, seeds:, decisions:, flaws:, away:, nonstop:, pair: base <x> cand <y>
 #       — the lines of zero.sh;
+#   count: base <k>/<n> cand <k>/<n> — of the n runs with wiki-trial/clean, k
+#       where count-check.sh says "count ok";
 #   trap runs: base <k>/15, cand <k>/15 — the files <run>/trap-<name>.json;
 #   <measure>: median base <x> cand <y> ratio <r> — for hidden (passes),
 #       lines, gz_bytes, overeng, caught, tokens_out, wall_s, cost_usd: x and y
@@ -25,12 +27,12 @@
 #   accept: pass | accept: fail — <the failing measures>; a fail only on wall —
 #       "accept: fail — wall (time only)".
 # Accepted when violations are not more; stages, seeds, decisions, flaws,
-# away, nonstop, pair, hidden and caught not lower; lines lower; overeng not
+# away, nonstop, pair, count, hidden and caught not lower; lines lower; overeng not
 # higher; the series wall and the trap wall_s not higher: code 0, otherwise 1.
 # --only "<stages>": stages counts only the named stages; violations and seeds
 # only with brain, plan, work, seed or away named; decisions and flaws only
-# with survey or grill; away, nonstop, pair only when named; the trap lines
-# only with traps; tokens, cost and wall over the named stages' folders. Every
+# with survey or grill; count only with brain, plan or work; away, nonstop,
+# pair only when named; the trap lines only with traps or a trap-<name>; tokens, cost and wall over the named stages' folders. Every
 # other line prints "skipped" and does not decide.
 # --map: only the trap lines, then "map: keep" — hidden not lower, overeng not
 # higher and tokens_out lower in the map series, code 0 — or "map: drop", 1.
@@ -386,7 +388,26 @@ for s in away nonstop pair; do
     zero_line "$s" $on
 done
 
-if named traps; then
+# The count lane of the series $1: "<k>/<n>".
+count_ok() {
+    local R n=0 k=0
+    for R in "$B/$1"/[0-9]*; do
+        [ -d "$R/wiki-trial/clean" ] || continue
+        n=$((n + 1))
+        if "$BASH" "$here/count-check.sh" "$R/wiki-trial/clean" > /dev/null 2>&1; then k=$((k + 1)); fi
+    done
+    echo "$k/$n"
+}
+if any brain plan work; then
+    kb="$(count_ok "$base")"
+    kc="$(count_ok "$cand")"
+    echo "count: base $kb cand $kc"
+    holds "$(count "$kc")" "$(count "$kb")" '>=' || fail count
+else
+    echo 'count: skipped'
+fi
+
+if any traps $(printf 'trap-%s ' $traps); then
     map_tokens=0
     trap_lines
 else

@@ -4,10 +4,9 @@
 
 ## In progress
 
-- [chain-speed](work/chain-speed/00-index.md) — plan confirmed — next: execute the plan through swork
-
 ## Deferred
 
+- port R22 (code map) and R23 (lite levels) to the LGS game skills — no speed gain measured in chain-speed; only on the user's wish
 - manual check of topic multi-agent: line 41 — until the user says so
 - ponytail-lean: lite, ultra, terse untested, the guilty rule group not found — stopped by the user 2026-10-18 · [log](work/ponytail-lean/progress-4.md)
 - manual check of topic quality-zero: lines 17, 18 — until the user says so

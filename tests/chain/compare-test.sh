@@ -8,7 +8,7 @@
 # one run anew: a stage brain with a judged label in blind/key.tsv, a stage
 # folder trap-reuse-plan and trap-reuse.json. Cases: pass, violations, hidden,
 # lines, time, overeng, caught, new-rules, medians, report, map, only,
-# zero-ratio. Prints "case <name>: ok" or "case <name>: got <output>", then
+# zero-ratio, count, trap-name. Prints "case <name>: ok" or "case <name>: got <output>", then
 # "compare test: all ok" and code 0, or "compare test: failed" and code 1.
 # The throwaway folder is removed.
 export LC_ALL=C.UTF-8
@@ -44,10 +44,11 @@ trapj() {
         "$3" "$4" "$8" "$7" "$3" "$5" "$6" > "$1/trap-$2.json"
 }
 
-# The series $1 of one run; the arguments after it — name=value over the defaults.
+# The series $1 of one run; the arguments after it — name=value over the defaults; count —
+# the fixture copied into wiki-trial/clean, none — no copy.
 make() {
     local s="$1" rules="sbrain-1 sbrain-2" noes="" wall=100 tok=1000 cost=1.5 lines=10 hidden=pass
-    local over=1 caught=2 twall=50 ttok=500 brain=1 kv id R
+    local over=1 caught=2 twall=50 ttok=500 brain=1 count=none kv id R
     shift
     for kv in "$@"; do local "$kv"; done
     R="$T/$s/1"
@@ -63,6 +64,10 @@ make() {
                 *) printf 'rule\t%s\tyes\there\n' "$id" ;;
             esac
         done > "$T/blind/$s-1/verdict.tsv"
+    fi
+    if [ "$count" != none ]; then
+        mkdir -p "$R/wiki-trial/clean"
+        cp "$here/fixtures/count-$count/count.sh" "$R/wiki-trial/clean/count.sh"
     fi
     stage "$R/trap-reuse-plan" "$twall" "$ttok" 0.5
     trapj "$R" reuse "$lines" "$hidden" "$over" "$caught" "$twall" "$ttok"
@@ -190,6 +195,25 @@ make base caught=0
 make cand caught=1 lines=5
 run base cand
 check zero-ratio zero_ratio
+
+count_lane() {
+    fails count && has 'count: base 1/1 cand 0/1'
+}
+fresh
+make base count=good
+make cand lines=5 count=words
+run base cand
+check count count_lane
+
+trap_name() {
+    passes && has 'trap runs: base 1/15, cand 1/15' && has 'lines: median base 10 cand 5 ratio 0.50' \
+        && has 'count: skipped'
+}
+fresh
+make base
+make cand brain=0 lines=5
+run --only trap-reuse base cand
+check trap-name trap_name
 
 if [ $failed -eq 0 ]; then
     echo "compare test: all ok"

@@ -10,6 +10,6 @@ A rule line: the number, the rule itself and, after the dash, the place in the s
 - sv-2. Every survey question has a recommendation, an open question included; a consent menu and the next-step menu are not survey questions — sbrain/references/survey.md:24
 - sv-3. A round has at most four questions — sbrain/references/survey.md:13
 - sv-4. From the second round on, before the questions, there is the tree counter line: decisions closed, asked now, waiting, and the confidence percentage — sbrain/references/survey.md:22
-- sv-5. No question asks what can be found in the project files or the wiki — sbrain/references/context.md:29
-- sv-6. No requirement, decision or success criterion that nobody named has got into the topic cards — sbrain/references/synthesis.md:51
+- sv-5. No question asks what can be found in the project files or the wiki — sbrain/references/context.md:9
+- sv-6. No requirement, decision or success criterion that nobody named has got into the topic cards — sbrain/references/synthesis.md:47
 - sv-7. On the grill, the plan's statements about the project are checked against the code before the questions, and a discrepancy is named at once — sbrain/references/survey.md:11

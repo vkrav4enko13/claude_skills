@@ -1,7 +1,5 @@
 # Snapshot: PowerShell 5.1 commands
 
-Read only on Windows.
-
 The same names: `$Root`, `$Snap`, `$Agents`, `$M`, `$Topic`, `$Wiki`, `$F`, `$Stage`, `$Cmd`, `$N`.
 
 ```powershell

@@ -9,7 +9,9 @@
 # stage; for work, seed and trap-work — also every slice of the topic has the status
 # "done" or "awaiting manual check" and the progress log has the record
 # "stage 7 finished"; for away — only that record: the slice statuses and the
-# phase are not looked at; for pair — only that .result of turns/01.json holds a
+# phase are not looked at; for small — only that .result of the last turn has
+# "saway: work finished" and count.sh -q, run on a temp copy, exits 0 on an
+# empty app.txt and 1 on a non-empty one; for pair — only that .result of turns/01.json holds a
 # report: the choice of the final one (accept or Принять) or the mark ⏸ of the
 # short one; for survey and grill — only that ended.txt exists: a run that
 # ended for any reason is measured; api_ms — duration_api_ms of the last turn: the field is
@@ -36,6 +38,7 @@ case "$stage" in
     work) topic=count; phase='done' ;;
     seed) topic=longest; phase='done' ;;
     away) topic=longest; phase='' ;;
+    small) topic=count-q; phase='' ;;
     pair) topic=''; phase='' ;;
     survey) topic=''; phase='' ;;
     grill) topic=''; phase='' ;;
@@ -71,6 +74,24 @@ case "$stage" in
         finished=false
         if grep -qs 'stage 7 finished' "$cards"/progress*.md; then
             finished=true
+        fi
+        ;;
+    small)
+        # The report of saway and the flag on a copy of count.sh are what counts.
+        finished=false
+        last="$(ls "$dir"/turns/*.json 2>/dev/null | tail -1)"
+        if [ -n "$last" ] && jq -r '.result // ""' "$last" | grep -q 'saway: work finished' \
+            && [ -f "$project/count.sh" ]; then
+            box="$(mktemp -d)"
+            cp "$project/count.sh" "$box/"
+            : > "$box/app.txt"
+            if (cd "$box" && bash count.sh -q > /dev/null 2>&1); then
+                echo word > "$box/app.txt"
+                code=0
+                (cd "$box" && bash count.sh -q > /dev/null 2>&1) || code=$?
+                if [ $code -eq 1 ]; then finished=true; fi
+            fi
+            rm -rf "$box"
         fi
         ;;
     pair)

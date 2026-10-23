@@ -22,7 +22,8 @@
 # stage grill on the project grillbox/wiki-trial/clean with grill-longest.sh as
 # longest.sh and grill-plan.md as plan-shortest.md in its root, then away —
 # the stage away on awaybox/wiki-trial/clean after seed-away.sh, its check
-# away-check.sh into away-check.txt; then nonstop — drive.sh with the stage
+# away-check.sh into away-check.txt; then small — the stage small on
+# smallbox/wiki-trial/clean after seed-small.sh; then nonstop — drive.sh with the stage
 # seed into the folder nonstop on nonstopbox/wiki-trial/clean after
 # seed-away.sh, its check nonstop-check.sh into nonstop-check.txt; then pair —
 # seed-pair.sh on pairbox/wiki-trial/clean with case a in run 1 and b in the
@@ -34,8 +35,8 @@
 # .claude/, .git/, .agents/ and .swork* into trapbox-<name>/seeded/, drive.sh
 # with the stage trap-plan into trap-<name>-plan and then trap-work into
 # trap-<name>-work, then trap-measure.sh into trap-<name>.json — a failed drive
-# still measures; the stage traps names all five. The stages away, nonstop,
-# pair and the traps are named only on request; the traps are not written into
+# still measures; the stage traps names all five. The stages away, small,
+# nonstop, pair and the traps are named only on request; the traps are not written into
 # the file stages. A check that fails does not fail
 # its lane: the check file holds the verdict. A lane whose named stages are
 # all passed (done in stage.json; pair — in both pair1 and pair2; a trap — in
@@ -84,7 +85,7 @@ done
 stages="${named# }"
 for s in $stages; do
     case "$s" in
-        brain | plan | work | seed | survey | grill | away | nonstop | pair) ;;
+        brain | plan | work | seed | survey | grill | away | small | nonstop | pair) ;;
         trap-reuse | trap-shared-bug | trap-rename | trap-traversal | trap-native) ;;
         *) echo "unknown stage: $s" >&2; exit 2 ;;
     esac
@@ -120,7 +121,7 @@ echo "$effort" > "$S/effort"
 # The stages the series was run with, for zero.sh: the earlier ones and these.
 had=""
 if [ -f "$S/stages" ]; then had="$(cat "$S/stages")"; fi
-for s in brain plan work seed survey grill away nonstop pair; do
+for s in brain plan work seed survey grill away small nonstop pair; do
     case " $had $stages " in *" $s "*) echo "$s" ;; esac
 done | tr '\n' ' ' | sed 's/ $//' > "$S/stages"
 echo >> "$S/stages"
@@ -148,6 +149,7 @@ lane() {
         survey) all=survey; box="$R/surveybox" ;;
         grill) all=grill; box="$R/grillbox" ;;
         away) all=away; box="$R/awaybox" ;;
+        small) all=small; box="$R/smallbox" ;;
         nonstop) all=nonstop; box="$R/nonstopbox" ;;
         pair) all=pair; box="$R/pairbox" ;;
         trap-*) all="$2"; box="$R/trapbox-${2#trap-}" ;;
@@ -176,6 +178,7 @@ lane() {
             cp "$here/grill-plan.md" "$project/plan-shortest.md"
             ;;
         away | nonstop) "$BASH" "$here/seed-away.sh" "$project" || return 1 ;;
+        small) "$BASH" "$here/seed-small.sh" "$project" || return 1 ;;
         pair)
             pcase=b
             if [ "${R##*/}" = 1 ]; then pcase=a; fi
@@ -237,7 +240,7 @@ lane() {
 run() {
     local R="$S/$1" name failed=0
     mkdir -p "$R"
-    for name in count longest survey grill away nonstop pair $traps; do
+    for name in count longest survey grill away small nonstop pair $traps; do
         if ! lane "$R" "$name"; then
             echo "run $1: lane $name not passed"
             failed=1

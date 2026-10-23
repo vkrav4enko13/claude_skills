@@ -1,56 +1,52 @@
 # Conformance check. Simplification. Review
 
-Read at step 5 — after this agent's last slice, — at step 6, after the edits of the conformance check, and at step 7, after the simplification and before the report.
-
-In the worktree mode by `references/worktree.md`, "Stages and the end": the final checks and the checkpoints of stages 5–7 run in `WT` after a `sync`, and the stage edits merge like a step.
+Read at step 5, after this agent's last slice; sections 6 and 7 apply its findings in order before the report. Worktree mode: `references/worktree.md`, "Stages and the end".
 
 ## 5. Conformance check
 
-After this agent's last slice. **Who runs stages 5–7** — the agent that claims `<topic folder>/.stage` by `references/agents-rules.md`, "When to claim":
+**Who runs stages 5–7** — the agent that claims `<topic folder>/.stage` by `references/agents-rules.md`, "When to claim":
 
-- code 3 — `wait` for it by "Waiting" and claim it again;
-- claimed, but "Next step" in `state.md` already says "user's choice after the report" — `release` it, then the short report by `references/report.md`, its first line beginning with `⏸` and naming the agent that gave the final report; then stop: the work has been reported;
-- claimed while `agents.sh busy --topic <topic>` shows another agent's live claim — `agents.sh release --all`, then the short report by `references/report.md`, its first line beginning with `⏸` and naming that agent for the final report; then stop;
-- claimed with no other live claim — stages 5–7 below, then the final report; `.stage` is released right before the final report is shown: a late agent is turned away by the bullet on "user's choice after the report".
+- code 3 — `wait` by "Waiting", claim again;
+- claimed, "Next step" in `state.md` is "user's choice after the report" — `release`, the short report of `references/report.md`, stop;
+- claimed, another live claim in `agents.sh busy --topic <topic>` — `agents.sh release --all`, a short report naming that agent, stop;
+- claimed, no other live claim — stages 5–7 and the final report; release `.stage` just before it.
 
-Record the start and the end of this stage and of the two next ones in "Progress log": "stage 5 started", "stage 5 finished". Stage 7 ends with the record "stage 7 finished"; where agents are marked, "stage 7 finished [<name>]". Write it in this form, not as free text.
+Record "stage 5 started", "stage 5 finished" and so on for stages 5–7 ("stage 7 finished [<name>]" where agents are marked); `stage 7 finished` is the batch's last line. In this form, not as free text.
 
-**First — all the checks anew.** Run the checks of all the "done" slices and the lines with a command of the "awaiting manual check" slices, each different command once: a late slice could have broken an early one, and stages 5–7 judge their own edits by a green check. A red one while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`, not an attempt; otherwise — an attempt to fix by step 6 of section 3 for the slice whose files the failure belongs to; still red after two attempts — "Decisions and bypass" of `references/slices.md`. A `not checked` slice is treated as one with only a manual check.
+**First — all the checks anew.** Run the checks of all "done" slices and the command lines of "awaiting manual check" ones, each distinct command once. Red — steps 5 and 6 of section 3 of `references/slices.md` for its slice; red after two — "Decisions and bypass" there. `not checked` counts as manual-check only.
 
-**Bypassed and dependent slices.** Add to the message of every reviewer of stages 5 and 7, next to the values in brackets, one sentence: `Bypassed, not to be reported as missing or wrong: S<N> — <files>` — the bypassed and the dependent slices. Drop a finding about such a slice or about the half-made edits of a bypassed one: start no executor for it, do not fix it, do not restore its files. Name what was dropped in "Deviations from the plan" of the report.
+**Only when the work changed code.** Code: scripts, programs, source files; not texts, documents, cards, settings. No code changed — after the checks skip stages 5–7 and the subagent; write `stages 5–7 skipped: no code`, then `stage 7 finished`.
 
-Read `references/conformance.md`. The conformance check and the simplification tasks are read by one reviewer that has not seen the conversation: the slices added new code — pass it both tasks from `references/simplify.md` word for word in the same message; there is no new code — only the conformance check task. The reviewers of this stage and of the review are passed the path to the topic folder: they read the plan cards themselves.
+**Bypassed and dependent slices.** Add to the stage 5–7 and review round 2 messages: `Bypassed, not to be reported as missing or wrong: S<N> — <files>`. Drop findings on them or a bypassed one's half-made edits, no fix or restore; name them in "Deviations from the plan".
 
-First check every finding against the code yourself: the reviewer makes mistakes too, and a slice recognized as done even before the edits is legitimately untouched. Before the edits take the checkpoint `stage-5` by `references/snapshot.md`; every edit is written under a claim of its files by `references/agents-rules.md`. The order of the edits matters: a red check caused by something left unfinished would cancel the removal of what is superfluous.
+**One fresh read-only subagent** that has not seen the conversation gets in one message the tasks of `references/conformance.md` and `references/review.md`, and the header and both tasks of `references/simplify.md`; description `Conformance, simplify and review of <topic>`. Add: each task's rules hold only inside it; one list, findings tagged `missing`, `beyond the plan`, `wrong` (stage 5), `reuse`, `redundant` (stage 6) or `error` (stage 7); read the changes and what they refer to, no wider (duplicate and redundancy tasks search the whole project).
 
-1. **"missing" and "wrong"** — an attempt to fix for the owning slice, as in step 6 of section 3: the executor gets the packet file of the slice; the text of the finding and the list of what has already been tried go into the message itself. After the attempt check the finding against the code yourself. It is not closed in two attempts — it goes into the report as unclosed; the edits of the attempts stay as long as the check of the slice is green. There is no stop here.
-2. **"beyond the plan"** — bring back to the state before the start only what is superfluous: a superfluous file as a whole, a superfluous piece with an edit. Run the checks of the affected slices.
-   - They passed — it is removed, a line goes into the report.
-   - They did not pass — so something needs it: restore it from `stage-5` and name it in the report.
-   - An affected slice has only a manual check or is `not checked` — do not remove it, name it in the report.
+Check each finding in the code yourself; a slice done before the edits is rightly untouched. Checkpoint `stage-5` by `references/snapshot.md`; each edit under a claim of its files by `references/agents-rules.md`. In order:
 
-A file outside all the lists affects all the slices with the status "done" and "awaiting manual check". There is no copy of such a file in `base/` — deal with it by the table "What to do with a found file outside the plan" from `references/snapshot.md`.
+1. **"missing" and "wrong"** — an attempt for the owning slice by step 6 of section 3, by its build path; an executor gets the finding text, not the failed output. Recheck in the code. Not closed in two — report it unclosed; edits stay while the slice check is green. No stop.
+2. **"beyond the plan"** — revert only the superfluous file or piece; run the affected slices' checks.
+   - Passed — removed, a report line.
+   - Failed — restore from `stage-5`, report it.
+   - An affected slice manual-check only or `not checked` — keep it, report it.
 
-Carry the list of what the reviewer could not check over into the report as it is.
+A file outside all lists affects every "done" and "awaiting manual check" slice; no copy in `base/` — the table "What to do with a found file outside the plan" from `references/snapshot.md`.
 
-Check the READ line of every reviewer against the list of changed and new files: in the report, in "Not read by the reviewers", name a file that is not in that line, together with who did not read it — the conformance check or the review. For the second round of the review check the line only against the fixed files: by its task it does not read the others.
+What the reviewer could not check goes to the report as is.
+
+Check the READ line against the changed and new files: a missing one goes into "Not read by the reviewers" with who skipped it — the stage 5–7 pass or review round 2 (checked only against the fixed files).
 
 ## 6. Simplification
 
-The stage is needed only if the slices added new code: a function, a class, a script, a new file with code. The work changed texts, settings or separate lines of existing code — the stage is skipped: write "stage 6 skipped: no new code" into "Progress log" and name this in the report, in "Simplified".
+Findings: `reuse` and `redundant` of the stage 5 pass. No own subagent, no efficiency or style. A finding on a place the conformance edits changed — recheck in the code.
 
-The tasks of the stage lie in `references/simplify.md`. The stage has no reviewers of its own: both tasks were read by the reviewer of the conformance check. This stage does not check efficiency and style. Its findings wait for the end of the edits of the conformance check: check a finding about a place that the conformance check changed or removed against the present code.
+Findings lost (interrupted after stage 5) — before editing give one fresh subagent the header and both tasks of `references/simplify.md` and the task of `references/review.md`, same description; its READ line is not checked against the full list.
 
-If the simplification findings are not in the context — the session was interrupted after stage 5 — give both tasks from `references/simplify.md` to a reviewer anew before you edit. Do not check the READ line of this run against the full list: it reads only the new code.
+Checkpoint `stage-6`; a red batch check while another agent has a live claim — rerun by step 5 of section 3 of `references/slices.md`, no restore. Edit within "What not to touch" of `references/simplify.md`.
 
-Before the edits take the checkpoint `stage-6`; a red check of a batch while another agent holds a live claim — a rerun by step 5 of section 3 of `references/slices.md`, not a restore. You do the editing, not the reviewers, and only by the "What not to touch" section from the same file.
+**Batches.** Findings of slices sharing files, also by a chain, form one batch; then its slices' checks. Red — restore the batch files from `stage-6`, report the findings as untouched. A batch slice manual-check only or `not checked` — apply nothing, report the findings.
 
-**Batches.** The findings of slices with shared files are one batch: slices that edit one and the same file are joined, including through a chain. After a batch run the checks of its slices. A red one — restore the files of the batch from `stage-6`, the findings go into the report as untouched. A slice of the batch has only a manual check or is `not checked` — do not apply the edits at all: there is nothing to check them with, the findings go into the report.
-
-A finding that you judged false or that "What not to touch" forbids — skip it without a question to the user and count it in the report.
+Skip, without asking, a false finding or one "What not to touch" forbids; count them in the report.
 
 ## 7. Review
 
-Read `references/review.md`: the task for a subagent that has not seen the conversation, the screening of the findings and the second round. Before the edits take the checkpoint `stage-7`; the edits go in batches and a red check is treated as in section 6.
-
-The review is read by a second reviewer — after the edits of the conformance check and the simplification.
+Reread `references/review.md` if out of context: screening, "Second round" (a new subagent, only after a fixed serious finding). Findings: `error` of the same stage 5 pass, made before the stage 5 and 6 edits — recheck one on a changed place. Checkpoint `stage-7`; batches and a red check as in section 6.

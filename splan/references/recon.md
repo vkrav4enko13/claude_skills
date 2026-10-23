@@ -1,34 +1,32 @@
 # Choose the size and name it aloud. Recon
 
-Read at step 2 — after the entry, before the recon — and at step 3, when the size is named.
+Read at steps 2 and 3.
 
 ## 2. Choose the size and name it aloud
 
-Before the recon say which size is chosen and why, and go on: this is not a stop, do not wait for an answer. The user can correct the size at any moment.
+Name the size and why, then go on: not a stop. The user may correct it any time.
 
 | Size | When | Result |
 |---|---|---|
-| **Direct** | The change can be named, made and checked in one pass; there are no decisions that the user would weigh | Two or three sentences in the chat: what we change, where, how we will check |
-| **Short** | One to three slices, at most one decision to weigh, no danger zone | A plan in the chat: the goal, the slices (what will start working, the files, the check), what we do not do |
-| **Cards** | Everything else; always — if there is a topic folder, if the user asked for a plan in cards or if a danger zone is touched: login and permissions, money, data migration, external agreements | A plan in cards in the topic folder — by `references/plan-format.md` |
+| **Direct** | Named, made and checked in one pass; nothing for the user to weigh | Two or three sentences in the chat: what, where, how checked |
+| **Short** | One to three slices, at most one decision to weigh, no danger zone | A plan in the chat: goal, slices (what starts working, files, check), what we do not do |
+| **Cards** | Everything else; always with a topic folder, on request, or in a danger zone: login and permissions, money, data migration, external agreements | A plan in cards in the topic folder — by `references/plan-format.md` |
 
-If you hesitate between two — take the heavier one. If the recon uncovered complexity, stop, say so and move to a heavier size; making it lighter on the way is not allowed.
+In doubt take the heavier. Recon shows complexity — stop, say so, go heavier; never lighter.
 
-The size is "Cards" but there is no topic folder — `splan` sets it up itself when it writes the plan: `00-index.md` and `state.md` — and opens the chain's journal line with the tail `plan written`. How — in `references/plan-format.md`.
+"Cards" without a topic folder — `splan` sets it up when writing (`references/plan-format.md`) and opens the chain's journal line with the tail `plan written`. Wiki not kept — `references/wiki-rules.md`, section "The wiki is not kept".
 
-The wiki is not kept in the project — keep the topic folder and the records by `references/wiki-rules.md`, section "The wiki is not kept".
-
-For a direct and a short one do the recon yourself, by reading the named places. Step 6 is not needed for them, of step 8 — only the self-check, without a separate agent; step 9 is mandatory. No topic folder is set up for them, and `splan` writes nothing to the wiki: the result stays in the chat, the journal line is written by whoever makes the edit.
+Direct and short: recon yourself by reading the named places; no step 6; step 8 is the self-check only; step 9 is mandatory. No topic folder, no wiki writes: the result stays in the chat; whoever makes the edit writes the journal line.
 
 ## 3. Recon
 
-First the code, then the questions.
+First the code, then the questions. First run `bash <skill folder>/scripts/codemap.sh <project root>` for a map of the code; it does not replace the search.
 
-- **What to look for:** the places the work will touch; how similar things are already done in the project — follow that; the build, launch and check commands; the project instructions and the glossary of terms; what will break nearby.
-- **You look for the facts, the user makes the decisions.** Do not ask what can be found in the repository, in the tools or on the web.
-- **For a plan in cards** hand the recon to subagents if they are available and the affected places are not known in advance: at most three per plan, to each — one question and a request to return a conclusion with paths and lines, not a dump of files. Start them in one message. Pass on what is decided as a fact, without arguments in its favour, and add: "if you find that this cannot work — report it". Read the places named in the requirements or in the task yourself.
-- **Check before you assert.** Any "the project does not have this" and any path or name in the plan is either checked against the code or called an unverified guess.
-- **Check the user's correction about the code against the code**, do not take it on trust; name the discrepancy.
-- **Ready-made code.** For the places the work will touch, find ready-made code in the project that can be taken instead of new code: a function, a class or a script. Write down the name, the signature and the file.
+- **What to look for:** the touched places; how the project does similar things — follow it; build, launch and check commands; project instructions and glossary; what breaks nearby.
+- **You look for the facts, the user makes the decisions.** Never ask what the repository, tools or web answer.
+- **For a plan in cards** with unknown affected places, use subagents if available: at most three, one question each, in one message, asking for a conclusion with paths and lines, not a file dump. Pass decisions as facts without arguments, plus "if you find that this cannot work — report it". Read places named in the requirements or task yourself.
+- **Check before you assert.** Every "the project does not have this", path and name is checked against the code or marked an unverified guess.
+- **Check the user's correction about the code against the code**; name the discrepancy.
+- **Ready-made code.** For the touched places find a function, class or script to take instead of new code; note name, signature, file.
 
-Questions to the user — only about what neither the code nor the requirements answer, and only blocking ones: without an answer it is impossible to choose the slicing or a technical decision that is expensive to undo. Ask them through the blocking question tool, with a recommendation for each. Decide the rest yourself and show it in the plan as a decision made.
+Ask the user only blocking questions that neither code nor requirements answer — without them the slicing or an expensive-to-undo decision cannot be chosen — via the blocking question tool, each with a recommendation. Decide the rest; show it in the plan as decided.

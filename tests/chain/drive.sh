@@ -8,11 +8,12 @@
 #   bash tests/chain/drive.sh <project> trap-plan|trap-work <stage folder> <level> <topic>
 #
 # The level is the effort of the session: low medium high xhigh max, without
-# it — medium. Stages: brain, plan, work, seed, away, pair, pair-multi, survey, grill, trap-plan, trap-work. The first turn starts the skill. While
+# it — medium. Stages: brain, plan, work, seed, away, small, pair, pair-multi, survey, grill, trap-plan, trap-work. The first turn starts the skill. While
 # the topic phase in state.md is not the one the stage is passed with — one more
 # turn with the stage answer into the same session, at most six answers. The
 # stage away is exactly one turn and no answer: saway reads any answer as the
-# user's return. Its project is seeded by seed-away.sh. The stage pair starts
+# user's return. Its project is seeded by seed-away.sh. The stage small is
+# one turn of saway like away, on the topic count-q seeded by seed-small.sh. The stage pair starts
 # swork on the topic of the fifth argument and, like away, has exactly one turn: two
 # of them run at once in one project seeded by seed-pair.sh. The stage pair-multi is the
 # same, but its first message also asks to work as several agents, and collect.sh
@@ -85,6 +86,11 @@ $(cat "$here/../trial-summary.md")"
     away)
         topic=longest
         first='/saway longest — я ушёл, доделай без меня: решай сам и не жди моих ответов'
+        answer=''
+        ;;
+    small)
+        topic=count-q
+        first='/saway count-q — я ушёл, доделай без меня: решай сам и не жди моих ответов'
         answer=''
         ;;
     pair)
@@ -213,7 +219,7 @@ if [ "$stage" = survey ] || [ "$stage" = grill ]; then
     echo "$ended" > "$dir/ended.txt"
 elif [ $first_failed -eq 1 ]; then
     exit 1
-elif [ "$stage" != away ] && [ "$stage" != pair ] && [ "$stage" != pair-multi ]; then
+elif [ "$stage" != away ] && [ "$stage" != small ] && [ "$stage" != pair ] && [ "$stage" != pair-multi ]; then
     while ! passed && [ $answers -lt 6 ]; do
         answers=$((answers + 1))
         turn "$answer" --resume "$(jq -r .session_id "$out")"

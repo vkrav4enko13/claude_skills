@@ -1,81 +1,73 @@
 # Snapshot: what changed and how to restore it
 
-Read once per run, at step 2; reread it only if the text of the file is no longer in the context.
-
-`swork` does not rely on git, even when it is there: the working tree may hold the user's uncommitted edits, and git will not tell them apart from the executor's edits. The mechanism is the same for all projects; git, if it is there, only helps.
+Read at step 2. Do not rely on git even when it is there.
 
 ## What lies where
 
-**The snapshot folder.** For a plan in the topic folder — `.swork/` in that folder: `<wiki folder>/work/<topic>/.swork/`. The wiki rules and the check script do not see folders with a dot at the start of the name, so the snapshot does not get in their way. For a plan from the chat and a task without a plan — `.swork-<id>/` in the project root, `<id>` — the first field of `agents.sh id`. The snapshot survives an interrupted session and is deleted when the user has chosen "accept the work"; the snapshot of a topic — only when `agents.sh busy --topic <topic>` finds no live claim.
+**The snapshot folder.** A topic plan — `<wiki folder>/work/<topic>/.swork/`. A plan from the chat or no plan — `.swork-<id>/` in the project root, `<id>` the first field of `agents.sh id`. Deleted on "accept the work"; a topic one only when `agents.sh busy --topic <topic>` finds no live claim.
 
 | Path in the snapshot | What it is |
 |---|---|
 | `base/<path from the project root>` | A copy of the file before the first edit |
-| `new-files.txt` | The files created in this work: a path from the root per line, without repeats |
-| `known.txt` | The files outside the plan that are left as they are — foreign edits and files there is nothing to restore with: a path from the root per line |
-| `created.txt` | The functions created by the slices: `S<N>: name(signature) — file` per line; written by the main session after every run of the executor |
-| `checks/` | The full output of every run of a check: `S2-1.txt`, `S2-2.txt` — the slice and the number of the run |
-| `dirty-at-start.txt` | Only under git: the output of `git status --porcelain` at the start |
-| `removed/<path>` | Only under git: the files outside the plan that were removed from the project, and the changed versions of the restored ones |
-| `notes/<name>.md` | A copy of a wiki note that existed before the work and that the work extended; it is not part of "the changes" |
-| `stage-5/`, `stage-6/`, `stage-7/` | The checkpoints: the state before the conformance check, the simplification, the review |
+| `new-files.txt` | Files created in this work: a root path per line, no repeats |
+| `known.txt` | Files outside the plan left as they are: a path per line |
+| `created.txt` | The functions created by the slices: `S<N>: name(signature) — file` per line |
+| `checks/` | Full output of every check run: `S2-1.txt` — slice and run number |
+| `dirty-at-start.txt` | Only under git: `git status --porcelain` at the start |
+| `removed/<path>` | Only under git: removed files outside the plan and changed versions of restored ones |
+| `notes/<name>.md` | A copy of a pre-existing wiki note the work extended; not part of "the changes" |
+| `stage-5/`, `stage-6/`, `stage-7/` | Checkpoints: the state before stages 5, 6, 7 |
 
-**The time marker** is an empty file `<snapshot>/agents/<id>/marker`, one per agent: its time must be set by the same file system that sets the time of the edits. A new agent calls `agents.sh id` and creates its marker when it joins. A continuing agent copies the oldest `<snapshot>/agents/*/marker` with `cp -p` as its own, instead of creating one — the oldest, so that no edit since the start of the work is missed; a legacy `.swork-marker` in the project root counts as such a marker. The project lies on another machine — both the marker and the search are done on that machine. When the work is continued no marker is moved.
+**The time marker** is an empty file `<snapshot>/agents/<id>/marker`, one per agent, timed by the file system of the edits. A new agent creates it on joining; a continuing one copies the oldest `<snapshot>/agents/*/marker` with `cp -p` as its own (a legacy root `.swork-marker` counts), moving none. A project on another machine — marker and search there.
 
-**The changes** are the comparison of `base/` with the current files plus the list `new-files.txt`. All the reviewers get this set.
+**The changes** — `base/` against the current files, plus `new-files.txt`; all reviewers get this set.
 
 ## Rules
 
-- **A copy is taken before the slice** — for every file named in the slice as "change". A "create" file is written into `new-files.txt`.
-- **An existing copy is not overwritten.** A second slice edits the same file or the work is being continued — `base/` already holds the original; a new copy would replace it with the changed file.
-- **A file listed in `new-files.txt` is not copied into `base/`:** it did not exist before the work started.
-- **Rollback** — put the copy back in place, delete a file listed in `new-files.txt`.
-- **A slice with a "Rollback" section is not rolled back with copies:** the database, the permissions and the schema are restored only by its own section.
+- **A copy is taken before the slice** — of every "change" file of the slice; a "create" file goes into `new-files.txt`.
+- **An existing copy is not overwritten.**
+- **A file listed in `new-files.txt` is not copied into `base/`.**
+- **Rollback** — put the copy back, delete a file listed in `new-files.txt`.
+- **A slice with a "Rollback" section is not rolled back with copies:** only by its own section.
 
 ## Checkpoints
 
-Before the conformance check, the simplification and the review copy the current state of all the changed and new files into the checkpoint folder. A failed edit of a stage is rolled back to the checkpoint, not to `base/`: otherwise a rollback of the simplification would wipe out the slice itself. A file created at a stage is deleted when a batch is rolled back.
-
-An existing checkpoint is not overwritten: when the work is continued it holds the state before the stage, while the project holds edits that are already half applied.
+Before each of stages 5, 6, 7 copy all changed and new files into its checkpoint folder; never over an existing one. A failed stage edit rolls back to the checkpoint, not to `base/`; a file created at the stage is deleted with its batch.
 
 ## Unreported edits
 
-After every run of the executor find the files newer than this agent's marker and subtract:
+After every slice build find files newer than this agent's marker and subtract:
 
-- the snapshot folder, `.agents/` and every `.swork-*/` of the project root and the wiki folder as a whole — always: you write the statuses, the check results and the notes into the wiki after the marker is already set;
+- the snapshot folder, `.agents/`, every `.swork-*/` of the project root and the whole wiki folder — always;
 - what other agents hold or logged — the output of `agents.sh others --since <own marker>`;
-- the files from the "Files" blocks of the current slice, of the slices that have already been executed and of the slices `done` or held in this topic;
+- the "Files" of the current, the executed and the `done` or held slices of this topic — a future slice's file changed early is outside the plan too;
 - the exclusions;
 - the files from `known.txt`.
-
-A file of a future slice that was changed ahead of time is the same kind of edit outside the plan: otherwise an already changed copy would go into `base/` before its slice, and a rollback would restore something other than the original.
 
 **The exclusions** are what the build and the run create.
 
 - Under git — the files for which `git check-ignore` answers with code 0.
-- Without git collect the list during the preparation from three sources: the project's ignore files (`.gitignore`, `.ignore` and the like); the output paths in the check commands of the slices; the standard list — `build/`, `out/`, `bin/`, `obj/`, `node_modules/`, `__pycache__/`, `*.o`, `*.obj`, `*.pdb`, `*.log`, `*.tmp`.
+- Without git collect it at preparation from: the project's ignore files (`.gitignore`, `.ignore` and the like); the output paths in the slices' check commands; the standard list — `build/`, `out/`, `bin/`, `obj/`, `node_modules/`, `__pycache__/`, `*.o`, `*.obj`, `*.pdb`, `*.log`, `*.tmp`.
 
-Write the list of exclusions into "Progress log" before the first slice. Without git it is an estimate: too wide a list will hide a real edit, too narrow a list will give needless entries in `known.txt`.
-
-**What the search does not see:** the deletion of a file and a move that keeps the time. Under git a deletion is shown by `git status`, without git — by nothing.
+**What the search does not see:** a deletion (under git `git status` shows it) and a move that keeps the time.
 
 **What to do with a found file outside the plan**
 
 | Case | Action |
 |---|---|
-| `agents.sh busy` finds another live agent | Into `known.txt` and a `⚠` line: never restore it — no agent logged it, and without a log it cannot be told whose it is |
-| Under git, the file is tracked and clean at the start (it is not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, then `git checkout -- <file>` and set the time of the file back to the time of this agent's marker, otherwise it will be found again; a line into the report |
-| Under git, the file is new and untracked, it is not in `dirty-at-start.txt` | Move it into the snapshot's `removed/` — do not delete it; a line into the report |
-| Under git, the file is in `dirty-at-start.txt` | Into `known.txt` and a `⚠` line by section 4 of `SKILL.md`: it holds the user's edits, there is nothing to restore it with |
+| `agents.sh busy` finds another live agent | Into `known.txt` and a `⚠` line: never restore it |
+| Under git, tracked and clean at the start (not in `dirty-at-start.txt`) | Copy the changed file into `removed/`, `git checkout -- <file>`, set its time to this agent's marker; a report line |
+| Under git, new and untracked, not in `dirty-at-start.txt` | Move it into the snapshot's `removed/`, never delete it; a report line |
+| Under git, in `dirty-at-start.txt` | Into `known.txt` and a `⚠` line by section 4 of `SKILL.md` |
 | Without git | Into `known.txt` and a `⚠` line: do not try to restore it |
 
-Write the path into `known.txt` at once, or the file will be found again after every following slice.
+Write the path into `known.txt` at once.
 
-After the restoring or the move run the checks of the current slice, of all the slices with the status "done" and the commands of the slices with the status "awaiting manual check": a file outside the lists could have been needed by any of them. A check turned red — then the slice must need a file that is not in the plan: put the file from `removed/` back in place and add it to the "Files" block of the slice with a card edit by "Decisions and bypass" of `references/slices.md`.
+After a restore or a move rerun the checks of the current and all "done" slices and the commands of "awaiting manual check" ones. One red — that slice needs the file: put it back from `removed/` and add it to the slice's "Files" with a card edit by "Decisions and bypass" of `references/slices.md`.
 
 ## Commands: bash
 
-`ROOT` is the project root, `SNAP` — the snapshot folder, `AGENTS` — the path of `agents.sh`, `M` — this agent's marker, `TOPIC` — the name of the topic folder, `WIKI` — the full path of the wiki folder, `F` — the path of a file from the root, `STAGE` — `stage-5`, `stage-6` or `stage-7`, `CMD` — the check command, `N` — the name of the output file (`S2-1`).
+`ROOT` — project root, `SNAP` — snapshot folder, `AGENTS` — path of `agents.sh`, `M` — this agent's marker, `TOPIC` — topic folder name, `WIKI` — wiki folder's full path, `F` — file path from the root, `STAGE` — `stage-5`, `stage-6` or `stage-7`, `CMD` — check command, `N` — output file name (`S2-1`).
 
 ```bash
 # whether the project is under git; the list at the start
@@ -130,4 +122,4 @@ bash "$AGENTS" busy --topic "$TOPIC"; [ $? -eq 1 ] && rm -rf "$SNAP" "$ROOT/.swo
 rm -rf "$SNAP"
 ```
 
-The PowerShell 5.1 commands are in `references/snapshot-powershell.md`: read it only on Windows.
+PowerShell 5.1 commands: `references/snapshot-powershell.md`; read it only on Windows.
