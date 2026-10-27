@@ -4,7 +4,7 @@ Read at steps 4 and 5.
 
 ## 4. Check lines
 
-A plan in cards: before slicing set up **check lines**, at least one per requirement; a line may name several requirements that one command checks. A line: the requirement, the scenario "condition → what should come out", and a command with the expected result or `checked manually: <steps>`.
+A plan in cards: before slicing split the work into **logical blocks** — one feature or part of the plan whose slices are built and checked together — and set up **check lines per logical block**, not per slice: 1–3 for a block (its main case, an error or an edge input) that together name each requirement of the block; a line may name several requirements that one command checks. A line: the requirement, the scenario "condition → what should come out", and a command with the expected result or `checked manually: <steps>`.
 
 Direct and short: no lines; decide before slicing where and with what behaviour is checked. Below holds for any size.
 
@@ -13,13 +13,13 @@ Direct and short: no lines; decide before slicing where and with what behaviour 
 - At least one check is end-to-end: the goal as a whole, by the path a person or calling code uses, owned by the slice that reaches it. The goal: the goal phrase of the chain's journal line `state.md` points to; wiki not kept — "In brief" of `task.md`; no topic — the user's words. Manual only if the user chose to accept by eye.
 - The project has no tests — do not invent them: a command with the expected result or a manual scenario is the check.
 - "A failing test first" stays out of the plan.
-- **Check focus — at this same step.** Write out up to five failures or kinds of input the requirements imply and no line catches; a check line for each. The count named at step 6 is final: a line is added later only if review finds a requirement without one — name it when showing the plan.
+- **Check focus — at this same step.** Write out up to five failures or kinds of input the requirements imply and no line catches; a check line for each. The count shown at step 9 is final: a line is added later only if review finds a requirement without one — name it when showing the plan.
 
 ## 5. Slicing
 
 A **slice** is a finished piece of behaviour checkable on its own.
 
-- **From check lines.** In cards a slice groups check lines: every line in exactly one slice, no slice without lines.
+- **From blocks.** A logical block is cut into slices; each check line names in "Slice" the slice after which it passes, as a rule the block's last; every slice of the block names the block's lines in "Checks", so no slice needs lines of its own.
 - **All the way through, not in layers.** "Whole schema, then whole server, then whole interface" are not slices.
 - **The first slice is the narrowest path from start to finish.** The others widen it.
 - **Preparation first.** A simplifying rebuild is its own earlier slice, marked `no behavior change`.

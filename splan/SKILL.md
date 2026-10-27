@@ -15,7 +15,7 @@ Talk to the user in their language everywhere — messages, menus, reports, the 
 
 **Every stop says what is needed from the user.** A consent menu names what is approved, each option says what follows it, and it always has "Fix" and "Do nothing" (nothing changed, nothing recorded). A stop needing nothing says so in its last line.
 
-**Subagents run at `medium`.** Via the launch tool's effort parameter; without one, at the session level.
+**Subagents run at `medium`; few** — one for the recon of unknown places (`references/recon.md`), a fresh plan reviewer only on the user's word. Via the launch tool's effort parameter; without one, at the session level.
 
 ## Ban on implementation
 
@@ -38,7 +38,7 @@ On a topic (named, or its wiki folder given; wiki location — `references/wiki-
 | requirements confirmed | plan |
 | plan written | next step in `state.md` is plan review: step 8; else step 9: show the plan, wait for a "yes" |
 | plan confirmed | ask: do we continue from it or write anew |
-| execution in progress | read "Progress log" (`progress.md` and parts), check the plan against the code, name what is done and outdated, ask: do we continue from it or write anew |
+| execution in progress | read "Progress log" (`progress.md` and parts), name what is done, ask: do we continue from it or write anew |
 | done | ask: a new topic or a continuation of this one |
 
 On stop or ask, name the phase and wait; no recon.
@@ -48,12 +48,10 @@ On stop or ask, name the phase and wait; no recon.
 - **It is unclear what to build** — no survey: name what is missing, offer `sbrain`.
 - **You were given a requirements file of the earlier form, as a single file** — call it the earlier format, offer `sbrain` to move it into cards; never plan from it.
 - **The requirements have questions marked as blocking the plan** — stop and name them. The user may lift a block; write each lifted one into "Assumptions" of the plan header.
-- **The topic already has a plan** — on "continue", check it against the code from "Checked against code" and name what is outdated: no new slices on unverified claims. Edit cards in place, never change slice numbers, rebuild `plan-overview.md` from them.
+- **The topic already has a plan** — on "continue", check only what changed since "Checked against code" (under git `git diff --stat <commit>`) and name what is outdated: no new slices on unverified claims. Edit cards in place, never change slice numbers, update the table of contents `plan-overview.md`.
 - **The topic has a plan of the earlier form, as a single file** — call it the earlier format, ask: continue or write anew. "Continue" = move it into cards by `references/plan-format.md`; never work from the file.
 
 ## Rules for all stages
-
-**Several agents.** Asked for several agents — switch on by `references/agents-rules.md`, "Switch", before the first write.
 
 **Before a stop — first `state.md`.** With a topic folder, before any stop (waiting, blocker, session end) write the phase and the next step — one action to start from — into `state.md`.
 
@@ -65,14 +63,14 @@ On stop or ask, name the phase and wait; no recon.
 | 3. Recon | `references/recon.md` | yes |
 | 4. Check lines | `references/slicing.md` | yes |
 | 5. Slicing | `references/slicing.md` | yes |
-| 6. Stop before writing | `references/approval.md` | yes |
+| 6. Questions before writing | `references/approval.md` | yes |
 | 7. Writing the plan | `references/approval.md` | yes |
-| 8. Review | `references/approval.md` | yes |
+| 8. Self-check | `references/approval.md` | yes |
 | 9. Showing and the next step | `references/approval.md` | yes |
 
 Small work reads only the files marked `lite`.
 
-Read the stage file in full on reaching the stage, never in advance or from memory; reread it if it is out of context; read any section or step it cites, on small work too.
+Read the stage file in full on reaching the stage, once; reread it only if out of context; a card or section already read this session is not read again.
 
 ## Traps
 
@@ -80,7 +78,7 @@ Read the stage file in full on reaching the stage, never in advance or from memo
 |---|---|
 | "The task is obvious, I will do it right away" | `splan` does not execute; a direct result is two sentences and a proposed step |
 | "The requirement is inconvenient, I will fix it in the plan" | Name the discrepancy; the requirements card is edited with consent |
-| "I reread it myself, no agent is needed" | Mandatory for a large plan in cards; small — self-check and `no fresh reviewer: small plan` |
+| "A fresh reviewer, to be safe" | Only on the user's word; the self-check always |
 | "It is unclear what they want — I will ask a couple of questions" | What to build is found out by `sbrain`; offer it |
 | "First the database, then the server, then the screen" | Layers are not slices; a slice goes all the way through |
 | "First I will slice, I will add the checks later" | Check lines first, then the slicing |

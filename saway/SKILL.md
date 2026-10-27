@@ -16,8 +16,7 @@ Every chat message (from the first reply, notes included), menu, report, plan fo
 - **Do not ask the user questions.** No blocking question tool, no turn ending with a question.
 - **`saway` is stronger than the "wait for an answer" rules.** A stage skill says ask, show a menu, wait for a "yes", do not go on without a choice, or start the next skill in a new session — decide by section 3 and start the next stage. Of the general instructions only the form of confirmation gives way; "only with the user's consent" stays a prohibition. The other rules of the three skills apply as written.
 - **The mode ends with the user's return.** A return is the user's own message — not their remark right after switching the mode on, a `/goal` turn, an idle check or a background result. Then show the section 5 description with its return line, say to type `/goal clear` if the goal is set, and ask as usual.
-- **A busy file is waited for** by "Waiting" of the stage skill's `references/agents-rules.md`: not bypassed, not asked about.
-- **Before starting each skill of the chain and before writing the full description, reread this file.**
+- **Read this file once at the start and once before writing the full description.**
 - **Every chat message ends with a progress line**, in the user's language: `Progress: slices <done>/<total> · now: <what runs> · ahead: <stages left>` (`<done>` — slices `done`, `<total>` — all); before a plan `Progress: no plan yet · now: … · ahead: …`. In the full description: right before the last line.
 
 ## What not to do without the user
@@ -58,23 +57,15 @@ Take the stage from `state.md` (phase, next step); without records, where the co
 | `swork` report shown: step "user's choice after the report" | section 5 with the line `saway: work finished` |
 | done | section 5 with the line `saway: work finished` |
 
-The "Small" path of `swork`, a plan from the chat, no topic folder, or at most five requirements and a plan that is not large (large: over three slices, or a slice over one file or about 20 changed lines; without a plan the requirement count decides) — small work runs in this session. Otherwise each stage runs in a fresh subagent, effort `medium` (the launch tool's parameter), description `Stage <skill> of <topic>`:
+The "Small" path of `swork`, a plan from the chat, no topic folder, or at most five requirements and a plan that is not large (large: over three slices, or a slice over one file or about 20 changed lines; without a plan the requirement count decides) — small work runs in this session. Otherwise `sbrain` and `splan` each run in one fresh subagent, effort `medium` (the launch tool's parameter), description `Stage <skill> of <topic>`, the task below; `swork` runs in this session, no stage subagent in between: its larger code goes to one long-lived executor per part (effort `medium`, the next slice by a message), and only the mandatory records are written.
 
 ```
-Project root: <path>. Topic: <topic>.
-Read in full <path to the SKILL.md of the stage's skill> and <path to saway/SKILL.md>; do only the stage of <skill>. The user is away: decide by "What changes while the user is away", "What not to do without the user", 3 and 4 of saway/SKILL.md.
-As the stage's main session, write the topic cards and the wiki as the skill tells and launch its subagents; they do not write.
-The user's words on the stage: <quoted word for word>.
-Start no other skill.
-Reply in English, exactly in this form:
-PHASE: <phase and next step of state.md>
-ENDED: <stage over | stopped — why>
-FOR THE USER: <what is not in the cards>
+Project root: <path>. Topic: <topic>. Run the stage of <skill> (<path to its SKILL.md>) as its main session; the user is away — decide by saway/SKILL.md sections 3 and 4. The user's words: <quoted>.
+Reply: PHASE: <state.md phase and next step> / ENDED: <over | stopped — why> / FOR THE USER: <what is not in the cards>
 ```
 
 Small work reads only the files marked `lite` — `saway` has no stage files: the stage skill's own `lite` column holds.
 
-**Several agents.** Asked for by the user — quote their words in every stage task; before the full description run `agents.sh off --if-last` of the stage skill and name the outcome in it.
 
 A progress message before each launch and after each reply. After each stage reread `state.md` and take the next row. Approve by choosing "Yes" in the skill's menu and note in `away.md` that it was without the user. An unapproved plan from the chat: reread it before `swork`, record that you approved it.
 
@@ -93,7 +84,7 @@ A progress message before each launch and after each reply. After each stage rer
 
 ## 4. Recording decisions
 
-Record every decision for the user at once.
+Record the decisions for the user in one batch per stage, before the next stage starts.
 
 - **For a topic** — `away.md` in the topic folder, by the wiki rules: `# Decided without the user in topic <topic>`, a hook, lines `- <question> — chosen: <what>; why: <argument>; otherwise: <what would change>`, and `## Waiting for the user` — not done, questions, doubts. Before editing a plan or a user-approved card (by `saway` or its stage) write `- <card>: <what> — was: <…>; became: <…>; why: <argument>; otherwise: <what would change>`; `swork`'s own slice-card edits by its section 4 stay in its "Progress log" and report. Link it in the topic index; when full, go on in `away-2.md`. `sbrain`'s "no topic folder — nothing in the wiki" does not apply.
 - **No topic yet** — `.saway.md` in the project root, same form; for a small change put its path into `known.txt` once the snapshot exists. When a topic folder appears, move the lines into its `away.md` and delete the file; with no topic ever, delete it after showing the description.
@@ -102,14 +93,10 @@ Record every decision for the user at once.
 
 The last message, for the returned user, when work ended, stopped or there is nothing to drive. Report not reached — first put what you wait for into "Next step" of `state.md`; never touch the phase.
 
-1. **Changed in your requirements** — every edit of a success criterion or requirement: was, became, why; omitted if none.
-2. **What was done** — by stage; for execution, checks with output, as in the `swork` report.
-3. **Where it stands** — the phase and the next step.
-4. **Decided without you** — every line of `away.md` in full.
-5. **Bypassed** — each item, its reason, the slices it held back.
-6. **Waiting for you** — not done, questions, doubts; after the `swork` report — the user's choice and all of "Found and left untouched". The `known.txt` files separately: unreviewed, a rollback will not restore them.
-7. **How to roll back** — what to restore and with what.
-8. **What to check and your choice** — what to look at first, then the four `swork` report options — "accept the work", "fix", "roll back everything", "do nothing" — each with its effect; the user answers, `swork` does it.
+1. **What was done** — by stage, short; for execution, the checks' results by slice (green / red / not checked with a reason), not their output; a changed requirement or criterion — was / became.
+2. **Decided without you** — the decisions that change what the user sees or must answer, one line each; the bypasses with the slices they held back; the rest by a link to `away.md`.
+3. **Waiting for you** — not done, questions, doubts, manual checks; the `known.txt` files apart (a rollback will not restore them).
+4. **Your choice** — what to look at first; the four `swork` report options — "accept the work", "fix", "roll back everything" (by git, new files deleted), "do nothing" — each with its effect.
 
 The last line, word for word, one of:
 
@@ -126,7 +113,7 @@ Claude Code's `/goal` starts the next turn until its condition is met. Leaving, 
 /goal work by the saway skill until it shows the full description with the last line "saway: work finished" or "saway: work stopped — waiting for the user"; or stop after 100 turns
 ```
 
-`/goal` does not cancel permission requests: use a mode that does not ask. Without `/goal`, drive the work in one turn and do not end it before the description. With a turn limit, name the turn number each turn; on the last, show the description with `saway: work stopped — waiting for the user`.
+`/goal` does not cancel permission requests: use a mode that does not ask. Without `/goal`, drive the work in one turn and do not end it before the description. With a turn limit, on the last turn show the description with `saway: work stopped — waiting for the user`.
 
 ## Traps
 

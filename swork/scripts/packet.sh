@@ -10,7 +10,10 @@
 # (codemap.sh; skipped when it fails or is empty), then a block per
 # created file: the first, this topic's, under === created earlier: <file>
 # (this topic) ===, the others under === created earlier: <file> ===.
-# "Out of scope" is skipped when the topic has no such section, a created
+# Technical decisions come from plan-decisions*.md or, without it, the
+# sections "Technical decisions" and "Check focus" of plan.md and its parts.
+# "Out of scope" comes from scope*.md or, without it, the section "Scope" of
+# requirements.md; it is skipped when there is none, a created
 # file — when it does not exist.
 # No card of that slice — "no slice S<N>" to stderr and code 1.
 # Wrong arguments or no topic folder — a message and code 2.
@@ -96,15 +99,24 @@ fi
 
 echo
 echo "=== technical decisions ==="
-if [ -n "$decisions" ]; then cat $decisions; fi
+if [ -n "$decisions" ]; then
+    cat $decisions
+elif [ -n "$plan" ]; then
+    section "Technical decisions" $plan
+    section "Check focus" $plan
+fi
 
+reqs=$(in_order "$T"/requirements.md "$T"/requirements-[0-9]*.md)
+out=""
 if [ -n "$scope" ]; then
     out=$(section "Out of scope" $scope)
-    if [ -n "$out" ]; then
-        echo
-        echo "=== out of scope ==="
-        printf '%s\n' "$out"
-    fi
+elif [ -n "$reqs" ]; then
+    out=$(section "Scope" $reqs)
+fi
+if [ -n "$out" ]; then
+    echo
+    echo "=== out of scope ==="
+    printf '%s\n' "$out"
 fi
 
 echo

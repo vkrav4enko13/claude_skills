@@ -20,7 +20,7 @@ The "Large" result is a topic folder `work/<topic>/` in the wiki, by default `do
 
 Every topic has six cards: `00-index.md`, `state.md`, `task.md`, `requirements.md`, `decisions.md`, `scope.md`. `examples.md`, `design.md`, `decision-<name>.md` — only when there is content.
 
-**A card** — title, hook, index line, splitting — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; written under a claim — `references/agents-rules.md`. Sections inside go under `## …`. Requirement groups may split into `requirements-<group>.md`, numbering continuous.
+**A card** — title, hook, index line, splitting — by `references/wiki-rules.md`, sections "Card and limits" and "Check". Sections inside go under `## …`. Requirement groups may split into `requirements-<group>.md`, numbering continuous.
 
 **Decisions.** A line of `decisions.md`: `- <what was chosen>, instead of <what> — <why>; <whose decision>; <status>`. Never omit "instead of" and "why": no alternative — `instead of nothing — the only option named`; no reason given — the one the choice follows from. Holds the summary's trade-offs and the assumptions the user agreed with. Whose: "user chose" (among the options or against the proposal) or "agreed" (you proposed with the price, they accepted); an unanswered proposal is an assumption for `scope.md`. Status: "in force", "superseded" or "withdrawn". A full card — `references/synthesis.md`, section "Glossary and decision records".
 

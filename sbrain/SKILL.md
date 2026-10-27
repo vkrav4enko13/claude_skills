@@ -15,7 +15,7 @@ Talk to the user in their language everywhere — chat, menus, reports, the plan
 
 **Every stop says what is needed from the user.** A consent menu names what is approved, each option what follows, and always has "Fix" and "Do nothing" (nothing changed or recorded). Nothing needed — say so in the last line.
 
-**Subagents run at `medium`.** Set effort `medium` with the launch tool's effort parameter; without one, at the session level.
+**Subagents run at `medium`; few and long-lived** — one per stage for research or review, one executor per block, the next task by a message, never one per question or slice. Set effort `medium` with the launch tool's effort parameter; without one, at the session level.
 
 ## Ban on implementation
 
@@ -46,8 +46,6 @@ On "Large", start a task list if the environment can: what already exists → su
 ## Rules for all stages
 
 `sbrain` writes to the wiki only after a confirmed summary. No topic folder — nothing in the wiki, not a card, not a line: survey answers stay in the chat.
-
-**Several agents.** The user asks to work with several agents — switch the mode on by `references/agents-rules.md`, "Switch", before the first write.
 
 **Before a stop — first `state.md`.** Once the topic folder exists, before any stop (waiting for an answer, a blocker, session end) write the phase and the next step into its `state.md`: one action the next session starts from.
 

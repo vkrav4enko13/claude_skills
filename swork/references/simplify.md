@@ -1,11 +1,11 @@
 # Simplification
 
-Read at step 5 by `references/finish.md`, section 5.
+Read at step 6 by `references/finish.md`, at the very end.
 
 Header of both tasks:
 
 ```
-Project root: <path>. Reply in English. Changed files: <paths>; before the work: <the path to base/>.
+Project root: <path>. Reply in English. Changed files: <paths>; before the work: `git diff` in the project root.
 New files: <paths>. The plan: <the path to the topic folder or the text>.
 Look only at the code of this work. Change nothing — only read.
 Delete nothing outside the project folder, temporary folders included.

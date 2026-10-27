@@ -213,8 +213,6 @@ LITERALS=(
     'no fresh reviewer: small plan'
     'several requirements that one command checks'
     'small work runs in this session'
-    'mode: worktree'
-    'inside submodule'
 )
 for s in "${LITERALS[@]}"; do
     if ! (cd "$R" && grep -rqF -- "$s" $SKILLS); then say "literal: $s"; fi

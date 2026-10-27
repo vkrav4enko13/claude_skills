@@ -14,27 +14,26 @@ Cards in the topic folder `work/<topic>/` of the project wiki; no separate plan 
 
 | Card | What it carries |
 |---|---|
-| `plan.md` | Header: goal, "Checked against code", "Shared constraints", "Not doing", "Assumptions", "Deferred questions", discrepancy rule |
-| `plan-decisions.md` | "Technical decisions" and "Check focus" |
-| `plan-checks.md` | Check lines as a table |
+| `plan.md` | Header: goal, "Checked against code", "Shared constraints", "Not doing", "Assumptions", "Deferred questions", "Technical decisions", "Check focus", discrepancy rule |
+| `plan-checks.md` | Check lines as a table, per logical block |
 | `plan-s<N>-<name>.md` | One card per slice |
-| `plan-overview.md` | The whole plan as one file, for a person |
+| `plan-overview.md` | The table of contents, for a person: a link per card, slices by logical block |
 
-**A card** — title, hook, index line, splitting — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; written under a claim (`references/agents-rules.md`); inner sections under `## …`. Splits: check lines by group into `plan-checks-<group>.md`, numbering continuous; `plan.md` into `plan-2.md`; `plan-s<N>-<name>.md` into `plan-s<N>-<name>-2.md` — the continuation of "What to do", titled `# S<N>. <title> — part 2`, no "Status" line.
+Four kinds of card; split only when a card passes the limits. **A card** — title, hook, index line, splitting — by `references/wiki-rules.md`, sections "Card and limits" and "Check"; inner sections under `## …`. Splits: check lines by group into `plan-checks-<group>.md`, numbering continuous; `plan.md` into `plan-2.md` ("Technical decisions" and "Check focus" first to go); `plan-s<N>-<name>.md` into `plan-s<N>-<name>-2.md` — the continuation of "What to do", titled `# S<N>. <title> — part 2`, no "Status" line.
 
-No empty sections except "Check focus", where empty means "checked and found nothing", written so. In templates replace the angle-bracket words, copy the rest.
+No empty sections except "Check focus". In templates replace the angle-bracket words, copy the rest.
 
 ### Header — `plan.md`
 
 ```markdown
 # Plan of topic <topic>
 
-> Plan header: goal, shared constraints, what we do not do, and the rule for the executor.
+> Plan header: goal, shared constraints, what we do not do, technical decisions and the rule for the executor.
 
 - **Goal:** <the confirmed goal of the topic in one phrase; for a task without a topic — what will come out>
 - **Requirements:** <the requirements cards of this topic; if there are none — the task in the user's words>
 - **Checked against code:** <the commit and the branch; if the project is not under git — the date and time of the check>
-- **Execution:** slices in dependency order; the discrepancy rule is at the end of the card
+- **Execution:** slices in dependency order, by the logical blocks of `plan-overview.md`; the discrepancy rule is at the end of the card
 
 ## Shared constraints
 
@@ -52,6 +51,14 @@ No empty sections except "Check focus", where empty means "checked and found not
 
 - <question> — <who will answer and when>; until answered: <what is assumed>
 
+## Technical decisions
+
+- **<what was chosen>** — instead of <what>: <why>
+
+## Check focus
+
+- <condition> → <the behaviour a reasonable person expects> — S<N>, line <No.>
+
 ## If the code differs from the plan
 
 Stop and report: **expected** — what the plan says; **found** — what is in the code, with the path;
@@ -60,29 +67,12 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 ```
 
 - **Shared constraints** — requirements for all slices (versions, platform, prohibitions, naming), a line each, values verbatim.
-- **Not doing** — what the executor would "fix while at it": neighbouring flaws, generalizations, unasked rebuilds. Refer to "Out of scope" in `scope.md` or `scope-<part>.md`, do not copy it.
+- **Not doing** — what the executor would "fix while at it": neighbouring flaws, generalizations, unasked rebuilds. Refer to "Out of scope" in `scope.md` or `scope-<part>.md` (no `scope.md` — the `## Scope` section of `requirements.md`), do not copy it.
 - **Assumptions** — all assumed without the user's confirmation, lifted blocking questions included, with the dependent slices.
 - **Deferred questions** — only those whose answer changes neither slices, approach nor check; one the slicing depends on — ask it.
-- **The discrepancy rule** — "If the code differs from the plan" — goes into every plan verbatim.
-
-### Technical decisions and check focus — `plan-decisions.md`
-
-```markdown
-# Technical decisions of topic <topic>
-
-> What the plan chose, instead of what and why; which failures and kinds of input it checks beyond the named ones.
-
-## Technical decisions
-
-- **<what was chosen>** — instead of <what>: <why>
-
-## Check focus
-
-- <condition> → <the behaviour a reasonable person expects> — S<N>, line <No.>
-```
-
+- **The discrepancy rule** — "If the code differs from the plan" — goes into every plan verbatim, last.
 - **Technical decisions** — two or three sentences each, only `splan`'s own; a requirements value the executor needs goes in words into "Shared constraints" or the slice.
-- **Check focus** — the step 4 lines, most likely first. Silence of the requirements never permits breaking on an input.
+- **Check focus** — the step 4 lines, most likely first; empty means "checked and found nothing", written so. Silence of the requirements never permits breaking on an input.
 
 ### Check lines — `plan-checks.md`
 
@@ -93,16 +83,16 @@ Report a minor discrepancy too (a file moved, a name changed, the meaning is the
 
 | No. | Requirement | Scenario | Command | Expected | Slice | Result |
 |---|---|---|---|---|---|---|
-| 1 | R2 | <condition → what should come out> | `<command>` | <the output or the state that means success> | S1 | not run |
+| 1 | R2, R3 | <condition → what should come out> | `<command>` | <the output or the state that means success> | S2 | not run |
 | 2 | R5 | <condition → what should come out> | checked manually: <steps> | <what to see> | S2 | not run |
 ```
 
-- **No.** — continuous; slices refer to it.
+- **No.** — continuous; slices refer to it. 1–3 lines per logical block, not per slice.
 - **Requirement** — its number(s); a "Check focus" line names the requirement implying its input; no requirements cards — "task"; an end-to-end line checking the plan's goal as a whole — the word "goal".
 - **Scenario** — exact values in words, not requirement numbers: not "an error on wrong input" but "an empty name → a refusal with the text 'Enter a name'".
 - **Command** — prints the result, no comparison inside (`swork` compares by "Expected"); else `checked manually: <steps>`.
 - **Expected** — success output, verbatim or a part; manual — what to see.
-- **Slice** — exactly one.
+- **Slice** — exactly one: the slice of its block after which the line passes.
 - **Result** — written by `swork`: `not run`, `green YYYY-MM-DD`, `red YYYY-MM-DD`, `awaiting manual check`, `not run: <reason>`. `splan` always writes `not run`.
 
 ### Slice — `plan-s<N>-<name>.md`
@@ -137,54 +127,39 @@ Slice rules:
 - **Interfaces — exact.** The executor sees only its slice: neighbours' names and types come from here; a name differing between `S3` and `S7` is a plan error. In a shared file too, what a neighbour takes is in "gives" of the slice introducing it.
 - **Files — verified.** Existing paths checked; new ones "create"; created earlier — "change: `path` (created in S<N>)": "create" in one slice only.
 - **"What to do" — decisions, not a retelling.** "Add the needed check", "handle the edge cases", "write tests for this" decide nothing.
-- **Every slice has check lines.** The card holds no scenarios or commands: "Checks" names the `plan-checks.md` lines with this slice in "Slice".
+- **Every slice names its block's check lines.** The card holds no scenarios or commands: "Checks" names the `plan-checks.md` lines whose "Slice" is a slice of its logical block.
 - **The irreversible — with a rollback.** Moving or deleting data, changing permissions or the schema: what to save and the restore command; saving is this slice's first step; both run as written — `swork` runs them without asking.
 - **Reuse — verified.** Names exist at the paths; never empty: a list or "nothing to reuse — searched: …".
 - **Marks — only where they apply.** `no behavior change` — a rebuild slice, green before the edits; `ready text` — "What to do" gives every edit verbatim. No mark — no line.
 
 ### Overview — `plan-overview.md`
 
-For a person, never the executor: written after the cards, rewritten in full after every card edit. Prose in the user's language; numbers, statuses, field names, paths, commands as in the cards.
+For a person, never the executor: the table of contents of the plan — a link per card, the slices grouped by logical block, no copies of the cards' text. Written after the cards; updated when a card is added, removed or renamed. Prose in the user's language; numbers, statuses, paths as in the cards.
 
-````markdown
+```markdown
 # Plan overview of topic <topic>
 
-> The plan as one file for reading; the source is the slice cards: where they differ, the card is right.
+> The table of contents of the plan: a link per card; the cards are the plan.
 
 - **Goal:** <the goal from `plan.md`>
+- [Plan](plan.md) — header, technical decisions, not doing; [Check lines](plan-checks.md) — lines 1–<last>
 
-## S<N>. <title> — <status>
+## Block <K>. <what starts working>
 
-<what will start working>
+- [S<N>. <slice title>](plan-s<N>-<name>.md) — depends on <slices | none>
+```
 
-- **Files:** <create and change>
-- **Depends on:** <slices | none>
-- **Steps:** <the items of "What to do", each on a new line>
-- **Checks:** line <No.> — <scenario>; expected: <expected>
-
-  ```
-  <command>
-  ```
-
-## Technical decisions
-
-## Not doing
-
-## Not agreed
-````
-
-No size limit; lines at most 400 characters: wrap items onto an indented line, commands at `&&`.
+Lines at most 400 characters.
 
 ## Order of writing
 
 1. **The topic folder.** None — set it up by "Where the plan lies".
 2. **The plan cards** — by the templates above.
-3. **The overview** — `plan-overview.md` by "Overview"; its topic index line: `- [Plan overview](plan-overview.md) — the plan as one file; the source is the slice cards`.
+3. **The overview** — `plan-overview.md` by "Overview"; its topic index line: `- [Plan overview](plan-overview.md) — the table of contents of the plan, slices by logical block`.
 4. **Lines in the topic index** — a line for every new card:
 
    ```markdown
-   - [Plan](plan.md) — goal, shared constraints, what we do not do, and the discrepancy rule
-   - [Technical decisions](plan-decisions.md) — what was chosen, instead of what, and the check focus
+   - [Plan](plan.md) — goal, shared constraints, what we do not do, technical decisions and the discrepancy rule
    - [Check lines](plan-checks.md) — lines 1–<last>: how each requirement is checked
    - [S<N>. <slice title>](plan-s<N>-<name>.md) — <what will start working>
    ```

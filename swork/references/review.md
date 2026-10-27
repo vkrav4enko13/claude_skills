@@ -1,16 +1,16 @@
 # Review
 
-Read at step 5 by `references/finish.md`, section 5, and at step 7. It looks only for errors.
+Read at step 6 by `references/finish.md`, at the very end. It looks only for errors.
 
 ## What to pass
 
-As for the conformance check; never the conversation, your arguments or the conclusion "it works".
+The plan, the project root, the changed and new files; never the conversation, your arguments or the conclusion "it works".
 
 ## Task
 
 ```
 Find the errors in the changes. Reply in English. Project root: <path>. Changed files: <paths>;
-before the work: <the path to base/>. New files: <paths>.
+before the work: `git diff` in the project root. New files: <paths>.
 The plan: <the path to the topic folder or the text>. Change nothing — only read.
 Delete nothing outside the project folder, temporary folders included.
 
@@ -22,7 +22,7 @@ Assume there are errors; find them:
 - a security hole at the system boundary;
 - what does not build or does not fit the calling code.
 
-Check each line of the plan's "Check focus" (card `plan-decisions.md`), if any: what the code does then.
+Check each line of the plan's "Check focus" (`plan.md` or `plan-decisions.md`), if any: what the code does then.
 
 Do not propose style, renamings, simplifications, "it would be better", or protection
 against an input that cannot occur here.
@@ -55,13 +55,7 @@ Check each finding in the code yourself:
 
 A confirmed one:
 
-- **An error in the code of the slices** — fix it yourself by `references/finish.md`, section 7; restored after a red check — report the finding.
+- **An error in the code of the slices** — fix it yourself by `references/finish.md`, section 7, then rerun its slices' checks; undone after a red check — report the finding. No second round.
 - **It requires going outside the plan, changing the behaviour or a decision of the plan** — leave it, report it with why.
 
 Name each declined finding in "Fixed after the review" as a line: what was proposed and why it was declined.
-
-## Second round
-
-Only if a **serious** finding was fixed. A new subagent, description `Review round 2 of <topic>`, gets the same task plus the findings and your fix and checks only them: the fix is right and broke nothing nearby.
-
-No third round. A new round 2 finding is not fixed: into "Found and left untouched". Keep your first fix if the slice checks are green (red while another agent has a live claim — rerun first); if round 2 shows the fix introduced the error, restore the files from `stage-7`, report both findings.
