@@ -38,9 +38,10 @@ One request for approval and the next step. Options:
   - "Yes, execute — in a new session" — its description gives the lines to paste: `/clear`, then `/swork <topic>`, the topic by name or folder path;
   - "Yes, execute — in this session" — the user types `/swork <topic>` here;
 - "Fix" — fix, show the corrected lines, ask again;
+- "A fresh review" — one round by `references/review.md`, "Separate agent", the fixes, then this request anew — offered, never run without the choice;
 - "Do nothing" — no approval recorded, phase unchanged.
 
-Typed, named in the question: "yes, stop here"; "a fresh review" (`references/review.md`, "Separate agent", then this step anew); back to `sbrain` if the requirements must change.
+Typed, named in the question: "yes, stop here"; back to `sbrain` if the requirements must change.
 
 A "Yes" approves and picks the step. Cards: first record — `state.md` phase `plan confirmed`, same in the topic's "In progress" line of the root index (forms in `references/plan-format.md`); then say how to start. Other options are not approval. "The plan is good" without a step: record approval, ask for the step.
 
